@@ -3,6 +3,18 @@
   src: url('./assets/fonts/Lobster_Two/LobsterTwo-Regular.ttf') format('truetype');
 }
 
+:root {
+  --ball-size: 100px;
+  --ball-blur: 10px;
+  --ball-opacity: 0.25;
+  --blue1: rgba(0, 150, 255, 0.25);
+  --blue2: rgba(10,20,40,0.9);
+  --green1: rgba(0, 255, 50, 0.25);
+  --orange1: rgba(255, 100, 0, 0.25);
+  --yellow1: rgba(255, 255, 0, 0.25);
+  --magenta1: rgba(255, 0, 150, 0.25);
+}
+
 html, body, #root {
   width: 100%;
   height: 100%;
@@ -36,7 +48,7 @@ html, body, #root {
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: rgba(10,20,40,0.9);
+  background-color: var(--blue2);
   box-shadow: 0 0 30px rgba(255, 255, 255, 0.3);
   opacity: 0;
 }

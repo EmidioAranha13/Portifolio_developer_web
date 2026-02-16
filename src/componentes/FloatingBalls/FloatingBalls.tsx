@@ -34,39 +34,44 @@ const FloatingBalls: React.FC<FloatingBallsProps> = ({ children }) => {
       if (!container) return;
 
       const numBalls = 100;
+      const balls: HTMLDivElement[] = [];
+
       const colors = [
-        "rgba(0, 150, 255, 0.25)", // azul
-        "rgba(0, 255, 50, 0.25)", // amarelo
-        "rgba(255, 100, 0, 0.25)", // magenta
-        "rgba(0, 150, 255, 0.25)", // azul
-        "rgba(255, 255, 0, 0.25)", // amarelo
-        "rgba(255, 0, 150, 0.25)", // magenta
+        "var(--green1)",
+        "var(--orange1)",
+        "var(--blue1)",
+        "var(--yellow1)",
+        "var(--magenta1)",
       ];
 
       for (let i = 0; i < numBalls; i++) {
-        const ball = document.createElement("div");
-        const color = colors[Math.floor(Math.random() * colors.length)];
+        const wrapper = document.createElement("div");
+        wrapper.classList.add("ball-wrapper");
 
+        const ball = document.createElement("div");
         ball.classList.add("ball");
+
+        wrapper.appendChild(ball);
+        container.appendChild(wrapper);
+        balls.push(wrapper); // 👈 agora armazenamos o wrapper
+
+        const color = colors[Math.floor(Math.random() * colors.length)];
         ball.style.background = color;
 
-        // metade esquerda, metade direita
         const side = i < numBalls / 2 ? "left" : "right";
         const xStart = 48;
         const xEnd = side === "left" ? Math.random() * 20 : 80 + Math.random() * 20;
         const yEnd = Math.random() * 100;
 
-        ball.style.left = `${xStart}vw`;
-        ball.style.top = "50vh";
+        wrapper.style.position = "absolute";
+        wrapper.style.left = `${xStart}vw`;
+        wrapper.style.top = "50vh";
 
         const size = Math.random() * 100 + 20;
         ball.style.width = `${size}px`;
         ball.style.height = `${size}px`;
 
-        container.appendChild(ball);
-
-        // ANIMAÇÃO DE EXPLOSÃO INICIAL
-        ball.animate(
+        wrapper.animate(
           [
             { left: `${xStart}vw`, top: "50vh", opacity: 1 },
             { left: `${xEnd}vw`, top: `${yEnd}vh`, opacity: 1 },
@@ -77,9 +82,9 @@ const FloatingBalls: React.FC<FloatingBallsProps> = ({ children }) => {
             fill: "forwards",
           }
         ).finished.then(() => {
-          // 🔹 Após chegar na posição final, inicia o movimento suave e infinito
           const toX = Math.random() * 200 - 100;
           const toY = Math.random() * 200 - 100;
+
           ball.animate(
             [
               { transform: "translate(0, 0)" },
@@ -96,10 +101,44 @@ const FloatingBalls: React.FC<FloatingBallsProps> = ({ children }) => {
         });
       }
 
+
+      // 🔥 INTERAÇÃO COM O MOUSE
+      const handleMouseMove = (e: MouseEvent) => {
+        const mouseX = e.clientX;
+        const mouseY = e.clientY;
+        const repelRadius = 140;
+
+        balls.forEach((wrapper) => {
+          const rect = wrapper.getBoundingClientRect();
+          const ballX = rect.left + rect.width / 2;
+          const ballY = rect.top + rect.height / 2;
+
+          const dx = ballX - mouseX;
+          const dy = ballY - mouseY;
+
+          const distance = Math.sqrt(dx * dx + dy * dy);
+
+          if (distance < repelRadius) {
+            const force = (repelRadius - distance) / repelRadius;
+            const moveX = (dx / distance) * force * 120;
+            const moveY = (dy / distance) * force * 120;
+
+            wrapper.style.transform = `translate(${moveX}px, ${moveY}px)`;
+          } else {
+            wrapper.style.transform = "";
+          }
+        });
+      };
+
+
+      window.addEventListener("mousemove", handleMouseMove);
+
       return () => {
+        window.removeEventListener("mousemove", handleMouseMove);
         container.innerHTML = "";
       };
     }
+
   }, [stage]);
 
   return (
@@ -107,9 +146,9 @@ const FloatingBalls: React.FC<FloatingBallsProps> = ({ children }) => {
       {stage !== "background" && (
         <>
           <div className="orbit-container">
-            <div className="orbit-ball blue"></div>
-            <div className="orbit-ball yellow"></div>
-            <div className="orbit-ball magenta"></div>
+            <div className="ball orbit-ball blue"></div>
+            <div className="ball orbit-ball yellow"></div>
+            <div className="ball orbit-ball magenta"></div>
           </div>
         </>
       )}
