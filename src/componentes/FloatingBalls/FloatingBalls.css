@@ -1,0 +1,147 @@
+.floating-balls-wrapper {
+  box-sizing: border-box;
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  background-color: #0a0a0a;
+  /* background: radial-gradient(ellipse at center, #0a0a0a, #000); */
+}
+
+/* ORBIT */
+.orbit-container {
+  position: absolute;
+  top:calc(50% - 2em);
+  left: calc(50% - 2em);
+  width: 0;
+  height: 0;
+  transform: translate(-50%, -50%);
+  z-index: 5;
+}
+
+.orbit-ball {
+  position: absolute;
+  width: 4em;
+  height: 4em;
+  border-radius: 50%;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 0 30px rgba(255, 255, 255, 0.3);
+  opacity: 0.8;
+  transform-origin: center;
+  animation: orbit 1s cubic-bezier(0.45, 0, 0.55, 1) infinite;
+  --angle: 0deg; /* ângulo inicial padrão */
+}
+
+.blue {
+  background: rgba(0, 150, 255, 0.5);
+  --angle: 0deg;
+}
+
+.yellow {
+  background: rgba(255, 255, 0, 0.5);
+  --angle: 120deg;
+}
+
+.magenta {
+  background: rgba(255, 0, 150, 0.5);
+  --angle: 240deg;
+}
+
+@keyframes orbit {
+  from {
+    transform: rotate(var(--angle)) translateX(60px) rotate(calc(-0 * var(--angle)));
+  }
+  to {
+    transform: rotate(calc(360deg + var(--angle))) translateX(60px) rotate(calc(-360deg - var(--angle)));
+  }
+}
+
+@keyframes orbitAndCenter {
+  0% {
+    transform: rotate(var(--angle)) translateX(60px) rotate(calc(-1 * var(--angle)));
+    opacity: 0.9;
+  }
+  100% {
+    transform: rotate(calc(360deg + var(--angle))) translateX(0) scale(0.8) rotate(calc(-360deg - var(--angle)));
+    opacity: 0.5;
+  }
+}
+
+
+/* Classe que aciona a animação */
+.orbit-ball.to-center {
+  animation: orbitAndCenter 1s cubic-bezier(0.55, 0, 0.45, 1) forwards;
+}
+
+
+/* COLISION FLASH */
+.collision-flash {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 120px;
+  height: 120px;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  background: radial-gradient(circle, white, transparent);
+  animation: flash 1s ease-out forwards;
+  z-index: 10;
+}
+
+@keyframes flash {
+  0% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(10);
+    opacity: 0;
+  }
+}
+
+/* BOLAS DE FUNDO */
+.floating-balls {
+  position: absolute;
+  top: -8vh;
+  left: -2vw;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+}
+
+.ball {
+  position: absolute;
+  border-radius: 50%;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
+  animation-timing-function: cubic-bezier(0.42, 0, 0.58, 1);
+  mix-blend-mode: screen;
+}
+
+/* .ball {
+  position: absolute;
+  border-radius: 50%;
+  will-change: transform, opacity;
+  filter: blur(2px);
+  box-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
+  animation-timing-function: cubic-bezier(0.42, 0, 0.58, 1);
+  transition: opacity 0.8s ease;
+} */
+
+/* CONTEÚDO CENTRAL */
+.floating-content {
+  position: relative;
+  z-index: 20;
+  width: 60%;
+  margin: 0 auto;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 2s ease;
+}
+
+.floating-content.visible {
+  opacity: 1;
+}
