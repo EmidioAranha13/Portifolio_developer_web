@@ -157,8 +157,8 @@ const FloatingBalls: React.FC<FloatingBallsProps> = ({ children }) => {
           <div className="collision-flash"></div> 
         ) 
       }
+      
       <div className="floating-balls" ref={containerRef}></div>
-
       <div
         className={`floating-content ${stage === "background" ? "visible" : ""}`}
       >
