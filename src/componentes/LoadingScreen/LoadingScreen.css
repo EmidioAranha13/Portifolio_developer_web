@@ -1,37 +1,98 @@
+@property --portal-size {
+  syntax: "<length>";
+  inherits: true;
+  initial-value: 0px;
+}
+
 .loading-screen {
   --loader-bg: radial-gradient(1200px 700px at 50% 40%, #12243f 0%, #08101f 55%, #060b14 100%);
   --portal-size: 0px;
+  --ring-thickness: 3px;
+  --portal-expand-duration: 1800ms;
   position: fixed;
   inset: 0;
   z-index: 200;
-  display: flex;
-  align-items: center;
-  justify-content: center;
   overflow: hidden;
+  pointer-events: none;
 }
 
-.loading-cover {
+.loading-screen::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    #01689d 0%,
+    #17937c 25%,
+    #3fa874 50%,
+    #6bbe68 75%,
+    #9cd65d 100%
+  );
+  -webkit-mask-image: radial-gradient(
+    circle at center,
+    transparent calc(var(--portal-size) - var(--ring-thickness)),
+    #000 calc(var(--portal-size) - var(--ring-thickness) + 1px),
+    #000 calc(var(--portal-size) + var(--ring-thickness)),
+    transparent calc(var(--portal-size) + var(--ring-thickness) + 1px)
+  );
+  mask-image: radial-gradient(
+    circle at center,
+    transparent calc(var(--portal-size) - var(--ring-thickness)),
+    #000 calc(var(--portal-size) - var(--ring-thickness) + 1px),
+    #000 calc(var(--portal-size) + var(--ring-thickness)),
+    transparent calc(var(--portal-size) + var(--ring-thickness) + 1px)
+  );
+  opacity: 0;
+  transition: opacity 180ms ease, --portal-size var(--portal-expand-duration) cubic-bezier(0.2, 0.84, 0.2, 1);
+  z-index: 3;
+}
+
+.loading-surface {
   position: absolute;
   inset: 0;
   background: var(--loader-bg);
-  -webkit-mask-image: radial-gradient(circle at center, transparent var(--portal-size), #000 calc(var(--portal-size) + 2px));
-  mask-image: radial-gradient(circle at center, transparent var(--portal-size), #000 calc(var(--portal-size) + 2px));
-  transition: opacity 260ms ease;
+  transition: opacity 260ms ease, --portal-size var(--portal-expand-duration) cubic-bezier(0.2, 0.84, 0.2, 1);
+  z-index: 1;
 }
 
-.loading-screen.stage-orbit .loading-cover {
+.loading-screen.stage-orbit {
   --portal-size: 0px;
 }
 
-.loading-screen.stage-collision .loading-cover {
-  --portal-size: 34px;
+.loading-screen.stage-collision {
+  --portal-size: 0px;
 }
 
-.loading-screen.stage-reveal .loading-cover {
-  animation: loadingPortalExpand 920ms cubic-bezier(0.2, 0.84, 0.2, 1) forwards;
+.loading-screen.stage-orbit .loading-surface,
+.loading-screen.stage-collision .loading-surface {
+  -webkit-mask-image: none;
+  mask-image: none;
 }
 
-.loading-screen.stage-done .loading-cover {
+.loading-screen.stage-portal {
+  --portal-size: 56px;
+}
+
+.loading-screen.stage-reveal {
+  --portal-size: 160vmax;
+}
+
+.loading-screen.stage-portal .loading-surface,
+.loading-screen.stage-reveal .loading-surface {
+  -webkit-mask-image: radial-gradient(circle at center, transparent var(--portal-size), #000 calc(var(--portal-size) + 2px));
+  mask-image: radial-gradient(circle at center, transparent var(--portal-size), #000 calc(var(--portal-size) + 2px));
+}
+
+.loading-screen.stage-portal::after,
+.loading-screen.stage-reveal::after {
+  opacity: 1;
+}
+
+.loading-screen.stage-done .loading-surface {
+  opacity: 0;
+}
+
+.loading-screen.stage-done::after {
   opacity: 0;
 }
 
@@ -42,6 +103,7 @@
   width: 0;
   height: 0;
   transform: translate(-50%, -50%);
+  z-index: 3;
 }
 
 .loading-ball {
@@ -50,21 +112,47 @@
   height: 3.8em;
   border-radius: 50%;
   --ball-color: var(--blue1);
+  --loader-ball-tint-mix: 94%;
+  --loader-highlight-strong: 0.62;
+  --loader-highlight-soft: 0.14;
   background:
-    radial-gradient(circle at 25% 22%, rgba(255, 255, 255, 0.7) 0%, rgba(255, 255, 255, 0.18) 26%, rgba(255, 255, 255, 0) 48%),
-    radial-gradient(circle at 72% 75%, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0) 54%),
-    color-mix(in srgb, var(--ball-color) 86%, white 14%);
-  border: 1px solid rgba(255, 255, 255, 0.45);
+    radial-gradient(circle at 24% 22%, rgba(255, 255, 255, var(--loader-highlight-strong)) 0%, rgba(255, 255, 255, 0.18) 22%, rgba(255, 255, 255, 0) 48%),
+    radial-gradient(circle at 72% 75%, rgba(255, 255, 255, var(--loader-highlight-soft)) 0%, rgba(255, 255, 255, 0) 52%),
+    color-mix(in srgb, var(--ball-color) var(--loader-ball-tint-mix), white calc(100% - var(--loader-ball-tint-mix)));
+  border: 1px solid rgba(255, 255, 255, 0.46);
   box-shadow:
-    inset 0 0 14px rgba(255, 255, 255, 0.32),
-    inset 0 -8px 12px rgba(255, 255, 255, 0.14),
-    0 16px 26px rgba(0, 0, 0, 0.22);
-  backdrop-filter: blur(7px) saturate(200%) contrast(120%);
-  -webkit-backdrop-filter: blur(7px) saturate(200%) contrast(120%);
+    inset 0 0 16px rgba(255, 255, 255, 0.34),
+    inset 0 -9px 13px rgba(255, 255, 255, 0.14),
+    0 16px 24px rgba(0, 0, 0, 0.2);
+  backdrop-filter: blur(7px) saturate(235%) contrast(132%);
+  -webkit-backdrop-filter: blur(7px) saturate(235%) contrast(132%);
+  will-change: transform;
+  transform: translateZ(0);
+}
+
+.loading-ball::before {
+  content: "";
+  position: absolute;
+  top: 11%;
+  left: 14%;
+  width: 32%;
+  height: 32%;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0) 72%);
+  pointer-events: none;
+}
+
+.loading-ball::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  box-shadow: inset 0 -10px 16px rgba(255, 255, 255, 0.1);
+  pointer-events: none;
 }
 
 .loading-orbit-ball {
-  animation: loadingOrbit 1s cubic-bezier(0.45, 0, 0.55, 1) infinite;
+  animation: loadingOrbit 1.35s cubic-bezier(0.4, 0.03, 0.2, 1) infinite;
   --angle: 0deg;
 }
 
@@ -84,39 +172,27 @@
 }
 
 .loading-orbit-ball.to-center {
-  animation: loadingOrbitAndCenter 0.52s cubic-bezier(0.55, 0, 0.45, 1) forwards;
+  animation: loadingOrbitAndCenter 0.72s cubic-bezier(0.2, 0.72, 0.2, 1) forwards;
 }
 
 .loading-text {
   position: absolute;
   bottom: 18%;
+  left: 50%;
+  transform: translateX(-50%);
   margin: 0;
+  text-align: center;
   font-size: 1rem;
   font-weight: 600;
   letter-spacing: 0.03em;
   color: rgba(255, 255, 255, 0.86);
-  z-index: 3;
+  z-index: 2;
 }
 
+.loading-screen.stage-portal .loading-orbit-container,
 .loading-screen.stage-reveal .loading-orbit-container {
   opacity: 0;
-  transition: opacity 260ms ease;
-}
-
-.loading-portal-core {
-  position: absolute;
-  width: 74px;
-  height: 74px;
-  border-radius: 50%;
-  border: 1px solid rgba(255, 255, 255, 0.42);
-  background:
-    radial-gradient(circle, rgba(255, 255, 255, 0.35) 0%, rgba(255, 255, 255, 0.08) 45%, rgba(255, 255, 255, 0) 70%);
-  backdrop-filter: blur(9px) saturate(170%);
-  -webkit-backdrop-filter: blur(9px) saturate(170%);
-  box-shadow:
-    inset 0 0 14px rgba(255, 255, 255, 0.35),
-    0 0 24px rgba(255, 255, 255, 0.1);
-  z-index: 2;
+  transition: opacity 200ms ease;
 }
 
 @keyframes loadingOrbit {
@@ -134,16 +210,8 @@
     opacity: 0.95;
   }
   100% {
-    transform: rotate(calc(90deg + var(--angle))) translateX(0) scale(0.66);
-    opacity: 0.55;
+    transform: rotate(calc(90deg + var(--angle))) translateX(0) scale(0.7);
+    opacity: 0.7;
   }
 }
 
-@keyframes loadingPortalExpand {
-  from {
-    --portal-size: 34px;
-  }
-  to {
-    --portal-size: 160vmax;
-  }
-}

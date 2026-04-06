@@ -4,6 +4,7 @@ import "./LoadingScreen.css";
 type LoadingScreenProps = {
   onFinish: () => void;
   isContentReady: boolean;
+  mode?: "portfolio" | "experience";
 };
 
 /**
@@ -13,10 +14,16 @@ type LoadingScreenProps = {
  * @param props Propriedades do componente.
  * @param props.onFinish Callback executado após a animação.
  * @param props.isContentReady Indica se a página principal já está carregada.
+ * @param props.mode Define o contexto do loading (portfólio ou experiência).
  * @returns JSX do overlay de carregamento.
  */
-const LoadingScreen: React.FC<LoadingScreenProps> = ({ onFinish, isContentReady }) => {
-  const [stage, setStage] = useState<"orbit" | "collision" | "reveal" | "done">("orbit");
+const LoadingScreen: React.FC<LoadingScreenProps> = ({
+  onFinish,
+  isContentReady,
+  mode = "portfolio",
+}) => {
+  const [stage, setStage] = useState<"orbit" | "collision" | "portal" | "reveal" | "done">("orbit");
+  const loadingText = mode === "experience" ? "Abrindo experiência..." : "Carregando portifólio...";
 
   useEffect(() => {
     if (stage === "orbit") {
@@ -24,13 +31,18 @@ const LoadingScreen: React.FC<LoadingScreenProps> = ({ onFinish, isContentReady 
       return () => window.clearTimeout(timer);
     }
 
-    if (stage === "collision" && isContentReady) {
-      const timer = window.setTimeout(() => setStage("reveal"), 520);
+    if (stage === "collision") {
+      const timer = window.setTimeout(() => setStage("portal"), 520);
+      return () => window.clearTimeout(timer);
+    }
+
+    if (stage === "portal" && isContentReady) {
+      const timer = window.setTimeout(() => setStage("reveal"), 260);
       return () => window.clearTimeout(timer);
     }
 
     if (stage === "reveal") {
-      const timer = window.setTimeout(() => setStage("done"), 920);
+      const timer = window.setTimeout(() => setStage("done"), 1800);
       return () => window.clearTimeout(timer);
     }
 
@@ -41,19 +53,15 @@ const LoadingScreen: React.FC<LoadingScreenProps> = ({ onFinish, isContentReady 
 
   return (
     <div className={`loading-screen stage-${stage}`}>
-      <div className="loading-cover" />
+      <div className="loading-surface">
+        <div className="loading-orbit-container">
+          <div className={`loading-ball loading-orbit-ball loading-blue ${stage !== "orbit" ? "to-center" : ""}`} />
+          <div className={`loading-ball loading-orbit-ball loading-yellow ${stage !== "orbit" ? "to-center" : ""}`} />
+          <div className={`loading-ball loading-orbit-ball loading-magenta ${stage !== "orbit" ? "to-center" : ""}`} />
+        </div>
 
-      <div className="loading-orbit-container">
-        <div className={`loading-ball loading-orbit-ball loading-blue ${stage !== "orbit" ? "to-center" : ""}`} />
-        <div className={`loading-ball loading-orbit-ball loading-yellow ${stage !== "orbit" ? "to-center" : ""}`} />
-        <div className={`loading-ball loading-orbit-ball loading-magenta ${stage !== "orbit" ? "to-center" : ""}`} />
+        <p className="loading-text">{loadingText}</p>
       </div>
-
-      {(stage === "collision" || stage === "reveal") && <div className="loading-portal-core" />}
-
-      <p className="loading-text">
-        {isContentReady ? "Abrindo experiência..." : "Carregando portifólio..."}
-      </p>
     </div>
   );
 };
