@@ -5,6 +5,26 @@ import StyledHeader from "./componentes/StyledHeader/StyledHeader";
 import "./App.css";
 
 type GlassPreset = "soft" | "crystal" | "liquid-strong";
+type ThemeMode = "day" | "night";
+
+/** Chave no `localStorage` para lembrar o tema escolhido pelo usuário. */
+const THEME_STORAGE_KEY = "portfolio-theme";
+
+/**
+ * Lê o tema salvo de forma segura (SSR / modo privado / valor inválido).
+ *
+ * @returns Modo de tema persistido ou o padrão noturno.
+ */
+function readStoredTheme(): ThemeMode {
+  if (typeof window === "undefined") return "night";
+  try {
+    const raw = localStorage.getItem(THEME_STORAGE_KEY);
+    if (raw === "day" || raw === "night") return raw;
+  } catch {
+    /* storage indisponível */
+  }
+  return "night";
+}
 
 /**
  * Componente raiz da aplicação.
@@ -14,6 +34,7 @@ type GlassPreset = "soft" | "crystal" | "liquid-strong";
  */
 function App() {
   const [preset, setPreset] = useState<GlassPreset>("liquid-strong");
+  const [themeMode, setThemeMode] = useState<ThemeMode>(() => readStoredTheme());
   const [assetsReady, setAssetsReady] = useState(false);
   const [loaderDone, setLoaderDone] = useState(false);
 
@@ -62,16 +83,30 @@ function App() {
     return () => window.removeEventListener("load", handleLoaded);
   }, []);
 
+  useEffect(() => {
+    /**
+     * Persiste o tema atual sempre que o usuário (ou código) alterar `themeMode`.
+     *
+     * @returns void
+     */
+    try {
+      localStorage.setItem(THEME_STORAGE_KEY, themeMode);
+    } catch {
+      /* quota / privado */
+    }
+  }, [themeMode]);
+
   return (
-    <div className="App">
+    <div className={`App theme-${themeMode}`}>
       {!loaderDone && (
         <LoadingScreen
+          themeMode={themeMode}
           isContentReady={assetsReady}
           onFinish={() => setLoaderDone(true)}
         />
       )}
 
-      <StyledHeader />
+      <StyledHeader themeMode={themeMode} onThemeChange={setThemeMode} />
       <LiquidGlassBalls preset={preset}>
         <div className="content">
           <h1>Bem Vindo !</h1>

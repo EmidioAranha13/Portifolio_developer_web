@@ -5,6 +5,7 @@ type LoadingScreenProps = {
   onFinish: () => void;
   isContentReady: boolean;
   mode?: "portfolio" | "experience";
+  themeMode?: "day" | "night";
 };
 
 /**
@@ -15,12 +16,14 @@ type LoadingScreenProps = {
  * @param props.onFinish Callback executado após a animação.
  * @param props.isContentReady Indica se a página principal já está carregada.
  * @param props.mode Define o contexto do loading (portfólio ou experiência).
+ * @param props.themeMode Tema visual ativo (diurno ou noturno), alinhado ao App.
  * @returns JSX do overlay de carregamento.
  */
 const LoadingScreen: React.FC<LoadingScreenProps> = ({
   onFinish,
   isContentReady,
   mode = "portfolio",
+  themeMode = "night",
 }) => {
   const [stage, setStage] = useState<"orbit" | "collision" | "portal" | "reveal" | "done">("orbit");
   const loadingText = mode === "experience" ? "Abrindo experiência..." : "Carregando portifólio...";
@@ -52,7 +55,7 @@ const LoadingScreen: React.FC<LoadingScreenProps> = ({
   }, [stage, onFinish, isContentReady]);
 
   return (
-    <div className={`loading-screen stage-${stage}`}>
+    <div className={`loading-screen theme-${themeMode} stage-${stage}`}>
       <div className="loading-surface">
         <div className="loading-orbit-container">
           <div className={`loading-ball loading-orbit-ball loading-blue ${stage !== "orbit" ? "to-center" : ""}`} />

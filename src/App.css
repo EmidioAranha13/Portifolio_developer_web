@@ -4,6 +4,47 @@
 }
 
 :root {
+  /* Base */
+  --color-white: #ffffff;
+  --color-day-surface: #cdddff;
+  --color-black: #101010;
+  --color-night-surface: #0a0a0a;
+  --color-night-bg-1: #12243f;
+  --color-night-bg-2: #08101f;
+  --color-night-bg-3: #060b14;
+
+  /* Day gradient palette */
+  --color-day-grad-1: #f84187;
+  --color-day-grad-2: #f841ca;
+  --color-day-grad-3: #b73bcf;
+  --color-day-grad-4: #5f38cc;
+  --color-day-grad-5: #5edce0;
+
+  /* Night gradient palette (header/loading) */
+  --color-night-grad-1: #01689d;
+  --color-night-grad-2: #17937c;
+  --color-night-grad-3: #3fa874;
+  --color-night-grad-4: #6bbe68;
+  --color-night-grad-5: #9cd65d;
+
+  /* Theme tokens */
+  --app-main-bg: var(--color-night-surface);
+  --app-main-text: var(--color-white);
+  --header-text-color: var(--color-white);
+  --header-active-text-color: var(--color-white);
+  --header-underline-color: var(--color-white);
+  --header-gradient: linear-gradient(
+    90deg,
+    var(--color-night-grad-1) 0%,
+    var(--color-night-grad-2) 25%,
+    var(--color-night-grad-3) 50%,
+    var(--color-night-grad-4) 75%,
+    var(--color-night-grad-5) 100%
+  );
+  --page-bg-gradient: radial-gradient(1200px 700px at 50% 40%, var(--color-night-bg-1) 0%, var(--color-night-bg-2) 55%, var(--color-night-bg-3) 100%);
+  --loader-text-color: rgba(255, 255, 255, 0.86);
+
+  /* Glass balls colors */
   --ball-size: 100px;
   --ball-blur: 10px;
   --ball-opacity: 0.25;
@@ -15,13 +56,38 @@
   --magenta1: rgba(255, 0, 150, 0.25);
 }
 
+.App.theme-day {
+  --app-main-bg: var(--color-day-surface);
+  --app-main-text: var(--color-black);
+  --header-text-color: var(--color-black);
+  --header-active-text-color: var(--color-black);
+  --header-underline-color: var(--color-black);
+  --header-gradient: linear-gradient(
+    90deg,
+    var(--color-day-grad-1) 0%,
+    var(--color-day-grad-2) 25%,
+    var(--color-day-grad-3) 50%,
+    var(--color-day-grad-4) 75%,
+    var(--color-day-grad-5) 100%
+  );
+  --page-bg-gradient: var(--color-day-surface);
+  --loader-text-color: rgba(16, 16, 16, 0.86);
+
+  /* Mantém as bolhas vivas no fundo claro. */
+  --blue1: rgba(0, 150, 255, 0.56);
+  --green1: rgba(0, 255, 50, 0.56);
+  --orange1: rgba(255, 100, 0, 0.56);
+  --yellow1: rgba(255, 255, 0, 0.56);
+  --magenta1: rgba(255, 0, 150, 0.56);
+}
+
 html, body, #root {
   width: 100dvw;
   height: 100dvh;
   margin: 0;
   padding: 0;
   overflow: hidden;
-  background: #0a0a0a; /* fundo escuro para destacar as bolinhas */
+  background: var(--app-main-bg);
 }
 
 * {
@@ -44,12 +110,12 @@ html, body, #root {
   position: relative;
   height: 100dvh;
   width: 100%;
-  color: white;
+  color: var(--app-main-text);
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: var(--blue2);
-  box-shadow: 0 0 30px rgba(255, 255, 255, 0.3);
+  background-color: transparent;
+  box-shadow: none;
   opacity: 0;
 }
 

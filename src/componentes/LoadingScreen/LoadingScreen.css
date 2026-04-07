@@ -5,7 +5,15 @@
 }
 
 .loading-screen {
-  --loader-bg: radial-gradient(1200px 700px at 50% 40%, #12243f 0%, #08101f 55%, #060b14 100%);
+  /* Herda tokens do App (theme-night / theme-day); fallback = visual noturno clássico */
+  --loader-bg: var(
+    --page-bg-gradient,
+    radial-gradient(1200px 700px at 50% 40%, #12243f 0%, #08101f 55%, #060b14 100%)
+  );
+  --loader-ring-gradient: var(
+    --header-gradient,
+    linear-gradient(90deg, #01689d 0%, #17937c 25%, #3fa874 50%, #6bbe68 75%, #9cd65d 100%)
+  );
   --portal-size: 0px;
   --ring-thickness: 3px;
   --portal-expand-duration: 1800ms;
@@ -20,14 +28,7 @@
   content: "";
   position: absolute;
   inset: 0;
-  background: linear-gradient(
-    90deg,
-    #01689d 0%,
-    #17937c 25%,
-    #3fa874 50%,
-    #6bbe68 75%,
-    #9cd65d 100%
-  );
+  background: var(--loader-ring-gradient);
   -webkit-mask-image: radial-gradient(
     circle at center,
     transparent calc(var(--portal-size) - var(--ring-thickness)),
@@ -185,7 +186,7 @@
   font-size: 1rem;
   font-weight: 600;
   letter-spacing: 0.03em;
-  color: rgba(255, 255, 255, 0.86);
+  color: var(--loader-text-color, rgba(255, 255, 255, 0.86));
   z-index: 2;
 }
 

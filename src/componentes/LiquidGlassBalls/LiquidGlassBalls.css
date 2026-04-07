@@ -12,7 +12,18 @@
   width: 100vw;
   height: 100vh;
   overflow: hidden;
-  background: radial-gradient(1200px 700px at 50% 40%, #12243f 0%, #08101f 55%, #060b14 100%);
+  background: var(--page-bg-gradient);
+}
+
+.App.theme-day .liquid-balls-wrapper {
+  --glass-tint-mix: 94%;
+  --glass-border-alpha: 0.62;
+  --glass-inner-glow: 0.22;
+  --glass-inner-shadow: 0.08;
+  --glass-highlight-strong: 0.36;
+  --glass-highlight-soft: 0.08;
+  --glass-backdrop-saturate: 245%;
+  --glass-backdrop-contrast: 142%;
 }
 
 .liquid-balls-wrapper.preset-soft {

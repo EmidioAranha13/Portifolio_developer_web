@@ -51,7 +51,7 @@ const LiquidGlassBalls: React.FC<LiquidGlassBallsProps> = ({ children, preset = 
       top: Math.round(Math.random() * 100),
       left: Math.round(Math.random() * 100),
       delay: Number((Math.random() * 8).toFixed(2)),
-      duration: Number((Math.random() * 10 + 12).toFixed(2)),
+      duration: Number((Math.random() * 6 + 6).toFixed(2)),
       color: COLORS[Math.floor(Math.random() * COLORS.length)],
     }));
   }, []);

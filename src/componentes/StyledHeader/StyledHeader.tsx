@@ -1,5 +1,6 @@
 import { useState } from "react";
 import "./StyledHeader.css";
+import ThemeToggle from "../ThemeToggle/ThemeToggle";
 
 const HEADER_TABS = [
   "Sobre Mim",
@@ -11,13 +12,18 @@ const HEADER_TABS = [
   "Contatos",
 ] as const;
 
+type StyledHeaderProps = {
+  themeMode: "day" | "night";
+  onThemeChange: (mode: "day" | "night") => void;
+};
+
 /**
  * Cabeçalho estilizado usado na camada de conteúdo principal.
  * Renderiza uma barra de abas com destaque no item selecionado.
  *
  * @returns Elemento de header com navegação por abas.
  */
-const StyledHeader: React.FC = () => {
+const StyledHeader: React.FC<StyledHeaderProps> = ({ themeMode, onThemeChange }) => {
   const [activeTab, setActiveTab] = useState<(typeof HEADER_TABS)[number]>("Sobre Mim");
 
   return (
@@ -34,6 +40,9 @@ const StyledHeader: React.FC = () => {
           </button>
         ))}
       </nav>
+      <div className="header-toggle">
+        <ThemeToggle mode={themeMode} onChange={onThemeChange} />
+      </div>
     </header>
   );
 };
