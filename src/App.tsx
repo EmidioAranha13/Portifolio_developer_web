@@ -2,10 +2,13 @@ import { useEffect, useState } from "react";
 import LiquidGlassBalls from "./componentes/LiquidGlassBalls/LiquidGlassBalls";
 import LoadingScreen from "./componentes/LoadingScreen/LoadingScreen";
 import StyledHeader from "./componentes/StyledHeader/StyledHeader";
+import type { LanguageCode } from "./componentes/LanguageSelector/LanguageSelector";
+import profileImage from "./assets/img-profile.jpg";
 import "./App.css";
 
 type GlassPreset = "soft" | "crystal" | "liquid-strong";
 type ThemeMode = "day" | "night";
+const DEFAULT_LANGUAGE: LanguageCode = "BR";
 
 /** Chave no `localStorage` para lembrar o tema escolhido pelo usuário. */
 const THEME_STORAGE_KEY = "portfolio-theme";
@@ -35,6 +38,7 @@ function readStoredTheme(): ThemeMode {
 function App() {
   const [preset, setPreset] = useState<GlassPreset>("liquid-strong");
   const [themeMode, setThemeMode] = useState<ThemeMode>(() => readStoredTheme());
+  const [language, setLanguage] = useState<LanguageCode>(DEFAULT_LANGUAGE);
   const [assetsReady, setAssetsReady] = useState(false);
   const [loaderDone, setLoaderDone] = useState(false);
 
@@ -106,10 +110,33 @@ function App() {
         />
       )}
 
-      <StyledHeader themeMode={themeMode} onThemeChange={setThemeMode} />
+      <StyledHeader
+        themeMode={themeMode}
+        onThemeChange={setThemeMode}
+        language={language}
+        onLanguageChange={setLanguage}
+      />
       <LiquidGlassBalls preset={preset}>
         <div className="content">
-          <h1>Bem Vindo !</h1>
+          <section className="hero-intro">
+            <div className="hero-avatar-ring">
+              <img
+                className="hero-avatar-image"
+                src={profileImage}
+                alt="Foto de Emidio Aranha"
+              />
+            </div>
+
+            <div className="hero-texts">
+              <h1 className="hero-name">Emídio Aranha</h1>
+              <h2 className="hero-role">
+                Full Stack Developer | Web, Mobile & IoT Solutions
+              </h2>
+              <h2 className="hero-role">
+                React + React Native | Android | Angular | PHP | IA 
+              </h2>
+            </div>
+          </section>
         </div>
         {/* <div className="preset-hint">
           <span>{`Preset: ${preset}`}</span>

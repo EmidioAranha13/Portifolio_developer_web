@@ -1,6 +1,7 @@
 import { useState } from "react";
 import "./StyledHeader.css";
 import ThemeToggle from "../ThemeToggle/ThemeToggle";
+import LanguageSelector, { type LanguageCode } from "../LanguageSelector/LanguageSelector";
 
 const HEADER_TABS = [
   "Sobre Mim",
@@ -15,6 +16,8 @@ const HEADER_TABS = [
 type StyledHeaderProps = {
   themeMode: "day" | "night";
   onThemeChange: (mode: "day" | "night") => void;
+  language: LanguageCode;
+  onLanguageChange: (language: LanguageCode) => void;
 };
 
 /**
@@ -23,7 +26,12 @@ type StyledHeaderProps = {
  *
  * @returns Elemento de header com navegação por abas.
  */
-const StyledHeader: React.FC<StyledHeaderProps> = ({ themeMode, onThemeChange }) => {
+const StyledHeader: React.FC<StyledHeaderProps> = ({
+  themeMode,
+  onThemeChange,
+  language,
+  onLanguageChange,
+}) => {
   const [activeTab, setActiveTab] = useState<(typeof HEADER_TABS)[number]>("Sobre Mim");
 
   return (
@@ -40,8 +48,9 @@ const StyledHeader: React.FC<StyledHeaderProps> = ({ themeMode, onThemeChange })
           </button>
         ))}
       </nav>
-      <div className="header-toggle">
+      <div className="header-controls">
         <ThemeToggle mode={themeMode} onChange={onThemeChange} />
+        <LanguageSelector value={language} onChange={onLanguageChange} />
       </div>
     </header>
   );
