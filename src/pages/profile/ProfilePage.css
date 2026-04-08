@@ -1,0 +1,245 @@
+.profile-page {
+  width: 100%;
+  min-width: 0;
+  max-width: 1100px;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+
+.profile-hero-stage {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding-bottom: clamp(24px, 4vh, 48px);
+}
+
+.hero-intro {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(20px, 4vw, 56px);
+  width: 100%;
+}
+
+.hero-avatar-ring {
+  width: clamp(180px, 25vw, 300px);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  padding: clamp(6px, 1.1vw, 10px);
+  background: var(--header-gradient);
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.24);
+  flex-shrink: 0;
+}
+
+.hero-avatar-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+  display: block;
+}
+
+.hero-texts {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+}
+
+.hero-name {
+  margin: 0;
+  font-size: clamp(2rem, 6vw, 5.2rem);
+  line-height: 1.05;
+  font-weight: 800;
+  color: var(--app-main-text);
+  -webkit-text-stroke: 1px var(--hero-stroke-color);
+  text-shadow: 0 2px 10px var(--hero-text-shadow-color);
+  overflow-wrap: anywhere;
+  text-align: center;
+  max-width: 100%;
+}
+
+.hero-name-ja {
+  font-size: clamp(1.75rem, 5vw, 4.5rem);
+}
+
+.hero-role {
+  margin: 0;
+  font-size: clamp(0.92rem, 1.6vw, 1.35rem);
+  font-weight: 800;
+  color: var(--app-main-text);
+  letter-spacing: 0.01em;
+  -webkit-text-stroke: 0.65px var(--hero-stroke-role-color);
+  text-shadow: 0 1px 8px color-mix(in srgb, var(--hero-text-shadow-color) 78%, transparent 22%);
+  overflow-wrap: anywhere;
+  text-align: center;
+  max-width: 100%;
+  padding-inline: max(0px, env(safe-area-inset-left, 0px), env(safe-area-inset-right, 0px));
+}
+
+.hero-actions {
+  margin-top: 14px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+@media (min-width: 861px) {
+  .profile-hero-stage {
+    /* Só no desktop: ocupa a primeira tela para centralizar o hero. */
+    min-height: calc(100dvh - var(--app-header-height) - 36px);
+  }
+}
+
+@media (max-width: 860px) {
+  /* Respiro entre o header fixo e o bloco do hero. */
+  .profile-hero-stage {
+    padding-top: clamp(16px, 5vw, 28px);
+  }
+
+  .hero-intro {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    min-width: 0;
+    padding-inline: 4px;
+  }
+
+  /* Evita stretch horizontal: anel precisa largura = altura (círculo, não oval). */
+  .hero-avatar-ring {
+    align-self: center;
+    width: min(260px, 78vw);
+    height: min(260px, 78vw);
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+
+  .hero-texts {
+    align-items: center;
+    min-width: 0;
+    width: 100%;
+  }
+
+  .hero-actions {
+    justify-content: center;
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .hero-actions .custom-bullet-button {
+    min-width: 0;
+    flex: 1 1 136px;
+    max-width: min(320px, 100%);
+  }
+
+  .profile-about-paragraph,
+  .profile-global-skills {
+    text-align: left;
+    hyphens: auto;
+    overflow-wrap: anywhere;
+  }
+
+  .profile-about {
+    padding: clamp(14px, 4vw, 22px);
+    border-radius: 14px;
+  }
+}
+
+.profile-about {
+  margin-top: clamp(40px, 7vh, 96px);
+  width: 100%;
+  padding: clamp(18px, 2.8vw, 28px);
+  border-radius: 18px;
+  background: rgba(96, 96, 102, 0.6);
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.14);
+  opacity: 0;
+  transform: translateY(18px);
+  transition:
+    opacity 0.62s ease,
+    transform 0.62s ease;
+}
+
+.profile-about.is-revealed {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .profile-about {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}
+
+.profile-about-title {
+  margin: 0 0 clamp(16px, 2.2vw, 22px);
+  font-size: clamp(1.45rem, 2.75vw, 1.95rem);
+  font-weight: 800;
+  line-height: 1.15;
+  color: var(--app-main-text);
+}
+
+.profile-about-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(160px, 280px);
+  gap: clamp(18px, 3vw, 30px);
+  align-items: start;
+}
+
+.profile-about-copy {
+  color: var(--app-main-text);
+}
+
+.profile-about-paragraph {
+  margin: 0 0 0.85em;
+  font-size: clamp(0.88rem, 1.35vw, 1rem);
+  font-weight: 600;
+  line-height: 1.6;
+  text-align: justify;
+  text-wrap: pretty;
+}
+
+.profile-about-paragraph:last-child {
+  margin-bottom: 0;
+}
+
+.profile-about-visual {
+  width: 100%;
+}
+
+.profile-photo-rotator {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.2);
+}
+
+.profile-photo-slide {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity 520ms ease;
+}
+
+.profile-photo-slide.active {
+  opacity: 1;
+}
+
+.profile-global-skills {
+  margin: clamp(18px, 2.5vw, 24px) 0 0;
+  padding-top: clamp(16px, 2.2vw, 20px);
+  border-top: 1px solid color-mix(in srgb, var(--app-main-text) 22%, transparent 78%);
+  font-size: clamp(0.82rem, 1.25vw, 0.95rem);
+  font-weight: 700;
+  line-height: 1.65;
+  color: var(--app-main-text);
+  text-align: justify;
+  text-wrap: pretty;
+}

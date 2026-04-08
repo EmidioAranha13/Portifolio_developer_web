@@ -25,7 +25,7 @@ const LoadingScreen: React.FC<LoadingScreenProps> = ({
   mode = "portfolio",
   themeMode = "night",
 }) => {
-  const [stage, setStage] = useState<"orbit" | "collision" | "portal" | "reveal" | "done">("orbit");
+  const [stage, setStage] = useState<"orbit" | "collision" | "portal" | "reveal">("orbit");
   const loadingText = mode === "experience" ? "Abrindo experiência..." : "Carregando portifólio...";
 
   useEffect(() => {
@@ -45,12 +45,12 @@ const LoadingScreen: React.FC<LoadingScreenProps> = ({
     }
 
     if (stage === "reveal") {
-      const timer = window.setTimeout(() => setStage("done"), 1800);
+      const timer = window.setTimeout(() => {
+        onFinish();
+      }, 1800);
       return () => window.clearTimeout(timer);
     }
 
-    if (stage !== "done") return undefined;
-    onFinish();
     return undefined;
   }, [stage, onFinish, isContentReady]);
 

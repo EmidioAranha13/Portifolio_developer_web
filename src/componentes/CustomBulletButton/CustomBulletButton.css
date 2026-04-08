@@ -1,0 +1,125 @@
+.custom-bullet-button {
+  min-width: 172px;
+  height: 46px;
+  border-radius: 999px;
+  border: none;
+  -webkit-appearance: none;
+  appearance: none;
+  -webkit-tap-highlight-color: transparent;
+  padding: 0 18px;
+  font-size: 0.98rem;
+  font-weight: 800;
+  letter-spacing: 0.01em;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition:
+    transform 180ms ease,
+    box-shadow 220ms ease,
+    opacity 180ms ease,
+    filter 220ms ease;
+}
+
+.custom-bullet-button:hover {
+  transform: translateY(-1px);
+}
+
+.custom-bullet-button:active {
+  transform: translateY(0);
+}
+
+.custom-bullet-button:focus,
+.custom-bullet-button:focus-visible {
+  outline: none;
+}
+
+.custom-bullet-button-content {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.custom-bullet-button-label {
+  line-height: 1;
+}
+
+.custom-bullet-button-icon-wrap {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.custom-bullet-button-icon {
+  width: 22px;
+  height: 22px;
+  display: inline-block;
+  background-color: currentColor;
+  -webkit-mask-image: var(--button-icon-url);
+  mask-image: var(--button-icon-url);
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  mask-position: center;
+  -webkit-mask-size: contain;
+  mask-size: contain;
+}
+
+.custom-bullet-button-primary {
+  background: var(--header-gradient);
+  color: var(--color-white);
+  box-shadow:
+    0 10px 24px rgba(0, 0, 0, 0.22),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.2);
+}
+
+.custom-bullet-button-primary:hover {
+  filter: saturate(1.08) brightness(1.05);
+  box-shadow:
+    0 14px 28px rgba(0, 0, 0, 0.26),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.24);
+}
+
+.custom-bullet-button-primary:active {
+  filter: saturate(1.02) brightness(0.98);
+}
+
+.custom-bullet-button-outline {
+  background:
+    linear-gradient(var(--app-main-bg), var(--app-main-bg)) padding-box,
+    var(--header-gradient) border-box;
+  border: 2px solid transparent;
+  color: var(--header-text-color);
+  box-shadow:
+    0 10px 22px rgba(0, 0, 0, 0.18),
+    inset 0 0 0 1px color-mix(in srgb, var(--color-white) 12%, transparent);
+}
+
+.custom-bullet-button-outline .custom-bullet-button-label {
+  background: var(--header-gradient);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.custom-bullet-button-outline .custom-bullet-button-icon {
+  background: var(--header-gradient);
+}
+
+.custom-bullet-button-outline:hover {
+  border: 2px solid transparent;
+  box-shadow:
+    0 14px 26px rgba(0, 0, 0, 0.22),
+    inset 0 0 0 1px color-mix(in srgb, var(--color-white) 16%, transparent);
+}
+
+.custom-bullet-button-outline:focus,
+.custom-bullet-button-outline:focus-visible {
+  border: 2px solid transparent;
+  outline: none;
+}
+
+.custom-bullet-button-outline:active {
+  opacity: 0.92;
+}

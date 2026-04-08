@@ -21,7 +21,10 @@
   inset: 0;
   z-index: 200;
   overflow: hidden;
-  pointer-events: none;
+  /* Bloqueia clique na página por baixo; rolagem é barrada por JS sem esconder o overflow do documento. */
+  pointer-events: auto;
+  touch-action: none;
+  overscroll-behavior: none;
 }
 
 .loading-screen::after {
@@ -87,14 +90,6 @@
 .loading-screen.stage-portal::after,
 .loading-screen.stage-reveal::after {
   opacity: 1;
-}
-
-.loading-screen.stage-done .loading-surface {
-  opacity: 0;
-}
-
-.loading-screen.stage-done::after {
-  opacity: 0;
 }
 
 .loading-orbit-container {

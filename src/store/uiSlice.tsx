@@ -1,7 +1,17 @@
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
 
+export type SectionKey =
+  | "about"
+  | "education"
+  | "experience"
+  | "skills"
+  | "certifications"
+  | "projects"
+  | "contact";
+
 const initialState = {
   isSidebarOpen: false,
+  activeSection: "about" as SectionKey,
 };
 
 /**
@@ -32,11 +42,22 @@ export const uiSlice = createSlice({
     setSidebarOpen(state, action: PayloadAction<boolean>) {
       state.isSidebarOpen = action.payload;
     },
+
+    /**
+     * Define a seção ativa atual do site.
+     *
+     * @param state Estado atual do slice de UI.
+     * @param action Action com a chave da seção ativa.
+     * @returns void
+     */
+    setActiveSection(state, action: PayloadAction<SectionKey>) {
+      state.activeSection = action.payload;
+    },
   },
 });
 
 /** Actions exportadas para manipular o estado de UI. */
-export const { toggleSidebar, setSidebarOpen } = uiSlice.actions;
+export const { toggleSidebar, setSidebarOpen, setActiveSection } = uiSlice.actions;
 
 /** Reducer principal do slice de UI. */
 export default uiSlice.reducer;
