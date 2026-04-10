@@ -1,0 +1,76 @@
+.profile-section-rail {
+  display: flex;
+  align-items: stretch;
+  gap: 1em;
+  width: 100%;
+  min-width: 0;
+}
+
+.profile-section-rail__track {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 48px;
+  flex-shrink: 0;
+  align-self: stretch;
+}
+
+.profile-section-rail__ring {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  padding: 3px;
+  box-sizing: border-box;
+  background: var(--header-gradient);
+  flex-shrink: 0;
+}
+
+.profile-section-rail__inner {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-night-bg-1);
+}
+
+.App.theme-day .profile-section-rail__inner {
+  background: var(--color-day-surface);
+}
+
+.profile-section-rail__img {
+  display: block;
+  width: 22px;
+  height: 22px;
+  object-fit: contain;
+}
+
+.App.theme-day .profile-section-rail__img {
+  filter: brightness(0) saturate(100%);
+}
+
+/* Coluna: anel em cima, linha em baixo — sem overlap. */
+.profile-section-rail__line {
+  flex: 1 1 auto;
+  width: 3px;
+  min-height: 0.75rem;
+  margin-top: 0;
+  align-self: center;
+  border-radius: 999px;
+  background: var(--header-gradient);
+  pointer-events: none;
+}
+
+.profile-section-rail--no-ring .profile-section-rail__line {
+  min-height: 1rem;
+}
+
+.profile-section-rail--no-line .profile-section-rail__track {
+  align-self: flex-start;
+}
+
+.profile-section-rail__body {
+  flex: 1;
+  min-width: 0;
+}

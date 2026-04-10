@@ -1,52 +1,17 @@
 import { useEffect, useRef, useState } from "react";
 import CustomBulletButton from "../../componentes/CustomBulletButton/CustomBulletButton";
+import ProfileHeroTripleArrowsDown from "../../componentes/ProfileHeroTripleArrowsDown/ProfileHeroTripleArrowsDown";
+import ProfilePhotoRotator from "../../componentes/ProfilePhotoRotator/ProfilePhotoRotator";
+import ProfileSectionRail from "../../componentes/ProfileSectionRail/ProfileSectionRail";
 import type { InfoTexts, InfoTextsLanguage } from "../../utils/infoTextsCollection";
 import profileImage from "../../assets/img-profile.jpg";
+import arrow1 from "../../assets/arrow-1.png";
 import "./ProfilePage.css";
 
 type ProfilePageProps = {
   infoTexts: InfoTexts;
   languageKey: InfoTextsLanguage;
 };
-
-/** Cores de exemplo até haver fotos reais em assets. */
-const PHOTO_PLACEHOLDER_SWATCHES = [
-  "#01689D",
-  "#3FA874",
-  "#6BBE68",
-  "#9CD65D",
-  "#17937C",
-];
-
-/**
- * Bloco que alterna slides visuais (placeholders coloridos por enquanto).
- *
- * @returns Área de fotos com transição suave entre “slides”.
- */
-function ProfilePhotoRotator() {
-  const [slideIndex, setSlideIndex] = useState(0);
-
-  useEffect(() => {
-    const id = window.setInterval(() => {
-      setSlideIndex(
-        (previous) => (previous + 1) % PHOTO_PLACEHOLDER_SWATCHES.length
-      );
-    }, 3500);
-    return () => window.clearInterval(id);
-  }, []);
-
-  return (
-    <div className="profile-photo-rotator" aria-hidden="true">
-      {PHOTO_PLACEHOLDER_SWATCHES.map((color, index) => (
-        <div
-          key={color}
-          className={`profile-photo-slide ${index === slideIndex ? "active" : ""}`}
-          style={{ background: color }}
-        />
-      ))}
-    </div>
-  );
-}
 
 /**
  * Página de perfil (Sobre mim): hero, resumo profissional e habilidades gerais.
@@ -57,6 +22,7 @@ function ProfilePhotoRotator() {
 const ProfilePage: React.FC<ProfilePageProps> = ({ infoTexts, languageKey }) => {
   const hasResume = infoTexts.professionalResume.length > 0;
   const hasSkills = infoTexts.globalSkills.length > 0;
+  const hasResumeBlock = hasResume || hasSkills;
   const skillsLine = infoTexts.globalSkills.join("・");
   const aboutRef = useRef<HTMLElement>(null);
   const [aboutRevealed, setAboutRevealed] = useState(false);
@@ -121,17 +87,34 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ infoTexts, languageKey }) => 
         </section>
       </div>
 
+      <div className="profile-hero-triple-arrows-slot">
+        <ProfileHeroTripleArrowsDown />
+      </div>
+
       <section
         ref={aboutRef}
         className={`profile-about ${aboutRevealed ? "is-revealed" : ""}`}
         aria-labelledby="profile-about-heading"
       >
-        <h2 id="profile-about-heading" className="profile-about-title">
-          {infoTexts.about}
-        </h2>
+        <ProfileSectionRail
+          imageSrc={arrow1}
+          showLine={false}
+          className="profile-about-rail--header"
+        >
+          <div className="profile-about-heading-stack">
+            <h2 id="profile-about-heading" className="profile-about-title">
+              <span className="profile-about-title-text">{infoTexts.about}</span>
+            </h2>
+            <div className="profile-about-heading-rule" aria-hidden="true" />
+          </div>
+        </ProfileSectionRail>
 
-        {(hasResume || hasSkills) && (
-          <>
+        {hasResumeBlock ? (
+          <ProfileSectionRail
+            imageSrc={arrow1}
+            showRing={false}
+            className="profile-about-rail--resume"
+          >
             <div className="profile-about-row">
               <div className="profile-about-copy">
                 {hasResume &&
@@ -145,12 +128,17 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ infoTexts, languageKey }) => 
                 <ProfilePhotoRotator />
               </div>
             </div>
+          </ProfileSectionRail>
+        ) : null}
 
-            {hasSkills && (
-              <p className="profile-global-skills">{skillsLine}</p>
-            )}
-          </>
-        )}
+        {hasSkills ? (
+          <ProfileSectionRail
+            imageSrc={arrow1}
+            className="profile-about-rail--skills"
+          >
+            <p className="profile-global-skills">{skillsLine}</p>
+          </ProfileSectionRail>
+        ) : null}
       </section>
     </div>
   );

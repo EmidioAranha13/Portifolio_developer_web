@@ -1,0 +1,132 @@
+/* Ângulo do conic-gradient: cores “andam” à volta da borda; a forma não roda. */
+@property --profile-hero-border-angle {
+  syntax: "<angle>";
+  inherits: false;
+  initial-value: 0deg;
+}
+
+.profile-hero-triple-arrows-down {
+  position: relative;
+  box-sizing: border-box;
+  width: 60%;
+  max-width: 100%;
+  height: 2.5em;
+  min-height: 2.5em;
+  flex-shrink: 0;
+  margin-inline: auto;
+  border-radius: 0.45em;
+  font-size: clamp(11px, 2.4vw, 15px);
+  isolation: isolate;
+}
+
+.profile-hero-triple-arrows-down::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  border-radius: inherit;
+  box-sizing: border-box;
+  padding: 2px;
+  background: conic-gradient(
+    from var(--profile-hero-border-angle),
+    var(--color-night-grad-1),
+    var(--color-night-grad-2),
+    var(--color-night-grad-3),
+    var(--color-night-grad-4),
+    var(--color-night-grad-5),
+    var(--color-night-grad-1)
+  );
+  -webkit-mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  mask-composite: exclude;
+  animation: profile-hero-border-angle-orbit 3.6s linear infinite;
+}
+
+.App.theme-day .profile-hero-triple-arrows-down::before {
+  background: conic-gradient(
+    from var(--profile-hero-border-angle),
+    var(--color-day-grad-1),
+    var(--color-day-grad-2),
+    var(--color-day-grad-3),
+    var(--color-day-grad-4),
+    var(--color-day-grad-5),
+    var(--color-day-grad-1)
+  );
+}
+
+.profile-hero-triple-arrows-down__panel {
+  position: absolute;
+  inset: 2px;
+  z-index: 1;
+  box-sizing: border-box;
+  border-radius: 0.32em;
+  background: transparent;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 0;
+}
+
+.profile-hero-triple-arrows-down__viewport {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+
+.profile-hero-triple-arrows-down__track {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 0.06em;
+  animation: profile-hero-arrows-scroll 2.2s linear infinite;
+}
+
+/* Chevron (expand_more): máscara sobre degradê linear do tema (igual ao header). */
+.profile-hero-triple-arrows-down__arrow {
+  --profile-hero-arrow-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='white' d='M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z'/%3E%3C/svg%3E");
+  display: block;
+  width: 0.52em;
+  height: 0.52em;
+  flex-shrink: 0;
+  background: var(--header-gradient);
+  -webkit-mask: var(--profile-hero-arrow-mask) center / contain no-repeat;
+  mask: var(--profile-hero-arrow-mask) center / contain no-repeat;
+}
+
+@keyframes profile-hero-border-angle-orbit {
+  to {
+    --profile-hero-border-angle: 360deg;
+  }
+}
+
+/* Metade do track = um trio de setas; loop sem salto (segundo trio = cópia do primeiro). */
+@keyframes profile-hero-arrows-scroll {
+  0% {
+    transform: translateY(-50%);
+  }
+
+  100% {
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .profile-hero-triple-arrows-down::before {
+    animation: none;
+  }
+
+  .profile-hero-triple-arrows-down__track {
+    animation: none;
+    transform: none;
+  }
+}
