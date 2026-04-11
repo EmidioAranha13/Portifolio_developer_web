@@ -54,41 +54,57 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ infoTexts, languageKey }) => 
     <div className="profile-page">
       <div className="profile-hero-stage">
         <section className="hero-intro" aria-labelledby="profile-hero-name">
-          <div className="hero-avatar-ring">
-            <img
-              className="hero-avatar-image"
-              src={profileImage}
-              alt={infoTexts.name}
-            />
+          <div
+            className="hero-intro__rail hero-intro__rail--start"
+            aria-hidden="true"
+          >
+            <ProfileHeroTripleArrowsDown orientation="vertical" />
           </div>
 
-          <div className="hero-texts">
-            <h1
-              id="profile-hero-name"
-              className={`hero-name ${languageKey === "ja" ? "hero-name-ja" : ""}`}
-            >
-              {infoTexts.name}
-            </h1>
-            <h2 className="hero-role">{infoTexts.role}</h2>
-            <h2 className="hero-role">{infoTexts.techStack}</h2>
-            <div className="hero-actions">
-              <CustomBulletButton
-                label={infoTexts.downloadCV}
-                variant="primary"
-                icon="download"
-              />
-              <CustomBulletButton
-                label={infoTexts.contactMe}
-                variant="outline"
-                icon="paperPlane"
+          <div className="hero-intro__main">
+            <div className="hero-avatar-ring">
+              <img
+                className="hero-avatar-image"
+                src={profileImage}
+                alt={infoTexts.name}
               />
             </div>
+
+            <div className="hero-texts">
+              <h1
+                id="profile-hero-name"
+                className={`hero-name ${languageKey === "ja" ? "hero-name-ja" : ""}`}
+              >
+                {infoTexts.name}
+              </h1>
+              <h2 className="hero-role">{infoTexts.role}</h2>
+              <h2 className="hero-role">{infoTexts.techStack}</h2>
+              <div className="hero-actions">
+                <CustomBulletButton
+                  label={infoTexts.downloadCV}
+                  variant="primary"
+                  icon="download"
+                />
+                <CustomBulletButton
+                  label={infoTexts.contactMe}
+                  variant="outline"
+                  icon="paperPlane"
+                />
+              </div>
+            </div>
+          </div>
+
+          <div
+            className="hero-intro__rail hero-intro__rail--end"
+            aria-hidden="true"
+          >
+            <ProfileHeroTripleArrowsDown orientation="vertical" />
           </div>
         </section>
-      </div>
 
-      <div className="profile-hero-triple-arrows-slot">
-        <ProfileHeroTripleArrowsDown />
+        <div className="profile-hero-triple-arrows-slot">
+          <ProfileHeroTripleArrowsDown orientation="horizontal" />
+        </div>
       </div>
 
       <section

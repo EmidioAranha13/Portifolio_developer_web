@@ -7,6 +7,7 @@ import StyledFooter from "./componentes/StyledFooter/StyledFooter";
 import type { LanguageCode } from "./componentes/LanguageSelector/LanguageSelector";
 import { infoTextsCollection } from "./utils/infoTextsCollection";
 import ProfilePage from "./pages/profile/ProfilePage";
+import EducationPage from "./pages/education/EducationPage";
 import type { RootState } from "./store/index";
 import type { SectionKey } from "./store/uiSlice";
 import "./App.css";
@@ -169,6 +170,8 @@ function App() {
             <div key={activeSection} className="page-fade">
               {activeSection === "about" ? (
                 <ProfilePage infoTexts={infoTexts} languageKey={languageKey} />
+              ) : activeSection === "education" ? (
+                <EducationPage />
               ) : (
                 <section className="page-placeholder">
                   <h2>{tabTitleBySection[activeSection]}</h2>

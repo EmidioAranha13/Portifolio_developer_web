@@ -16,7 +16,7 @@ type BallConfig = {
   color: string;
 };
 
-const BALL_COUNT = 60;
+const BALL_COUNT = 100;
 const COLORS = ["var(--green1)", "var(--orange1)", "var(--blue1)", "var(--yellow1)", "var(--magenta1)"];
 
 const FILTER_PRESET = {

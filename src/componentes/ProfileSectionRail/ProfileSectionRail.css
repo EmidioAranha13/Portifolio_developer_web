@@ -58,8 +58,27 @@
   margin-top: 0;
   align-self: center;
   border-radius: 999px;
-  background: var(--header-gradient);
+  /* Mesmas cores do header, mas de cima → baixo (o header usa 90deg = lateral). */
+  background: linear-gradient(
+    180deg,
+    var(--color-night-grad-1) 0%,
+    var(--color-night-grad-2) 25%,
+    var(--color-night-grad-3) 50%,
+    var(--color-night-grad-4) 75%,
+    var(--color-night-grad-5) 100%
+  );
   pointer-events: none;
+}
+
+.App.theme-day .profile-section-rail__line {
+  background: linear-gradient(
+    180deg,
+    var(--color-day-grad-1) 0%,
+    var(--color-day-grad-2) 25%,
+    var(--color-day-grad-3) 50%,
+    var(--color-day-grad-4) 75%,
+    var(--color-day-grad-5) 100%
+  );
 }
 
 .profile-section-rail--no-ring .profile-section-rail__line {

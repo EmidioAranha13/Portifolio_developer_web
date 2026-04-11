@@ -2,12 +2,14 @@ import { useEffect, useState } from "react";
 import photoRotator1 from "../../assets/photo-rotator-1.jpg";
 import photoRotator2 from "../../assets/photo-rotator-2.jpg";
 import photoRotator3 from "../../assets/photo-rotator-3.jpg";
+import photoRotator4 from "../../assets/photo-rotator-4.jpg";
 import "./ProfilePhotoRotator.css";
 
 const PROFILE_PHOTO_ROTATOR_IMAGES = [
   photoRotator1,
   photoRotator2,
   photoRotator3,
+  photoRotator4,
 ];
 
 /**

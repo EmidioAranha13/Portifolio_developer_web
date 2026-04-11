@@ -14,7 +14,7 @@ type ProfileSectionRailProps = {
 };
 
 /**
- * Trilho lateral: anel com imagem + linha vertical em degradê do tema, alinhado ao conteúdo.
+ * Trilho lateral: anel com imagem + linha vertical com degradê do tema (cima → baixo), alinhado ao conteúdo.
  * Útil para seções tipo timeline no perfil.
  */
 const ProfileSectionRail: React.FC<ProfileSectionRailProps> = ({
