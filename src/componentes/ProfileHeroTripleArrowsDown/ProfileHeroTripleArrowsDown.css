@@ -6,6 +6,11 @@
 }
 
 .profile-hero-triple-arrows-down {
+  /* Personalizar no ProfilePage: .profile-page .profile-hero-triple-arrows-down { ... } */
+  --hero-arrows-panel-bg: color-mix(in srgb, var(--app-main-bg) 58%, transparent);
+  --hero-arrows-backdrop-blur: 12px;
+  --hero-arrows-backdrop-saturate: 1.18;
+
   /* 3em / 4em relativos ao font-size deste bloco. */
   font-size: 1rem;
   /* Tamanho original das setas; a coluna é maior que 3em — corta com overflow hidden. */
@@ -73,7 +78,7 @@
   z-index: 1;
   box-sizing: border-box;
   border-radius: calc(4em - 3px);
-  background-color: color-mix(in srgb, var(--app-main-bg) 58%, transparent);
+  background-color: color-mix(in srgb, var(--app-main-bg) 30%, transparent);
   backdrop-filter: blur(12px) saturate(1.18);
   -webkit-backdrop-filter: blur(12px) saturate(1.18);
   /* Corta a coluna grande; mantém o “miolo” visível e centrado. */

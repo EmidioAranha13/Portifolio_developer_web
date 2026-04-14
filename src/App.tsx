@@ -11,6 +11,7 @@ import EducationPage from "./pages/education/EducationPage";
 import type { RootState } from "./store/index";
 import type { SectionKey } from "./store/uiSlice";
 import "./App.css";
+import "./styles/glassSurface.css";
 
 type GlassPreset = "soft" | "crystal" | "liquid-strong";
 type ThemeMode = "day" | "night";
@@ -171,7 +172,7 @@ function App() {
               {activeSection === "about" ? (
                 <ProfilePage infoTexts={infoTexts} languageKey={languageKey} />
               ) : activeSection === "education" ? (
-                <EducationPage />
+                <EducationPage title={tabTitleBySection.education} />
               ) : (
                 <section className="page-placeholder">
                   <h2>{tabTitleBySection[activeSection]}</h2>

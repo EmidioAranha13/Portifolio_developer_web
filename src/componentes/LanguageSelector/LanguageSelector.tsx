@@ -90,7 +90,11 @@ const LanguageSelector: React.FC<LanguageSelectorProps> = ({
       </button>
 
       {isOpen && (
-        <div className="language-selector-menu" role="listbox" aria-label="Idiomas">
+        <div
+          className="language-selector-menu glass-surface"
+          role="listbox"
+          aria-label="Idiomas"
+        >
           {OPTIONS.map((option) => (
             <button
               key={option.code}

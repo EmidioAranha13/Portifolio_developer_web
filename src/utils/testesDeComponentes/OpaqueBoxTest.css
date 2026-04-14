@@ -1,0 +1,19 @@
+/* Layout; vidro vem de .glass-surface (src/styles/glassSurface.css). */
+.opaque-box-test {
+  box-sizing: border-box;
+  width: 100%;
+  max-width: min(520px, 100%);
+  margin-inline: auto;
+  min-height: clamp(120px, 22vh, 220px);
+  padding: clamp(16px, 3vw, 24px);
+  border-radius: 14px;
+  color: var(--app-main-text);
+}
+
+.opaque-box-test__hint {
+  margin: 0;
+  font-size: clamp(0.85rem, 1.2vw, 0.95rem);
+  font-weight: 600;
+  line-height: 1.5;
+  opacity: 0.92;
+}

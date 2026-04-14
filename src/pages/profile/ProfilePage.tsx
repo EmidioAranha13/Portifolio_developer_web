@@ -109,7 +109,7 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ infoTexts, languageKey }) => 
 
       <section
         ref={aboutRef}
-        className={`profile-about ${aboutRevealed ? "is-revealed" : ""}`}
+        className={`profile-about glass-surface ${aboutRevealed ? "is-revealed" : ""}`}
         aria-labelledby="profile-about-heading"
       >
         <ProfileSectionRail

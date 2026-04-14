@@ -1,0 +1,60 @@
+/**
+ * Superfície “vidro”:
+ * - Sem backdrop-filter: fundo em gradiente opaco (leitura garantida).
+ * - Com suporte: translúcido + blur (como .language-selector-menu).
+ * - prefers-reduced-transparency: sem blur, volta ao fallback.
+ *
+ * Personalizar por componente (sem mudar esta classe):
+ *   --glass-fallback-bg     → gradiente quando não há blur / transparência reduzida
+ *   --glass-backdrop-bg     → camada translúcida quando há backdrop-filter
+ *
+ * Ex.: .meu-cartao.glass-surface { --glass-backdrop-bg: color-mix(...); }
+ */
+.glass-surface {
+  --glass-fallback-bg: linear-gradient(
+    155deg,
+    color-mix(in srgb, var(--app-main-bg) 86%, var(--color-white)) 0%,
+    color-mix(in srgb, var(--app-main-bg) 68%, var(--color-white)) 100%
+  );
+  --glass-backdrop-bg: color-mix(in srgb, var(--color-white) 55%, transparent);
+
+  background: var(--glass-fallback-bg);
+  border: 1px solid color-mix(in srgb, var(--app-main-text) 16%, transparent);
+  box-shadow:
+    0 12px 28px rgba(0, 0, 0, 0.2),
+    inset 0 1px 0 color-mix(in srgb, var(--app-main-text) 12%, transparent);
+}
+
+.App.theme-day .glass-surface {
+  --glass-fallback-bg: linear-gradient(
+    155deg,
+    color-mix(in srgb, var(--app-main-bg) 94%, #fff) 0%,
+    color-mix(in srgb, var(--app-main-bg) 82%, rgba(180, 200, 255, 0.55)) 100%
+  );
+  --glass-backdrop-bg: color-mix(in srgb, var(--color-white) 68%, transparent);
+}
+
+@supports ((-webkit-backdrop-filter: blur(1px)) or (backdrop-filter: blur(1px))) {
+  .glass-surface {
+    background: var(--glass-backdrop-bg);
+    backdrop-filter: blur(10px) saturate(1.15);
+    -webkit-backdrop-filter: blur(10px) saturate(1.15);
+    box-shadow: 0 12px 22px rgba(0, 0, 0, 0.2);
+  }
+
+  .App.theme-day .glass-surface {
+    backdrop-filter: blur(10px) saturate(1.08);
+    -webkit-backdrop-filter: blur(10px) saturate(1.08);
+  }
+}
+
+@media (prefers-reduced-transparency: reduce) {
+  .glass-surface {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    background: var(--glass-fallback-bg) !important;
+    box-shadow:
+      0 10px 24px rgba(0, 0, 0, 0.16),
+      inset 0 1px 0 color-mix(in srgb, var(--app-main-text) 10%, transparent);
+  }
+}

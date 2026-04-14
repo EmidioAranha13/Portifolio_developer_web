@@ -7,6 +7,10 @@
   align-items: stretch;
 }
 
+/* Vidro da pílula de setas: padrão em ProfileHeroTripleArrowsDown.css
+   (--hero-arrows-panel-bg, --hero-arrows-backdrop-blur, --hero-arrows-backdrop-saturate).
+   Ex.: .profile-page .profile-hero-triple-arrows-down { --hero-arrows-panel-bg: color-mix(...); } */
+
 .profile-hero-stage {
   display: flex;
   flex-direction: column;
@@ -143,7 +147,7 @@
   }
 
   .hero-texts {
-    flex: 1 1 auto;
+    flex: 1 0 auto;
     /* min-width: auto — não encolhe abaixo do texto; evita quebra com white-space: nowrap. */
     align-items: center;
     overflow: hidden;
@@ -245,21 +249,43 @@
   }
 }
 
+/* Vidro do Sobre: personalize sem mudar .glass-surface global — em .profile-about.glass-surface
+   defina --glass-backdrop-bg (com backdrop-filter) e/ou --glass-fallback-bg (fallback / reduced transparency).
+   Ex. noite acinzentado:
+   .profile-about.glass-surface {
+     --glass-backdrop-bg: color-mix(in srgb, rgb(96, 96, 102) 48%, transparent);
+     --glass-fallback-bg: linear-gradient(155deg,
+       color-mix(in srgb, rgb(96, 96, 102) 72%, var(--app-main-bg)) 0%,
+       color-mix(in srgb, rgb(96, 96, 102) 52%, var(--app-main-bg)) 100%);
+   }
+   Tema claro: prefixe com .App.theme-day .profile-about.glass-surface { ... } */
+
 .profile-about {
   margin-top: clamp(40px, 7vh, 96px);
   position: relative;
   width: 100%;
   padding: clamp(18px, 2.8vw, 28px);
   border-radius: 18px;
-  background-color: rgba(96, 96, 102, 0.6);
-  backdrop-filter: blur(12px) saturate(1.18);
-  -webkit-backdrop-filter: blur(12px) saturate(1.18);
-  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.14);
+  /* Fundo e sombra base: .glass-surface (variáveis acima substituem o padrão). */
   opacity: 0;
   transform: translateY(18px);
   transition:
     opacity 0.62s ease,
     transform 0.62s ease;
+}
+
+.profile-about.glass-surface {
+  --glass-backdrop-bg: color-mix(in srgb, rgb(96, 96, 102) 48%, transparent);
+  --glass-fallback-bg: linear-gradient(155deg,
+    color-mix(in srgb, rgb(96, 96, 102) 72%, var(--app-main-bg)) 0%,
+    color-mix(in srgb, rgb(96, 96, 102) 52%, var(--app-main-bg)) 100%);
+}
+
+.App.theme-day .profile-about.glass-surface {
+  --glass-backdrop-bg: color-mix(in srgb, rgb(204, 204, 204) 48%, transparent);
+  --glass-fallback-bg: linear-gradient(155deg,
+    color-mix(in srgb, rgb(204, 204, 204) 72%, var(--app-main-bg)) 0%,
+    color-mix(in srgb, rgb(204, 204, 204) 52%, var(--app-main-bg)) 100%);
 }
 
 .profile-about.is-revealed {

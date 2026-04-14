@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useCallback, useLayoutEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import "./StyledHeader.css";
 import ThemeToggle from "../ThemeToggle/ThemeToggle";
@@ -61,7 +61,53 @@ const StyledHeader: React.FC<StyledHeaderProps> = ({
   const dispatch = useDispatch();
   const activeTab = useSelector((state: RootState) => state.ui.activeSection);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [compactNav, setCompactNav] = useState(false);
+  const headerRef = useRef<HTMLElement>(null);
+  const tabsRef = useRef<HTMLElement>(null);
+  const controlsRef = useRef<HTMLDivElement>(null);
   const menuIcon = new URL("../../assets/menu.png", import.meta.url).href;
+
+  const recomputeCompactNav = useCallback(() => {
+    const tabs = tabsRef.current;
+    const controls = controlsRef.current;
+    if (!tabs || !controls) return;
+
+    if (window.matchMedia("(max-width: 1024px)").matches) {
+      setCompactNav(true);
+      return;
+    }
+
+    const lastTab = tabs.querySelector<HTMLElement>(".tab-item:last-of-type");
+    if (!lastTab) {
+      setCompactNav(false);
+      return;
+    }
+
+    const gapPx = 10;
+    setCompactNav(lastTab.getBoundingClientRect().right > controls.getBoundingClientRect().left - gapPx);
+  }, []);
+
+  useLayoutEffect(() => {
+    recomputeCompactNav();
+    const ro = new ResizeObserver(() => recomputeCompactNav());
+    if (headerRef.current) ro.observe(headerRef.current);
+    if (controlsRef.current) ro.observe(controlsRef.current);
+    if (tabsRef.current) ro.observe(tabsRef.current);
+    window.addEventListener("resize", recomputeCompactNav);
+    const mq = window.matchMedia("(max-width: 1024px)");
+    mq.addEventListener("change", recomputeCompactNav);
+    const fonts = document.fonts;
+    let cancelled = false;
+    void fonts?.ready?.then(() => {
+      if (!cancelled) recomputeCompactNav();
+    });
+    return () => {
+      cancelled = true;
+      ro.disconnect();
+      window.removeEventListener("resize", recomputeCompactNav);
+      mq.removeEventListener("change", recomputeCompactNav);
+    };
+  }, [recomputeCompactNav, language]);
 
   /**
    * Marca a aba ativa e fecha o drawer no mobile.
@@ -75,7 +121,7 @@ const StyledHeader: React.FC<StyledHeaderProps> = ({
   };
 
   return (
-    <header className="background">
+    <header ref={headerRef} className={`background${compactNav ? " header--compact-nav" : ""}`}>
       <button
         type="button"
         className="mobile-menu-trigger"
@@ -87,7 +133,7 @@ const StyledHeader: React.FC<StyledHeaderProps> = ({
         <img src={menuIcon} alt="" aria-hidden="true" className="mobile-menu-icon" />
       </button>
 
-      <nav className="tabs" aria-label="Seções do portfólio">
+      <nav ref={tabsRef} className="tabs" aria-label="Seções do portfólio">
         {HEADER_TABS.map((tab) => (
           <button
             key={tab.key}
@@ -130,7 +176,7 @@ const StyledHeader: React.FC<StyledHeaderProps> = ({
         ))}
       </nav>
 
-      <div className="header-controls">
+      <div ref={controlsRef} className="header-controls">
         <ThemeToggle mode={themeMode} onChange={onThemeChange} />
         <LanguageSelector value={language} onChange={onLanguageChange} />
       </div>
