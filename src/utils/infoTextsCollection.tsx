@@ -14,11 +14,12 @@ export const infoTextsCollection = {
     techStack: "React + React Native | Android | Angular | PHP | IA",
     footerRights: "Emídio Aranha - 2026. Todos os direitos reservados.",
     professionalResume: [
-        "Desenvolvedor Web com 5 anos de Experiência ",
-        "Graduado em Ciência da Computação pela Universidade Federal do Amazonas. Possuo cursos  voltados a área de desenvolvimento Web e Android com sistemas Embarcados, além de Inglês Avançado e Japonês Intermediário.",
-        "Expertise em desenvolvimento de sistemas web e aplicativos mobile com diferentes finalidades, sejam elas para gerenciamento de informações remotas ou funcionalidades direcionadas (conexão IOT/Embarcados), planejamento de requisitos, produção de Mock-ups, UX/UI, facilitação de cerimônias ágeis (Scrum, planning, daily) mentoria e, ou acompanhamento de novos integrantes e treinamento de usuários.",
-        "Principais Empresas: DELTA SOLLUTIONS, ICTS ",
-        "Empresas atendidas: Daikin, INOVA, Conecthus, Elgin, Inventus Power, Flex",
+        "Desenvolvedor Web Full Stack com 5 anos de Experiência no mercado de tecnologia.",
+        "Graduado em Ciência da Computação pela Universidade Federal do Amazonas (UFAM). Qualificado em cursos  voltados a área de desenvolvimento Web e Android com sistemas Embarcados, além de Inglês Avançado e Japonês Intermediário.",
+        "Expertise em: desenvolvimento de sistemas web, desktop e aplicativos mobile com diferentes finalidades (sejam elas para gerenciamento de informações remotas ou funcionalidades direcionadas. Ex: conexão IOT/Embarcados), planejamento de requisitos, produção de Mock-ups, UX/UI, facilitação de cerimônias ágeis (Scrum, planning, daily) mentoria e, ou acompanhamento de novos integrantes e treinamento de usuários.",
+        "Motivado a melhorar a cada dia, buscando sempre novos desafios e oportunidades de aprendizado. Atualmente exploarando Inteligência Artificial com sistemas de visão e aprendizado de máquina para uso industrial.",
+        <u>Principais Empresas: DELTA SOLLUTIONS, ICTS</u>,
+        <u>Empresas atendidas: Daikin, INOVA, Conecthus, Elgin, Inventus Power, Flex</u>,
     ],
     globalSkills: [
         "Desenvolvimento de aplicações Web responsivas com React, React Native, Hooks e Redux",

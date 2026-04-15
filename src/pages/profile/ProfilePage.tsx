@@ -3,6 +3,7 @@ import CustomBulletButton from "../../componentes/CustomBulletButton/CustomBulle
 import ProfileHeroTripleArrowsDown from "../../componentes/ProfileHeroTripleArrowsDown/ProfileHeroTripleArrowsDown";
 import ProfilePhotoRotator from "../../componentes/ProfilePhotoRotator/ProfilePhotoRotator";
 import ProfileSectionRail from "../../componentes/ProfileSectionRail/ProfileSectionRail";
+import CardBox from "../../componentes/CardBox/CardBox";
 import type { InfoTexts, InfoTextsLanguage } from "../../utils/infoTextsCollection";
 import profileImage from "../../assets/img-profile.jpg";
 import arrow1 from "../../assets/arrow-1.png";
@@ -24,7 +25,7 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ infoTexts, languageKey }) => 
   const hasSkills = infoTexts.globalSkills.length > 0;
   const hasResumeBlock = hasResume || hasSkills;
   const skillsLine = infoTexts.globalSkills.join("・");
-  const aboutRef = useRef<HTMLElement>(null);
+  const aboutRef = useRef<HTMLDivElement>(null);
   const [aboutRevealed, setAboutRevealed] = useState(false);
 
   useEffect(() => {
@@ -107,9 +108,9 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ infoTexts, languageKey }) => 
         </div>
       </div>
 
-      <section
+      <CardBox
         ref={aboutRef}
-        className={`profile-about glass-surface ${aboutRevealed ? "is-revealed" : ""}`}
+        className={`profile-about ${aboutRevealed ? "is-revealed" : ""}`}
         aria-labelledby="profile-about-heading"
       >
         <ProfileSectionRail
@@ -132,6 +133,9 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ infoTexts, languageKey }) => 
             className="profile-about-rail--resume"
           >
             <div className="profile-about-row">
+              <div className="profile-about-visual">
+                <ProfilePhotoRotator />
+              </div>
               <div className="profile-about-copy">
                 {hasResume &&
                   infoTexts.professionalResume.map((paragraph, index) => (
@@ -139,9 +143,6 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ infoTexts, languageKey }) => 
                       {paragraph}
                     </p>
                   ))}
-              </div>
-              <div className="profile-about-visual">
-                <ProfilePhotoRotator />
               </div>
             </div>
           </ProfileSectionRail>
@@ -152,10 +153,16 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ infoTexts, languageKey }) => 
             imageSrc={arrow1}
             className="profile-about-rail--skills"
           >
+            <div className="profile-about-heading-stack">
+              <h2 id="profile-about-heading" className="profile-about-title">
+                <span className="profile-about-title-text">{"Atribuições Gerais"}</span>
+              </h2>
+              <div className="profile-about-heading-rule" aria-hidden="true" />
+            </div>
             <p className="profile-global-skills">{skillsLine}</p>
           </ProfileSectionRail>
         ) : null}
-      </section>
+      </CardBox>
     </div>
   );
 };

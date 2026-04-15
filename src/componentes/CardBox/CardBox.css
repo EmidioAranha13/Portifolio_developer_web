@@ -1,0 +1,32 @@
+.card-box {
+  position: relative;
+  box-sizing: border-box;
+  width: 100%;
+  padding: clamp(18px, 2.8vw, 28px);
+  border-radius: 18px;
+}
+
+/* Vidro do Sobre: personalize sem mudar .glass-surface global — em .profile-about.glass-surface
+   defina --glass-backdrop-bg (com backdrop-filter) e/ou --glass-fallback-bg (fallback / reduced transparency).
+   Ex. noite acinzentado:
+   .profile-about.glass-surface {
+     --glass-backdrop-bg: color-mix(in srgb, rgb(96, 96, 102) 48%, transparent);
+     --glass-fallback-bg: linear-gradient(155deg,
+       color-mix(in srgb, rgb(96, 96, 102) 72%, var(--app-main-bg)) 0%,
+       color-mix(in srgb, rgb(96, 96, 102) 52%, var(--app-main-bg)) 100%);
+   }
+   Tema claro: prefixe com .App.theme-day .profile-about.glass-surface { ... } */
+
+.card-box.glass-surface {
+  --glass-backdrop-bg: color-mix(in srgb, rgb(96, 96, 102) 48%, transparent);
+  --glass-fallback-bg: linear-gradient(155deg,
+    color-mix(in srgb, rgb(96, 96, 102) 72%, var(--app-main-bg)) 0%,
+    color-mix(in srgb, rgb(96, 96, 102) 52%, var(--app-main-bg)) 100%);
+}
+
+.App.theme-day .card-box.glass-surface {
+  --glass-backdrop-bg: color-mix(in srgb, rgb(114, 114, 114) 48%, transparent);
+  --glass-fallback-bg: linear-gradient(155deg,
+    color-mix(in srgb, rgb(204, 204, 204) 72%, var(--app-main-bg)) 0%,
+    color-mix(in srgb, rgb(204, 204, 204) 52%, var(--app-main-bg)) 100%);
+}

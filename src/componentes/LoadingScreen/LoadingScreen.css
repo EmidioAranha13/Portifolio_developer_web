@@ -11,7 +11,7 @@
     radial-gradient(1200px 700px at 50% 40%, #12243f 0%, #08101f 55%, #060b14 100%)
   );
   --loader-ring-gradient: var(
-    --header-gradient,
+    --header-90-gradient,
     linear-gradient(90deg, #01689d 0%, #17937c 25%, #3fa874 50%, #6bbe68 75%, #9cd65d 100%)
   );
   --portal-size: 0px;

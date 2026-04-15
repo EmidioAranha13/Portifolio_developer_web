@@ -1,0 +1,186 @@
+.tree-rail {
+  --tree-main-color: var(--color-night-grad-1);
+  --tree-branch-gradient: var(--header-90-gradient);
+  --tree-branch-gradient-reverse: var(--header-90-gradient-reverse);
+  --tree-gap: clamp(26px, 4vw, 40px);
+  --tree-branch-length: clamp(44px, 7vw, 78px);
+  --tree-node-text: var(--header-text-color);
+  --tree-spine-top: 0px;
+  --tree-spine-bottom: 0px;
+  position: relative;
+  width: 100%;
+  min-width: 0;
+  max-width: 1100px;
+  margin-inline: auto;
+  padding: clamp(8px, 2vw, 16px) 0;
+}
+
+.App.theme-day .tree-rail {
+  --tree-main-color: var(--color-day-grad-1);
+}
+
+.tree-rail__heading {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin-bottom: clamp(10px, 2vw, 18px);
+}
+
+.tree-rail__spine {
+  position: absolute;
+  top: var(--tree-spine-top, 0px);
+  bottom: var(--tree-spine-bottom, 0px);
+  left: 50%;
+  width: 4px;
+  border-radius: 999px;
+  transform: translateX(-50%);
+  background: var(--tree-main-color);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.tree-rail__row {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: minmax(180px, 1fr) auto minmax(180px, 1fr);
+  align-items: center;
+  column-gap: var(--tree-gap);
+}
+
+.tree-rail__row--root {
+  padding: clamp(12px, 1.8vw, 18px) 0;
+}
+
+.tree-rail__row--knot {
+  padding: clamp(10px, 1.6vw, 14px) 0;
+}
+
+.tree-rail__side {
+  min-height: 1px;
+}
+
+.tree-rail__side--left {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.tree-rail__side--right {
+  display: flex;
+  justify-content: flex-start;
+}
+
+.tree-rail__node {
+  position: relative;
+  min-width: clamp(54px, 7vw, 84px);
+  padding: 6px 14px;
+  border-radius: 2em;
+  text-align: center;
+  font-weight: 800;
+  color: var(--tree-node-text);
+  background: var(--tree-main-color);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.18);
+}
+
+.tree-rail__node--root {
+  font-size: clamp(0.9rem, 1.2vw, 1rem);
+  background-color: ;
+}
+
+.tree-rail__node--knot {
+  font-size: clamp(0.85rem, 1.1vw, 0.95rem);
+}
+
+.tree-rail__node--branch-left::after,
+.tree-rail__node--branch-right::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  width: var(--tree-branch-length);
+  height: 3px;
+  border-radius: 999px;
+  transform: translateY(-50%);
+}
+
+.tree-rail__node--branch-left::after {
+  right: 100%;
+  background: var(--tree-branch-gradient-reverse);
+}
+
+.tree-rail__node--branch-right::after {
+  left: 100%;
+  background: var(--tree-branch-gradient);
+}
+
+.tree-rail__leaf-shell {
+  position: relative;
+  width: min(100%, 330px);
+  padding: 3px;
+  border-radius: 1.2em;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.16);
+}
+
+.tree-rail__leaf-shell--right {
+  margin-inline-start: max(0px, calc(var(--tree-branch-length) - var(--tree-gap)));
+  background: var(--tree-branch-gradient-reverse);
+}
+
+.tree-rail__leaf-shell--left {
+  margin-inline-end: max(0px, calc(var(--tree-branch-length) - var(--tree-gap)));
+  background: var(--tree-branch-gradient);
+}
+
+.tree-rail__leaf-card {
+  width: 100%;
+  min-height: clamp(64px, 9vw, 88px);
+  border-radius: calc(1.2em - 3px);
+  padding: clamp(12px, 1.8vw, 16px) clamp(14px, 2vw, 20px);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 4px;
+}
+
+.tree-rail__leaf-card.glass-surface {
+  --glass-backdrop-bg: color-mix(in srgb, var(--app-main-bg) 38%, transparent);
+  --glass-fallback-bg: color-mix(in srgb, var(--app-main-bg) 58%, transparent);
+  border-width: 0;
+  box-shadow:
+    0 8px 20px rgba(0, 0, 0, 0.12),
+    inset 0 1px 0 color-mix(in srgb, var(--app-main-text) 10%, transparent);
+}
+
+.App.theme-day .tree-rail__leaf-card.glass-surface {
+  --glass-backdrop-bg: color-mix(in srgb, var(--app-main-bg) 42%, transparent);
+  --glass-fallback-bg: color-mix(in srgb, var(--app-main-bg) 62%, transparent);
+}
+
+.tree-rail__leaf-title {
+  margin: 0;
+  font-size: clamp(0.95rem, 1.3vw, 1.08rem);
+  line-height: 1.2;
+  color: var(--app-main-text);
+}
+
+.tree-rail__leaf-subtitle {
+  margin: 0;
+  font-size: clamp(0.8rem, 1.1vw, 0.9rem);
+  color: color-mix(in srgb, var(--app-main-text) 82%, transparent);
+}
+
+@media (max-width: 860px) {
+  .tree-rail {
+    --tree-gap: 16px;
+    --tree-branch-length: 28px;
+  }
+
+  .tree-rail__row {
+    grid-template-columns: minmax(126px, 1fr) auto minmax(126px, 1fr);
+  }
+
+  .tree-rail__leaf-shell {
+    width: min(100%, 230px);
+  }
+}

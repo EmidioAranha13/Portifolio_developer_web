@@ -54,7 +54,7 @@
   aspect-ratio: 1;
   border-radius: 50%;
   padding: clamp(6px, 1.1vw, 10px);
-  background: var(--header-gradient);
+  background: var(--header-90-gradient);
   box-shadow: 0 16px 36px rgba(0, 0, 0, 0.24);
   flex-shrink: 0;
 }
@@ -249,43 +249,14 @@
   }
 }
 
-/* Vidro do Sobre: personalize sem mudar .glass-surface global — em .profile-about.glass-surface
-   defina --glass-backdrop-bg (com backdrop-filter) e/ou --glass-fallback-bg (fallback / reduced transparency).
-   Ex. noite acinzentado:
-   .profile-about.glass-surface {
-     --glass-backdrop-bg: color-mix(in srgb, rgb(96, 96, 102) 48%, transparent);
-     --glass-fallback-bg: linear-gradient(155deg,
-       color-mix(in srgb, rgb(96, 96, 102) 72%, var(--app-main-bg)) 0%,
-       color-mix(in srgb, rgb(96, 96, 102) 52%, var(--app-main-bg)) 100%);
-   }
-   Tema claro: prefixe com .App.theme-day .profile-about.glass-surface { ... } */
-
 .profile-about {
   margin-top: clamp(40px, 7vh, 96px);
-  position: relative;
-  width: 100%;
-  padding: clamp(18px, 2.8vw, 28px);
-  border-radius: 18px;
   /* Fundo e sombra base: .glass-surface (variáveis acima substituem o padrão). */
   opacity: 0;
   transform: translateY(18px);
   transition:
     opacity 0.62s ease,
     transform 0.62s ease;
-}
-
-.profile-about.glass-surface {
-  --glass-backdrop-bg: color-mix(in srgb, rgb(96, 96, 102) 48%, transparent);
-  --glass-fallback-bg: linear-gradient(155deg,
-    color-mix(in srgb, rgb(96, 96, 102) 72%, var(--app-main-bg)) 0%,
-    color-mix(in srgb, rgb(96, 96, 102) 52%, var(--app-main-bg)) 100%);
-}
-
-.App.theme-day .profile-about.glass-surface {
-  --glass-backdrop-bg: color-mix(in srgb, rgb(204, 204, 204) 48%, transparent);
-  --glass-fallback-bg: linear-gradient(155deg,
-    color-mix(in srgb, rgb(204, 204, 204) 72%, var(--app-main-bg)) 0%,
-    color-mix(in srgb, rgb(204, 204, 204) 52%, var(--app-main-bg)) 100%);
 }
 
 .profile-about.is-revealed {
@@ -319,7 +290,7 @@
 .profile-about-heading-rule {
   height: 3px;
   border-radius: 999px;
-  background: var(--header-gradient);
+  background: var(--header-90-gradient);
 }
 
 .profile-about-title {
@@ -330,7 +301,7 @@
 }
 
 .profile-about-title-text {
-  background-image: var(--header-mobile-drawer-gradient);
+  background-image: var(--header-90-mobile-drawer-gradient);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
@@ -338,15 +309,18 @@
 }
 
 .profile-about-row {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(160px, 380px);
-  gap: clamp(18px, 3vw, 30px);
-  align-items: start;
+  display: block;
   margin-top: clamp(18px, 2.5vw, 24px);
 }
 
 .profile-about-copy {
   color: var(--app-main-text);
+}
+
+.profile-about-row::after {
+  content: "";
+  display: block;
+  clear: both;
 }
 
 .profile-about-paragraph {
@@ -363,8 +337,10 @@
 }
 
 .profile-about-visual {
-  width: 100%;
+  float: right;
+  width: min(38%, 380px);
   max-width: 380px;
+  margin: 0 0 clamp(10px, 1.6vw, 14px) clamp(18px, 3vw, 30px);
 }
 
 @media (max-width: 860px) {
@@ -374,7 +350,15 @@
     gap: 18px;
   }
 
+  .profile-about-copy {
+    order: 1;
+  }
+
   .profile-about-visual {
+    order: 2;
+    float: none;
+    width: 100%;
+    margin: 0;
     max-width: 100%;
   }
 }

@@ -67,7 +67,7 @@
 }
 
 .custom-bullet-button-primary {
-  background: var(--header-gradient);
+  background: var(--header-90-gradient);
   color: var(--color-white);
   box-shadow:
     0 10px 24px rgba(0, 0, 0, 0.22),
@@ -88,7 +88,7 @@
 .custom-bullet-button-outline {
   background:
     linear-gradient(var(--app-main-bg), var(--app-main-bg)) padding-box,
-    var(--header-gradient) border-box;
+    var(--header-90-gradient) border-box;
   border: 2px solid transparent;
   color: var(--header-text-color);
   box-shadow:
@@ -97,14 +97,14 @@
 }
 
 .custom-bullet-button-outline .custom-bullet-button-label {
-  background: var(--header-gradient);
+  background: var(--header-90-gradient);
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
 .custom-bullet-button-outline .custom-bullet-button-icon {
-  background: var(--header-gradient);
+  background: var(--header-90-gradient);
 }
 
 .custom-bullet-button-outline:hover {
