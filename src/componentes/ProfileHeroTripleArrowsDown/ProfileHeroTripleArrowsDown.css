@@ -178,10 +178,30 @@
     overflow: hidden;
     justify-content: center;
   }
+
+  /* Thumb da scrollbar: coluna preenche o pílula (onda contínua). */
+  .profile-hero-triple-arrows-down--scrollbar-thumb.profile-hero-triple-arrows-down--vertical
+    .profile-hero-triple-arrows-down__viewport--scrollbar-fill,
+  .profile-hero-triple-arrows-down--scrollbar-thumb.profile-hero-triple-arrows-down--vertical
+    .profile-hero-triple-arrows-down__viewport--split {
+    flex: 1;
+    min-height: 0;
+    justify-content: stretch;
+    align-items: center;
+  }
+
+  .profile-hero-triple-arrows-down--scrollbar-thumb
+    .profile-hero-triple-arrows-down__track--scrollbar-fill {
+    flex: 1 1 auto;
+    min-height: 100%;
+    max-height: none;
+    justify-content: flex-start;
+    margin-block: 0;
+  }
 }
 
 @media (max-width: 860px) {
-  .profile-hero-triple-arrows-down--vertical {
+  .profile-hero-triple-arrows-down--vertical:not(.profile-hero-triple-arrows-down--scrollbar-thumb) {
     display: none;
   }
 }
@@ -234,6 +254,56 @@
   to {
     --profile-hero-border-angle: 360deg;
   }
+}
+
+/* Fim do scroll: setas para cima + onda invertida no tempo. */
+.profile-hero-triple-arrows-down--arrows-up .profile-hero-triple-arrows-down__viewport--scrollbar-fill {
+  transform: scaleY(-1);
+}
+
+.profile-hero-triple-arrows-down--arrows-up .profile-hero-triple-arrows-down__arrow {
+  animation-direction: reverse;
+}
+
+/* Meio do scroll: metade superior → cima; metade inferior → baixo. */
+.profile-hero-triple-arrows-down__viewport--split {
+  flex-direction: column;
+  justify-content: stretch;
+  align-items: stretch;
+  gap: 0;
+}
+
+.profile-hero-triple-arrows-down__split-half {
+  flex: 1 1 50%;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.profile-hero-triple-arrows-down__split-half--up .profile-hero-triple-arrows-down__track--split-up {
+  flex: 1 1 auto;
+  min-height: 0;
+  max-height: 100%;
+  width: fit-content;
+  justify-content: flex-start;
+  margin-block: 0;
+  transform: scaleY(-1);
+}
+
+.profile-hero-triple-arrows-down__split-half--up .profile-hero-triple-arrows-down__track--split-up .profile-hero-triple-arrows-down__arrow {
+  animation-direction: reverse;
+}
+
+.profile-hero-triple-arrows-down__split-half--down .profile-hero-triple-arrows-down__track--split-down {
+  flex: 1 1 auto;
+  min-height: 0;
+  max-height: 100%;
+  width: fit-content;
+  justify-content: flex-start;
+  margin-block: 0;
 }
 
 @media (prefers-reduced-motion: reduce) {

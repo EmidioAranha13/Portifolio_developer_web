@@ -7,6 +7,7 @@ import StyledFooter from "./componentes/StyledFooter/StyledFooter";
 import CardBox from "./componentes/CardBox/CardBox";
 import type { LanguageCode } from "./componentes/LanguageSelector/LanguageSelector";
 import { infoTextsCollection } from "./utils/infoTextsCollection";
+import ProfileHeroArrowsScrollRail from "./componentes/ProfileHeroTripleArrowsDown/ProfileHeroArrowsScrollRail";
 import ProfilePage from "./pages/profile/ProfilePage";
 import EducationPage from "./pages/education/EducationPage";
 import type { RootState } from "./store/index";
@@ -178,6 +179,7 @@ function App() {
           <span>1 soft | 2 crystal | 3 liquid-strong</span>
         </div> */}
         </LiquidGlassBalls>
+        <ProfileHeroArrowsScrollRail scrollRootRef={containerRef} />
       </main>
     </div>
   );

@@ -19,12 +19,33 @@ const ARROW_STACK_OVERLAP = 0.7;
 
 const MIN_VERTICAL_ARROWS = 12;
 const MAX_VERTICAL_ARROWS = 160;
+const MIN_SCROLLBAR_ARROWS = 14;
+const MAX_SCROLLBAR_ARROWS = 220;
 
 export type ProfileHeroTripleArrowsOrientation = "horizontal" | "vertical";
+
+export type ScrollbarThumbPhase = "top" | "middle" | "bottom";
 
 function approxArrowSizePx(): number {
   if (typeof window === "undefined") return 34;
   return Math.min(42, Math.max(26, window.innerWidth * 0.08));
+}
+
+function scrollbarArrowSizePx(el: HTMLElement): number {
+  const w = el.clientWidth;
+  return Math.round(Math.max(11, Math.min(24, w * 0.92)));
+}
+
+function computeVerticalArrowCount(
+  heightPx: number,
+  arrowPx: number,
+  min: number,
+  max: number
+): number {
+  if (heightPx < 20) return min;
+  const step = arrowPx * (1 - ARROW_STACK_OVERLAP);
+  const n = Math.ceil((heightPx - arrowPx) / step) + 3;
+  return Math.max(min, Math.min(max, n));
 }
 
 function useVerticalArrowCount(
@@ -42,10 +63,13 @@ function useVerticalArrowCount(
       const h = el.clientHeight;
       if (h < 24) return;
       const arrowPx = approxArrowSizePx();
-      const step = arrowPx * (1 - ARROW_STACK_OVERLAP);
-      const n = Math.ceil((h - arrowPx) / step) + 1;
       setCount(
-        Math.max(MIN_VERTICAL_ARROWS, Math.min(MAX_VERTICAL_ARROWS, n))
+        computeVerticalArrowCount(
+          h,
+          arrowPx,
+          MIN_VERTICAL_ARROWS,
+          MAX_VERTICAL_ARROWS
+        )
       );
     };
 
@@ -60,6 +84,67 @@ function useVerticalArrowCount(
   }, [enabled]);
 
   return count;
+}
+
+/** Contagens para thumb da scrollbar (coluna cheia ou duas metades). */
+function useScrollbarThumbArrowCounts(
+  rootRef: RefObject<HTMLDivElement | null>,
+  enabled: boolean,
+  phase: ScrollbarThumbPhase
+): { single: number; topHalf: number; bottomHalf: number } {
+  const [single, setSingle] = useState(32);
+  const [topHalf, setTopHalf] = useState(16);
+  const [bottomHalf, setBottomHalf] = useState(16);
+
+  useLayoutEffect(() => {
+    if (!enabled) return;
+    const el = rootRef.current;
+    if (!el) return;
+
+    const measure = () => {
+      const h = Math.max(0, el.clientHeight - 8);
+      const arrowPx = scrollbarArrowSizePx(el);
+      if (phase === "middle") {
+        const halfH = Math.max(18, (h - 4) / 2);
+        setTopHalf(
+          computeVerticalArrowCount(
+            halfH,
+            arrowPx,
+            MIN_SCROLLBAR_ARROWS,
+            MAX_SCROLLBAR_ARROWS
+          )
+        );
+        setBottomHalf(
+          computeVerticalArrowCount(
+            halfH,
+            arrowPx,
+            MIN_SCROLLBAR_ARROWS,
+            MAX_SCROLLBAR_ARROWS
+          )
+        );
+      } else {
+        setSingle(
+          computeVerticalArrowCount(
+            h,
+            arrowPx,
+            MIN_SCROLLBAR_ARROWS,
+            MAX_SCROLLBAR_ARROWS
+          )
+        );
+      }
+    };
+
+    measure();
+    const ro = new ResizeObserver(measure);
+    ro.observe(el);
+    window.addEventListener("resize", measure);
+    return () => {
+      ro.disconnect();
+      window.removeEventListener("resize", measure);
+    };
+  }, [enabled, phase]);
+
+  return { single, topHalf, bottomHalf };
 }
 
 function waveDelayCss(
@@ -100,16 +185,84 @@ function ArrowWaveTrack({
 
 type ProfileHeroTripleArrowsDownProps = {
   orientation?: ProfileHeroTripleArrowsOrientation;
+  /** `scrollbar`: coluna densa para o thumb da barra de scroll. */
+  verticalVariant?: "hero" | "scrollbar";
+  /** Fase do scroll (só `verticalVariant="scrollbar"`). */
+  scrollbarScrollPhase?: ScrollbarThumbPhase;
 };
 
 const ProfileHeroTripleArrowsDown: React.FC<
   ProfileHeroTripleArrowsDownProps
-> = ({ orientation = "horizontal" }) => {
+> = ({
+  orientation = "horizontal",
+  verticalVariant = "hero",
+  scrollbarScrollPhase = "top",
+}) => {
   const verticalRef = useRef<HTMLDivElement>(null);
-  const verticalCount = useVerticalArrowCount(
+  const isHeroVertical =
+    orientation === "vertical" && verticalVariant === "hero";
+
+  const verticalCount = useVerticalArrowCount(verticalRef, isHeroVertical);
+
+  const isScrollbarVertical =
+    orientation === "vertical" && verticalVariant === "scrollbar";
+  const { single, topHalf, bottomHalf } = useScrollbarThumbArrowCounts(
     verticalRef,
-    orientation === "vertical"
+    isScrollbarVertical,
+    scrollbarScrollPhase
   );
+
+  if (isScrollbarVertical) {
+    const phase = scrollbarScrollPhase;
+    const rootClass = [
+      "profile-hero-triple-arrows-down",
+      "profile-hero-triple-arrows-down--vertical",
+      "profile-hero-triple-arrows-down--scrollbar-thumb",
+      phase === "bottom" ? "profile-hero-triple-arrows-down--arrows-up" : "",
+    ]
+      .filter(Boolean)
+      .join(" ");
+
+    if (phase === "middle") {
+      return (
+        <div
+          ref={verticalRef}
+          className={rootClass}
+          aria-hidden="true"
+        >
+          <div className="profile-hero-triple-arrows-down__panel">
+            <div className="profile-hero-triple-arrows-down__viewport profile-hero-triple-arrows-down__viewport--split">
+              <div className="profile-hero-triple-arrows-down__split-half profile-hero-triple-arrows-down__split-half--up">
+                <ArrowWaveTrack
+                  waveCount={topHalf}
+                  className="profile-hero-triple-arrows-down__track profile-hero-triple-arrows-down__track--vertical profile-hero-triple-arrows-down__track--split-up"
+                />
+              </div>
+              <div className="profile-hero-triple-arrows-down__split-half profile-hero-triple-arrows-down__split-half--down">
+                <ArrowWaveTrack
+                  waveCount={bottomHalf}
+                  className="profile-hero-triple-arrows-down__track profile-hero-triple-arrows-down__track--vertical profile-hero-triple-arrows-down__track--split-down"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      );
+    }
+
+    return (
+      <div ref={verticalRef} className={rootClass} aria-hidden="true">
+        <div className="profile-hero-triple-arrows-down__panel">
+          <div className="profile-hero-triple-arrows-down__viewport profile-hero-triple-arrows-down__viewport--scrollbar-fill">
+            <ArrowWaveTrack
+              waveCount={single}
+              className="profile-hero-triple-arrows-down__track profile-hero-triple-arrows-down__track--vertical profile-hero-triple-arrows-down__track--scrollbar-fill"
+            />
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   if (orientation === "vertical") {
     return (
