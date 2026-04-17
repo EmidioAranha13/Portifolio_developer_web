@@ -14,8 +14,8 @@
   align-items: center;
   justify-content: center;
   padding: clamp(10px, 1.8vw, 14px) clamp(18px, 3vw, 28px);
-  border-radius: 1.25em;
-  border: 2px solid var(--color-night-grad-1) !important;
+  border-radius: 3em;
+  border: 0.3em solid var(--color-night-grad-1) !important;
   box-shadow:
     0 10px 26px rgba(0, 0, 0, 0.18),
     inset 0 1px 0 color-mix(in srgb, var(--app-main-text) 10%, transparent);
@@ -25,14 +25,23 @@
   border-color: var(--color-day-grad-1) !important;
 }
 
+/* Igual a .profile-about (CardBox / .card-box.glass-surface). */
 .education-page__heading.glass-surface {
-  --glass-backdrop-bg: color-mix(in srgb, var(--app-main-bg) 36%, transparent);
-  --glass-fallback-bg: color-mix(in srgb, var(--app-main-bg) 52%, transparent);
+  --glass-backdrop-bg: color-mix(in srgb, rgb(96, 96, 102) 48%, transparent);
+  --glass-fallback-bg: linear-gradient(
+    155deg,
+    color-mix(in srgb, rgb(96, 96, 102) 72%, var(--app-main-bg)) 0%,
+    color-mix(in srgb, rgb(96, 96, 102) 52%, var(--app-main-bg)) 100%
+  );
 }
 
 .App.theme-day .education-page__heading.glass-surface {
-  --glass-backdrop-bg: color-mix(in srgb, var(--app-main-bg) 40%, transparent);
-  --glass-fallback-bg: color-mix(in srgb, var(--app-main-bg) 56%, transparent);
+  --glass-backdrop-bg: color-mix(in srgb, rgb(114, 114, 114) 48%, transparent);
+  --glass-fallback-bg: linear-gradient(
+    155deg,
+    color-mix(in srgb, rgb(204, 204, 204) 72%, var(--app-main-bg)) 0%,
+    color-mix(in srgb, rgb(204, 204, 204) 52%, var(--app-main-bg)) 100%
+  );
 }
 
 .education-page__title {

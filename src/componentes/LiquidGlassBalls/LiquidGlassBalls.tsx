@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useRef } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import "./LiquidGlassBalls.css";
 
 type LiquidGlassBallsProps = {
@@ -16,7 +16,10 @@ type BallConfig = {
   color: string;
 };
 
-const BALL_COUNT = 60;
+const BALL_COUNT_DESKTOP = 60;
+const BALL_COUNT_MOBILE = 30;
+/** Alinhado ao layout “compacto” do portfólio (860px). */
+const MOBILE_BALLS_MEDIA = "(max-width: 860px)";
 const COLORS = ["var(--green1)", "var(--orange1)", "var(--blue1)", "var(--yellow1)", "var(--magenta1)"];
 
 const FILTER_PRESET = {
@@ -37,6 +40,19 @@ const FILTER_PRESET = {
 const LiquidGlassBalls: React.FC<LiquidGlassBallsProps> = ({ children, preset = "crystal" }) => {
   const filterConfig = FILTER_PRESET[preset];
   const glassRefs = useRef<Array<HTMLSpanElement | null>>([]);
+  const [ballCount, setBallCount] = useState(() =>
+    typeof window !== "undefined" && window.matchMedia(MOBILE_BALLS_MEDIA).matches
+      ? BALL_COUNT_MOBILE
+      : BALL_COUNT_DESKTOP
+  );
+
+  useEffect(() => {
+    const mq = window.matchMedia(MOBILE_BALLS_MEDIA);
+    const sync = () => setBallCount(mq.matches ? BALL_COUNT_MOBILE : BALL_COUNT_DESKTOP);
+    sync();
+    mq.addEventListener("change", sync);
+    return () => mq.removeEventListener("change", sync);
+  }, []);
 
   /**
    * Gera a configuração das bolas apenas uma vez por montagem do componente.
@@ -45,7 +61,7 @@ const LiquidGlassBalls: React.FC<LiquidGlassBallsProps> = ({ children, preset = 
    * @returns Lista de configurações para renderização das bolas.
    */
   const balls = useMemo<BallConfig[]>(() => {
-    return Array.from({ length: BALL_COUNT }, (_, index) => ({
+    return Array.from({ length: BALL_COUNT_DESKTOP }, (_, index) => ({
       id: index,
       size: Math.round(Math.random() * 110 + 30),
       top: Math.round(Math.random() * 100),
@@ -55,6 +71,8 @@ const LiquidGlassBalls: React.FC<LiquidGlassBallsProps> = ({ children, preset = 
       color: COLORS[Math.floor(Math.random() * COLORS.length)],
     }));
   }, []);
+
+  const visibleBalls = balls.slice(0, ballCount);
 
   useEffect(() => {
     const repelRadius = 140;
@@ -138,7 +156,7 @@ const LiquidGlassBalls: React.FC<LiquidGlassBallsProps> = ({ children, preset = 
       </svg>
 
       <div className="liquid-balls-layer">
-        {balls.map((ball) => (
+        {visibleBalls.map((ball) => (
           <div
             key={ball.id}
             className="liquid-ball"

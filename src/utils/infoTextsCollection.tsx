@@ -1,3 +1,32 @@
+/** Uma entrada na linha do tempo de formação (folha do TreeRail). */
+export type EducationActivity = {
+  title: string;
+  institution: string;
+  degree: string;
+  period: string;
+  location: string;
+  /** Valor exibido no knot (ex.: mês ou marco temporal). */
+  ended: string;
+  description: string;
+  scholar: string;
+  extra: string;
+};
+
+export type EducationYearEntry = {
+  year: number;
+  activities: EducationActivity[];
+};
+
+export type EducationLeafLabels = {
+  institution: string;
+  degree: string;
+  period: string;
+  location: string;
+  description: string;
+  scholar: string;
+  extra: string;
+};
+
 export const infoTextsCollection = {
   br: {
     name: "Emídio Aranha",
@@ -13,15 +42,16 @@ export const infoTextsCollection = {
     contactMe: "Contate-me",
     techStack: "React + React Native | Android | Angular | PHP | IA",
     footerRights: "Emídio Aranha - 2026. Todos os direitos reservados.",
-    professionalResume: [
+    profile_page: {
+      professionalResume: [
         "Desenvolvedor Web Full Stack com 5 anos de Experiência no mercado de tecnologia.",
         "Graduado em Ciência da Computação pela Universidade Federal do Amazonas (UFAM). Qualificado em cursos  voltados a área de desenvolvimento Web e Android com sistemas Embarcados, além de Inglês Avançado e Japonês Intermediário.",
         "Expertise em: desenvolvimento de sistemas web, desktop e aplicativos mobile com diferentes finalidades (sejam elas para gerenciamento de informações remotas ou funcionalidades direcionadas. Ex: conexão IOT/Embarcados), planejamento de requisitos, produção de Mock-ups, UX/UI, facilitação de cerimônias ágeis (Scrum, planning, daily) mentoria e, ou acompanhamento de novos integrantes e treinamento de usuários.",
         "Motivado a melhorar a cada dia, buscando sempre novos desafios e oportunidades de aprendizado. Atualmente exploarando Inteligência Artificial com sistemas de visão e aprendizado de máquina para uso industrial.",
         <u>Principais Empresas: DELTA SOLLUTIONS, ICTS</u>,
         <u>Empresas atendidas: Daikin, INOVA, Conecthus, Elgin, Inventus Power, Flex</u>,
-    ],
-    globalSkills: [
+      ],
+      globalSkills: [
         "Desenvolvimento de aplicações Web responsivas com React, React Native, Hooks e Redux",
         "Expertise em HTML, CSS, Javascript e Typescript",
         "Criação e Integração de API´s com API Rest, Graph QL, Spring boot",
@@ -37,8 +67,118 @@ export const infoTextsCollection = {
         "Mapeamento/Definição/Gerenciamento de Tarefas",
         "Resiliência e adaptabilidade com ferramentas novas",
         "Noções de CI | CD para Deploy de sistemas",
-    ],
-},
+      ],
+    },
+    education_page: {
+      leafLabels: {
+        institution: "Instituição:",
+        degree: "Grau:",
+        period: "Período:",
+        location: "Cidade | Estado:",
+        description: "Descrição:",
+        scholar: "Bolsista:",
+        extra: "Extras:",
+      },
+      education: [
+        {
+          year: 2012,
+          activities: [
+            {
+              title: "Curso de Lingua Inglesa Jovens Iniciantes",
+              institution: "Minds",
+              degree: "Curso de capacitção",
+              period: "Janeiro 2010 - julho 2012",
+              location: "Manaus - AM",
+              ended: "Jul",
+              description: "",
+              scholar: "",
+              extra: "",
+            },
+          ],
+        },
+        {
+          year: 2014,
+          activities: [
+            {
+              title: "Curso de Lingua Inglesa nível básico ao avançado",
+              institution: "SENAC",
+              degree: "Curso de capacitção",
+              period: "Agosto 2012 - Dezembro 2014",
+              location: "Manaus - AM",
+              ended: "Dez",
+              description: "",
+              scholar: "",
+              extra: "",
+            },
+          ],
+        },
+        {
+          year: 2015,
+          activities: [
+            {
+              title: "Ensino Escolar Completo",
+              institution: "Escola Celus",
+              degree: "Ensino Fundamental e Médio",
+              period: "Janeiro 2000 - Dezembro 2015",
+              location: "Manaus - AM",
+              ended: "Dez",
+              description: "",
+              scholar: "",
+              extra: "",
+            },
+          ],
+        },
+        {
+          year: 2020,
+          activities: [
+            {
+              title: "Ensino em Lingua Japonesa nível básico ao avançado",
+              institution: "NIPPAKU",
+              degree: "Curso de capacitação",
+              period: "Janeiro 2015 - Setembro 2020",
+              location: "Manaus - AM",
+              ended: "Set",
+              description: "",
+              scholar: "",
+              extra: "",
+            },
+          ],
+        },
+        {
+          year: 2022,
+          activities: [
+            {
+              title: "Graduação em Ciência da Computação",
+              institution: "Universidade Federal do Amazonas (UFAM)",
+              degree: "Ensino Superior Completo",
+              period: "Abril 2016 - Julho 2022",
+              location: "Manaus - AM",
+              ended: "Jul",
+              description: "",
+              scholar: "",
+              extra: "",
+            },
+          ],
+        },
+        {
+          year: 2025,
+          activities: [
+            {
+              title: "DevTitans",
+              institution: "Universidade Federal do Amazonas (UFAM)",
+              degree: "Curso de Capacitação",
+              period: "Agosto 2024 - Fevereiro 2025",
+              location: "Manaus - AM",
+              ended: "Fev",
+              description: "Capacitação e Desenvolvimento em tecnologias Android para Sistemas Embarcados",
+              scholar: "Fundação de Apoio ao Ensino, Pesquisa, Extensão e Interiorização do IFAM, FAEPI, Brasil.",
+              extra: "",
+            },
+          ],
+        },
+      ],
+    },
+  },
   en: {
     name: "Emídio Aranha",
     role: "Full Stack Developer | Web, Mobile & IoT Solutions",
@@ -53,8 +193,45 @@ export const infoTextsCollection = {
     contactMe: "Contact me",
     techStack: "React + React Native | Android | Angular | PHP | AI",
     footerRights: "Emídio Aranha - 2026. All rights reserved.",
-    professionalResume: [],
-    globalSkills: [],
+    profile_page: {
+      professionalResume: [
+        "Full Stack Web Developer with 5 years of experience in the technology market.",
+        "Bachelor's degree in Computer Science from the Federal University of Amazonas (UFAM). Qualified through courses focused on Web and Android development with Embedded Systems, as well as Advanced English and Intermediate Japanese.",
+        "Expertise in: development of web systems, desktop applications, and mobile apps for various purposes (such as remote information management or specific functionalities, e.g., IoT/Embedded systems integration), requirements planning, mock-up design, UX/UI, facilitation of agile ceremonies (Scrum, planning, daily), mentoring and onboarding of new team members, and user training.",
+        "Motivated to continuously improve, always seeking new challenges and learning opportunities. Currently exploring Artificial Intelligence with computer vision and machine learning systems for industrial applications.",
+        <u>Main Companies: DELTA SOLUTIONS, ICTS</u>,
+        <u>Clients: Daikin, INOVA, Conecthus, Elgin, Inventus Power, Flex</u>,
+      ],
+      globalSkills: [
+        "Development of responsive web applications using React, React Native, Hooks, and Redux",
+        "Expertise in HTML, CSS, JavaScript, and TypeScript",
+        "API creation and integration using REST APIs, GraphQL, and Spring Boot",
+        "Development of test cases for feature validation using Jest",
+        "Participation in defining Clean Architecture and Storytelling",
+        "Understanding of SOLID principles",
+        "Version control, code analysis, and review using Git, GitHub, or GitLab",
+        "Application development in Linux and Windows environments",
+        "Experience in log analysis, troubleshooting, maintenance, and software evolution",
+        "Mockup design and adjustments using Figma with a focus on UX/UI",
+        "Creation and evolution of Design Systems",
+        "Management of documentation and development records",
+        "Task mapping, definition, and management",
+        "Resilience and adaptability to new tools",
+        "Basic knowledge of CI/CD for system deployment",
+      ],
+    },
+    education_page: {
+      leafLabels: {
+        institution: "Institution:",
+        degree: "Degree:",
+        period: "Period:",
+        location: "City | State:",
+        description: "Description:",
+        scholar: "Scholarship:",
+        extra: "Extras:",
+      },
+      education: [] as EducationYearEntry[],
+    },
   },
   ja: {
     name: "エミジオ・アラーニャ",
@@ -70,8 +247,45 @@ export const infoTextsCollection = {
     contactMe: "気軽に連絡してください",
     techStack: "React／React Native｜Android｜Angular｜PHP｜AI",
     footerRights: "エミジオ・アラーニャ - 2026. All rights reserved.",
-    professionalResume: [],
-    globalSkills: [],
+    profile_page: {
+      professionalResume: [
+        "IT業界において5年間の経験を持つフルスタックWeb開発者です。",
+        "アマゾナス連邦大学（UFAM）にてコンピュータサイエンスの学士号を取得しました。WebおよびAndroid開発（組み込みシステムを含む）に関するコースを修了し、英語は上級、日本語は中級レベルです。",
+        "Webシステム、デスクトップアプリケーション、モバイルアプリの開発に精通しており、リモート情報管理やIoT／組み込みシステム連携など、さまざまな用途に対応可能です。また、要件定義、モックアップ作成、UX/UI設計、アジャイル開発（スクラム、プランニング、デイリー）の進行、メンバーの指導およびユーザートレーニングの経験があります。",
+        "常に自己成長を目指し、新しい課題や学習機会に積極的に取り組んでいます。現在は産業向けのコンピュータビジョンおよび機械学習を活用した人工知能の研究に取り組んでいます。",
+        <u>主な企業：DELTA SOLUTIONS、ICTS</u>,
+        <u>取引先企業：Daikin、INOVA、Conecthus、Elgin、Inventus Power、Flex</u>,
+      ],
+      globalSkills: [
+        "React、React Native、Hooks、Reduxを用いたレスポンシブWebアプリケーションの開発",
+        "HTML、CSS、JavaScript、TypeScriptに関する専門知識",
+        "REST API、GraphQL、Spring Bootを用いたAPIの設計および統合",
+        "Jestを用いた機能検証のためのテストケース作成",
+        "クリーンアーキテクチャおよびストーリーテリングの設計への参加",
+        "SOLID原則の基礎知識",
+        "Git、GitHub、GitLabを用いたバージョン管理、コードレビューおよび分析",
+        "LinuxおよびWindows環境でのアプリケーション開発",
+        "ログ分析、トラブルシューティング、保守およびソフトウェア改善の経験",
+        "Figmaを用いたUX/UI重視のモックアップ作成および調整",
+        "デザインシステムの構築および改善",
+        "ドキュメントおよび開発記録の管理",
+        "タスクの整理、定義および管理",
+        "新しいツールへの柔軟な対応力と適応力",
+        "CI/CDによるデプロイに関する基礎知識",
+      ],
+    },
+    education_page: {
+      leafLabels: {
+        institution: "教育機関:",
+        degree: "学位・段階:",
+        period: "期間:",
+        location: "都市 | 州:",
+        description: "内容:",
+        scholar: "奨学金:",
+        extra: "その他:",
+      },
+      education: [] as EducationYearEntry[],
+    },
   },
 };
 

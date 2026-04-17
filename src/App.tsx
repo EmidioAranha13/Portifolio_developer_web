@@ -161,7 +161,7 @@ function App() {
                 {activeSection === "about" ? (
                   <ProfilePage infoTexts={infoTexts} languageKey={languageKey} />
                 ) : activeSection === "education" ? (
-                  <EducationPage title={tabTitleBySection.education} />
+                  <EducationPage title={tabTitleBySection.education} infoTexts={infoTexts} />
                 ) : (
                   <CardBox className="page-placeholder-card">
                     <section className="page-placeholder">

@@ -1,5 +1,6 @@
 .tree-rail {
   --tree-main-color: var(--color-night-grad-1);
+  --tree-root-color: var(--color-night-grad-2);
   --tree-branch-gradient: var(--header-90-gradient);
   --tree-branch-gradient-reverse: var(--header-90-gradient-reverse);
   --tree-gap: clamp(26px, 4vw, 40px);
@@ -12,11 +13,20 @@
   min-width: 0;
   max-width: 1100px;
   margin-inline: auto;
-  padding: clamp(8px, 2vw, 16px) 0;
+  padding: clamp(4px, 1vw, 8px) 0;
 }
 
 .App.theme-day .tree-rail {
   --tree-main-color: var(--color-day-grad-1);
+  --tree-root-color: var(--color-day-grad-4);
+}
+
+.App.theme-day .tree-rail__node--root {
+  box-shadow:
+    0 1px 2px rgba(0, 0, 0, 0.14),
+    0 4px 16px color-mix(in srgb, var(--color-day-grad-5) 52%, transparent),
+    0 10px 32px color-mix(in srgb, var(--color-day-grad-3) 42%, transparent),
+    0 16px 48px color-mix(in srgb, var(--color-day-grad-1) 30%, transparent);
 }
 
 .tree-rail__heading {
@@ -25,7 +35,7 @@
   width: 100%;
   display: flex;
   justify-content: center;
-  margin-bottom: clamp(10px, 2vw, 18px);
+  margin-bottom: clamp(5px, 1vw, 10px);
 }
 
 .tree-rail__spine {
@@ -33,15 +43,42 @@
   top: var(--tree-spine-top, 0px);
   bottom: var(--tree-spine-bottom, 0px);
   left: 50%;
-  width: 4px;
-  border-radius: 999px;
+  width: 0.5em;
+  /* border-radius: 999px; */
   transform: translateX(-50%);
   background: var(--tree-main-color);
   pointer-events: none;
   z-index: 0;
+  will-change: clip-path;
+}
+
+/* Spine “desce” a partir do heading; heading permanece visível. */
+.tree-rail:not(.tree-rail--motion-off):not(.tree-rail--intro-active) .tree-rail__spine {
+  clip-path: inset(0 0 100% 0);
+}
+
+.tree-rail:not(.tree-rail--motion-off).tree-rail--intro-active .tree-rail__spine {
+  animation: tree-rail-spine-grow 1.12s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+@keyframes tree-rail-spine-grow {
+  from {
+    clip-path: inset(0 0 100% 0);
+  }
+  to {
+    clip-path: inset(0 0 0 0);
+  }
+}
+
+.tree-rail--motion-off .tree-rail__spine {
+  clip-path: none;
+  animation: none;
+  will-change: auto;
 }
 
 .tree-rail__row {
+  --row-reveal-delay: 0ms;
+  --row-hide-delay: 0ms;
   position: relative;
   z-index: 1;
   display: grid;
@@ -51,11 +88,11 @@
 }
 
 .tree-rail__row--root {
-  padding: clamp(12px, 1.8vw, 18px) 0;
+  padding: clamp(4px, 0.85vw, 8px) 0;
 }
 
 .tree-rail__row--knot {
-  padding: clamp(10px, 1.6vw, 14px) 0;
+  padding: clamp(3px, 0.7vw, 7px) 0;
 }
 
 .tree-rail__side {
@@ -74,8 +111,6 @@
 
 .tree-rail__node {
   position: relative;
-  min-width: clamp(54px, 7vw, 84px);
-  padding: 6px 14px;
   border-radius: 2em;
   text-align: center;
   font-weight: 800;
@@ -85,12 +120,22 @@
 }
 
 .tree-rail__node--root {
-  font-size: clamp(0.9rem, 1.2vw, 1rem);
-  background-color: ;
+  min-width: clamp(58px, 7.5vw, 92px);
+  padding: clamp(7px, 1.1vw, 9px) clamp(16px, 2.2vw, 20px);
+  font-size: clamp(0.9rem, 1.2vw, 1.05rem);
+  background-color: var(--tree-root-color);
+  /* “Glow” em degradê: camadas com stops do tema (noite). */
+  box-shadow:
+    0 1px 2px rgba(0, 0, 0, 0.28),
+    0 4px 14px color-mix(in srgb, var(--color-night-grad-5) 44%, transparent),
+    0 9px 26px color-mix(in srgb, var(--color-night-grad-3) 40%, transparent),
+    0 14px 40px color-mix(in srgb, var(--color-night-grad-1) 34%, transparent);
 }
 
 .tree-rail__node--knot {
-  font-size: clamp(0.85rem, 1.1vw, 0.95rem);
+  min-width: clamp(44px, 5.5vw, 70px);
+  padding: clamp(4px, 0.75vw, 6px) clamp(10px, 1.5vw, 13px);
+  font-size: clamp(0.76rem, 0.95vw, 0.86rem);
 }
 
 .tree-rail__node--branch-left::after,
@@ -99,37 +144,129 @@
   position: absolute;
   top: 50%;
   width: var(--tree-branch-length);
-  height: 3px;
-  border-radius: 999px;
+  height: 0.5em;
+  /* border-radius: 2em; */
   transform: translateY(-50%);
+  transform-origin: center center;
 }
 
 .tree-rail__node--branch-left::after {
   right: 100%;
   background: var(--tree-branch-gradient-reverse);
+  transform-origin: right center;
 }
 
 .tree-rail__node--branch-right::after {
   left: 100%;
   background: var(--tree-branch-gradient);
+  transform-origin: left center;
+}
+
+.tree-rail:not(.tree-rail--motion-off) .tree-rail__row:not(.tree-rail__row--visible) .tree-rail__node--branch-left::after,
+.tree-rail:not(.tree-rail--motion-off) .tree-rail__row:not(.tree-rail__row--visible) .tree-rail__node--branch-right::after {
+  transform: translateY(-50%) scaleX(0);
+}
+
+.tree-rail:not(.tree-rail--motion-off) .tree-rail__row--visible .tree-rail__node--branch-left::after,
+.tree-rail:not(.tree-rail--motion-off) .tree-rail__row--visible .tree-rail__node--branch-right::after {
+  transform: translateY(-50%) scaleX(1);
+  transition: transform 0.55s cubic-bezier(0.22, 1, 0.36, 1) calc(var(--row-reveal-delay, 0ms) + 0.14s);
 }
 
 .tree-rail__leaf-shell {
   position: relative;
-  width: min(100%, 330px);
-  padding: 3px;
+  width: 400px;
+  max-width: 100%;
+  /* padding: 3px; */
   border-radius: 1.2em;
+  border: 0.3em solid var(--color-night-grad-5);
   box-shadow: 0 6px 16px rgba(0, 0, 0, 0.16);
+}
+
+.tree-rail:not(.tree-rail--motion-off) .tree-rail__row:not(.tree-rail__row--visible) .tree-rail__leaf-shell--right {
+  opacity: 0;
+  transform: translate3d(-10px, 0, 0);
+}
+
+.tree-rail:not(.tree-rail--motion-off) .tree-rail__row:not(.tree-rail__row--visible) .tree-rail__leaf-shell--left {
+  opacity: 0;
+  transform: translate3d(10px, 0, 0);
+}
+
+.tree-rail:not(.tree-rail--motion-off) .tree-rail__row--visible .tree-rail__leaf-shell {
+  opacity: 1;
+  transform: translate3d(0, 0, 0);
+  transition:
+    opacity 0.5s cubic-bezier(0.22, 1, 0.36, 1) calc(var(--row-reveal-delay, 0ms) + 0.34s),
+    transform 0.5s cubic-bezier(0.22, 1, 0.36, 1) calc(var(--row-reveal-delay, 0ms) + 0.34s);
+}
+
+.tree-rail:not(.tree-rail--motion-off) .tree-rail__row:not(.tree-rail__row--visible) {
+  opacity: 0;
+  transform: translate3d(0, 14px, 0);
+}
+
+.tree-rail:not(.tree-rail--motion-off) .tree-rail__row--visible {
+  opacity: 1;
+  transform: translate3d(0, 0, 0);
+  transition:
+    opacity 0.52s cubic-bezier(0.22, 1, 0.36, 1) var(--row-reveal-delay, 0ms),
+    transform 0.52s cubic-bezier(0.22, 1, 0.36, 1) var(--row-reveal-delay, 0ms);
+}
+
+/* Transições de saída só após a primeira entrada (evita “piscar” no primeiro paint). */
+.tree-rail:not(.tree-rail--motion-off).tree-rail--exit-ready .tree-rail__row:not(.tree-rail__row--visible) {
+  transition:
+    opacity 0.42s cubic-bezier(0.55, 0.06, 0.68, 0.19) calc(var(--row-hide-delay, 0ms) + 0.2s),
+    transform 0.42s cubic-bezier(0.55, 0.06, 0.68, 0.19) calc(var(--row-hide-delay, 0ms) + 0.2s);
+}
+
+.tree-rail:not(.tree-rail--motion-off).tree-rail--exit-ready
+  .tree-rail__row:not(.tree-rail__row--visible)
+  .tree-rail__node--branch-left::after,
+.tree-rail:not(.tree-rail--motion-off).tree-rail--exit-ready
+  .tree-rail__row:not(.tree-rail__row--visible)
+  .tree-rail__node--branch-right::after {
+  transition: transform 0.42s cubic-bezier(0.55, 0.06, 0.68, 0.19) calc(var(--row-hide-delay, 0ms) + 0.1s);
+}
+
+.tree-rail:not(.tree-rail--motion-off).tree-rail--exit-ready
+  .tree-rail__row:not(.tree-rail__row--visible)
+  .tree-rail__leaf-shell--right,
+.tree-rail:not(.tree-rail--motion-off).tree-rail--exit-ready
+  .tree-rail__row:not(.tree-rail__row--visible)
+  .tree-rail__leaf-shell--left {
+  transition:
+    opacity 0.38s cubic-bezier(0.55, 0.06, 0.68, 0.19) var(--row-hide-delay, 0ms),
+    transform 0.38s cubic-bezier(0.55, 0.06, 0.68, 0.19) var(--row-hide-delay, 0ms);
+}
+
+.tree-rail--motion-off .tree-rail__row {
+  opacity: 1;
+  transform: none;
+}
+
+.tree-rail--motion-off .tree-rail__leaf-shell {
+  opacity: 1;
+  transform: none;
+}
+
+.tree-rail--motion-off .tree-rail__node--branch-left::after,
+.tree-rail--motion-off .tree-rail__node--branch-right::after {
+  transform: translateY(-50%) scaleX(1);
+  transition: none;
+}
+
+.App.theme-day .tree-rail__leaf-shell {
+  border-color: var(--color-day-grad-5);
 }
 
 .tree-rail__leaf-shell--right {
   margin-inline-start: max(0px, calc(var(--tree-branch-length) - var(--tree-gap)));
-  background: var(--tree-branch-gradient-reverse);
 }
 
 .tree-rail__leaf-shell--left {
   margin-inline-end: max(0px, calc(var(--tree-branch-length) - var(--tree-gap)));
-  background: var(--tree-branch-gradient);
 }
 
 .tree-rail__leaf-card {
@@ -143,18 +280,27 @@
   gap: 4px;
 }
 
+/* Igual a .profile-about (CardBox / .card-box.glass-surface). */
 .tree-rail__leaf-card.glass-surface {
-  --glass-backdrop-bg: color-mix(in srgb, var(--app-main-bg) 38%, transparent);
-  --glass-fallback-bg: color-mix(in srgb, var(--app-main-bg) 58%, transparent);
-  border-width: 0;
+  --glass-backdrop-bg: color-mix(in srgb, rgb(96, 96, 102) 48%, transparent);
+  --glass-fallback-bg: linear-gradient(
+    155deg,
+    color-mix(in srgb, rgb(96, 96, 102) 72%, var(--app-main-bg)) 0%,
+    color-mix(in srgb, rgb(96, 96, 102) 52%, var(--app-main-bg)) 100%
+  );
+  border-width: 0px;
   box-shadow:
     0 8px 20px rgba(0, 0, 0, 0.12),
     inset 0 1px 0 color-mix(in srgb, var(--app-main-text) 10%, transparent);
 }
 
 .App.theme-day .tree-rail__leaf-card.glass-surface {
-  --glass-backdrop-bg: color-mix(in srgb, var(--app-main-bg) 42%, transparent);
-  --glass-fallback-bg: color-mix(in srgb, var(--app-main-bg) 62%, transparent);
+  --glass-backdrop-bg: color-mix(in srgb, rgb(114, 114, 114) 48%, transparent);
+  --glass-fallback-bg: linear-gradient(
+    155deg,
+    color-mix(in srgb, rgb(204, 204, 204) 72%, var(--app-main-bg)) 0%,
+    color-mix(in srgb, rgb(204, 204, 204) 52%, var(--app-main-bg)) 100%
+  );
 }
 
 .tree-rail__leaf-title {
@@ -170,6 +316,27 @@
   color: color-mix(in srgb, var(--app-main-text) 82%, transparent);
 }
 
+.tree-rail__leaf-body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.tree-rail__leaf-body .tree-rail__leaf-subtitle {
+  line-height: 1.22;
+}
+
+.tree-rail__leaf-field-label {
+  font-weight: 700;
+}
+
+.tree-rail__leaf-divider {
+  width: 100%;
+  height: 3px;
+  border-radius: 999px;
+  background: #ffffff;
+}
+
 @media (max-width: 860px) {
   .tree-rail {
     --tree-gap: 16px;
@@ -178,9 +345,5 @@
 
   .tree-rail__row {
     grid-template-columns: minmax(126px, 1fr) auto minmax(126px, 1fr);
-  }
-
-  .tree-rail__leaf-shell {
-    width: min(100%, 230px);
   }
 }

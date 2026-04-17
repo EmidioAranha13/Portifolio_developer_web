@@ -21,10 +21,10 @@ type ProfilePageProps = {
  * @returns Bloco principal da seção Sobre mim.
  */
 const ProfilePage: React.FC<ProfilePageProps> = ({ infoTexts, languageKey }) => {
-  const hasResume = infoTexts.professionalResume.length > 0;
-  const hasSkills = infoTexts.globalSkills.length > 0;
+  const hasResume = infoTexts.profile_page.professionalResume.length > 0;
+  const hasSkills = infoTexts.profile_page.globalSkills.length > 0;
   const hasResumeBlock = hasResume || hasSkills;
-  const skillsLine = infoTexts.globalSkills.join("・");
+  const skillsLine = infoTexts.profile_page.globalSkills.join("・");
   const aboutRef = useRef<HTMLDivElement>(null);
   const [aboutRevealed, setAboutRevealed] = useState(false);
 
@@ -138,7 +138,7 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ infoTexts, languageKey }) => 
               </div>
               <div className="profile-about-copy">
                 {hasResume &&
-                  infoTexts.professionalResume.map((paragraph, index) => (
+                  infoTexts.profile_page.professionalResume.map((paragraph, index) => (
                     <p key={index} className="profile-about-paragraph">
                       {paragraph}
                     </p>
