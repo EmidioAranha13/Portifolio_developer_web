@@ -4,10 +4,12 @@ import {
   useState,
   type RefObject,
 } from "react";
-import "./ProfileHeroTripleArrowsDown.css";
+import "./ArrowBox.css";
 
 /** Quantidade de setas na onda do pílula horizontal / por coluna no mobile. */
 const WAVE_ARROW_COUNT = 9;
+const DESKTOP_WAVE_ARROW_COUNT = 11;
+const DESKTOP_WAVE_GROUPS = 11;
 
 /** Colunas no mobile: 1ª, 3ª e 5ª numa fase; 2ª e 4ª defasadas. */
 const MOBILE_WAVE_GROUPS = 5;
@@ -22,7 +24,7 @@ const MAX_VERTICAL_ARROWS = 160;
 const MIN_SCROLLBAR_ARROWS = 14;
 const MAX_SCROLLBAR_ARROWS = 220;
 
-export type ProfileHeroTripleArrowsOrientation = "horizontal" | "vertical";
+export type ArrowBoxOrientation = "horizontal" | "vertical";
 
 export type ScrollbarThumbPhase = "top" | "middle" | "bottom";
 
@@ -183,16 +185,16 @@ function ArrowWaveTrack({
   );
 }
 
-type ProfileHeroTripleArrowsDownProps = {
-  orientation?: ProfileHeroTripleArrowsOrientation;
+type ArrowBoxProps = {
+  orientation?: ArrowBoxOrientation;
   /** `scrollbar`: coluna densa para o thumb da barra de scroll. */
   verticalVariant?: "hero" | "scrollbar";
   /** Fase do scroll (só `verticalVariant="scrollbar"`). */
   scrollbarScrollPhase?: ScrollbarThumbPhase;
 };
 
-const ProfileHeroTripleArrowsDown: React.FC<
-  ProfileHeroTripleArrowsDownProps
+const ArrowBox: React.FC<
+  ArrowBoxProps
 > = ({
   orientation = "horizontal",
   verticalVariant = "hero",
@@ -287,14 +289,22 @@ const ProfileHeroTripleArrowsDown: React.FC<
     <div className="profile-hero-triple-arrows-down" aria-hidden="true">
       <div className="profile-hero-triple-arrows-down__panel">
         <div className="profile-hero-triple-arrows-down__viewport">
-          <ArrowWaveTrack
-            waveCount={WAVE_ARROW_COUNT}
-            className="profile-hero-triple-arrows-down__track profile-hero-triple-arrows-down__track--desktop"
-          />
-          <div className="profile-hero-triple-arrows-down__row">
+          <div className="profile-hero-triple-arrows-down__row profile-hero-triple-arrows-down__row--desktop">
+            {Array.from({ length: DESKTOP_WAVE_GROUPS }, (_, g) => (
+              <ArrowWaveTrack
+                key={`desktop-${g}`}
+                waveCount={DESKTOP_WAVE_ARROW_COUNT}
+                className="profile-hero-triple-arrows-down__track profile-hero-triple-arrows-down__track--desktop-lane"
+                lanePhaseShift={
+                  g % 2 === 0 ? 0 : MOBILE_ALTERNATE_LANE_PHASE
+                }
+              />
+            ))}
+          </div>
+          <div className="profile-hero-triple-arrows-down__row profile-hero-triple-arrows-down__row--mobile">
             {Array.from({ length: MOBILE_WAVE_GROUPS }, (_, g) => (
               <ArrowWaveTrack
-                key={g}
+                key={`mobile-${g}`}
                 waveCount={WAVE_ARROW_COUNT}
                 className="profile-hero-triple-arrows-down__track profile-hero-triple-arrows-down__track--mobile"
                 lanePhaseShift={
@@ -309,4 +319,4 @@ const ProfileHeroTripleArrowsDown: React.FC<
   );
 };
 
-export default ProfileHeroTripleArrowsDown;
+export default ArrowBox;

@@ -8,10 +8,10 @@ import {
   type PointerEvent as ReactPointerEvent,
   type RefObject,
 } from "react";
-import ProfileHeroTripleArrowsDown, {
+import ArrowBox, {
   type ScrollbarThumbPhase,
-} from "./ProfileHeroTripleArrowsDown";
-import "./ProfileHeroArrowsScrollRail.css";
+} from "./ArrowBox";
+import "./ArrowBoxScrollRail.css";
 
 const MIN_THUMB_PX = 80;
 const MIN_WIDTH_PX = 861;
@@ -24,19 +24,19 @@ function initialUseArrowsBar(): boolean {
   );
 }
 
-type ProfileHeroArrowsScrollRailProps = {
+type ArrowBoxScrollRailProps = {
   scrollRootRef: RefObject<HTMLElement | null>;
 };
 
 /**
  * Barra de scroll customizada: o “thumb” reutiliza o visual do
- * {@link ProfileHeroTripleArrowsDown} em orientação vertical.
+ * {@link ArrowBox} em orientação vertical.
  * Ativo em viewport ≥861px e sem `prefers-reduced-motion`.
  * Monta com a shell principal (incl. durante o loader) para não haver troca de scrollbar.
  */
-export default function ProfileHeroArrowsScrollRail({
+export default function ArrowBoxScrollRail({
   scrollRootRef,
-}: ProfileHeroArrowsScrollRailProps) {
+}: ArrowBoxScrollRailProps) {
   const railRef = useRef<HTMLDivElement>(null);
   const thumbRef = useRef<HTMLDivElement>(null);
   const [useArrowsBar, setUseArrowsBar] = useState(initialUseArrowsBar);
@@ -225,7 +225,7 @@ export default function ProfileHeroArrowsScrollRail({
           } as CSSProperties
         }
       >
-        <ProfileHeroTripleArrowsDown
+        <ArrowBox
           orientation="vertical"
           verticalVariant="scrollbar"
           scrollbarScrollPhase={scrollPhase}

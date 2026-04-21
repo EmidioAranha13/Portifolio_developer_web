@@ -1,4 +1,4 @@
-/* Rail fixo: “thumb” = ProfileHeroTripleArrowsDown vertical (só desktop, ver TS). */
+/* Rail fixo: “thumb” = ArrowBox vertical (só desktop, ver TS). */
 .app-arrows-scroll-rail {
   position: fixed;
   top: var(--app-header-height);

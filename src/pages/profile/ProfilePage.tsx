@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import CustomBulletButton from "../../componentes/CustomBulletButton/CustomBulletButton";
-import ProfileHeroTripleArrowsDown from "../../componentes/ProfileHeroTripleArrowsDown/ProfileHeroTripleArrowsDown";
+import ArrowBox from "../../componentes/ArrowBox/ArrowBox";
 import ProfilePhotoRotator from "../../componentes/ProfilePhotoRotator/ProfilePhotoRotator";
 import ProfileSectionRail from "../../componentes/ProfileSectionRail/ProfileSectionRail";
 import CardBox from "../../componentes/CardBox/CardBox";
@@ -55,13 +55,6 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ infoTexts, languageKey }) => 
     <div className="profile-page">
       <div className="profile-hero-stage">
         <section className="hero-intro" aria-labelledby="profile-hero-name">
-          <div
-            className="hero-intro__rail hero-intro__rail--start"
-            aria-hidden="true"
-          >
-            <ProfileHeroTripleArrowsDown orientation="vertical" />
-          </div>
-
           <div className="hero-intro__main">
             <div className="hero-avatar-ring">
               <img
@@ -94,17 +87,10 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ infoTexts, languageKey }) => 
               </div>
             </div>
           </div>
-
-          <div
-            className="hero-intro__rail hero-intro__rail--end"
-            aria-hidden="true"
-          >
-            <ProfileHeroTripleArrowsDown orientation="vertical" />
-          </div>
         </section>
 
         <div className="profile-hero-triple-arrows-slot">
-          <ProfileHeroTripleArrowsDown orientation="horizontal" />
+          <ArrowBox orientation="horizontal" />
         </div>
       </div>
 
