@@ -1,17 +1,5 @@
-import type { ReactNode } from "react";
+import type { ProfileSectionRailProps } from "../../utils/Types";
 import "./ProfileSectionRail.css";
-
-type ProfileSectionRailProps = {
-  /** URL da imagem dentro do anel (ex.: seta). */
-  imageSrc: string;
-  imageAlt?: string;
-  /** Retrato circular com borda em degradê (default: true). */
-  showRing?: boolean;
-  /** Linha vertical que acompanha a altura do conteúdo à direita (default: true). */
-  showLine?: boolean;
-  children: ReactNode;
-  className?: string;
-};
 
 /**
  * Trilho lateral: anel com imagem + linha vertical com degradê do tema (cima → baixo), alinhado ao conteúdo.

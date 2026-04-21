@@ -1,11 +1,6 @@
 import { useMemo, useState } from "react";
+import type { ThemeMode, ThemeToggleProps } from "../../utils/Types";
 import "./ThemeToggle.css";
-
-type ThemeToggleProps = {
-  defaultMode?: "day" | "night";
-  mode?: "day" | "night";
-  onChange?: (mode: "day" | "night") => void;
-};
 
 /**
  * Toggle visual de tema com imagens de manhã/noite.
@@ -21,7 +16,7 @@ const ThemeToggle: React.FC<ThemeToggleProps> = ({
   mode,
   onChange,
 }) => {
-  const [internalMode, setInternalMode] = useState<"day" | "night">(defaultMode);
+  const [internalMode, setInternalMode] = useState<ThemeMode>(defaultMode);
 
   const assets = useMemo(
     () => ({

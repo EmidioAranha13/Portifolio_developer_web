@@ -1,12 +1,6 @@
 import { useEffect, useState } from "react";
+import type { LoadingScreenProps } from "../../utils/Types";
 import "./LoadingScreen.css";
-
-type LoadingScreenProps = {
-  onFinish: () => void;
-  isContentReady: boolean;
-  mode?: "portfolio" | "experience";
-  themeMode?: "day" | "night";
-};
 
 /**
  * Tela de carregamento com animação de órbita e colisão.

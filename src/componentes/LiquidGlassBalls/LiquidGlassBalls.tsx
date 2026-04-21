@@ -1,20 +1,6 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
+import type { BallConfig, LiquidGlassBallsProps } from "../../utils/Types";
 import "./LiquidGlassBalls.css";
-
-type LiquidGlassBallsProps = {
-  children?: React.ReactNode;
-  preset?: "soft" | "crystal" | "liquid-strong";
-};
-
-type BallConfig = {
-  id: number;
-  size: number;
-  top: number;
-  left: number;
-  delay: number;
-  duration: number;
-  color: string;
-};
 
 const BALL_COUNT_DESKTOP = 60;
 const BALL_COUNT_MOBILE = 30;

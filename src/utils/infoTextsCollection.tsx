@@ -1,31 +1,6 @@
-/** Uma entrada na linha do tempo de formação (folha do TreeRail). */
-export type EducationActivity = {
-  title: string;
-  institution: string;
-  degree: string;
-  period: string;
-  location: string;
-  /** Valor exibido no knot (ex.: mês ou marco temporal). */
-  ended: string;
-  description: string;
-  scholar: string;
-  extra: string;
-};
+import type { EducationActivity, EducationLeafLabels, EducationYearEntry } from "./Types";
 
-export type EducationYearEntry = {
-  year: number;
-  activities: EducationActivity[];
-};
-
-export type EducationLeafLabels = {
-  institution: string;
-  degree: string;
-  period: string;
-  location: string;
-  description: string;
-  scholar: string;
-  extra: string;
-};
+export type { EducationActivity, EducationLeafLabels, EducationYearEntry };
 
 export const infoTextsCollection = {
   br: {

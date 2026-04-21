@@ -2,9 +2,10 @@ import { useCallback, useLayoutEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import "./StyledHeader.css";
 import ThemeToggle from "../ThemeToggle/ThemeToggle";
-import LanguageSelector, { type LanguageCode } from "../LanguageSelector/LanguageSelector";
+import LanguageSelector from "../LanguageSelector/LanguageSelector";
 import type { RootState } from "../../store/index";
-import { setActiveSection, type SectionKey } from "../../store/uiSlice";
+import { setActiveSection } from "../../store/uiSlice";
+import type { SectionKey, StyledHeaderProps } from "../../utils/Types";
 
 const HEADER_TABS = [
   {
@@ -36,14 +37,6 @@ const HEADER_TABS = [
     iconUrl: new URL("../../assets/paperPlane2.png", import.meta.url).href,
   },
 ] as const;
-
-type StyledHeaderProps = {
-  themeMode: "day" | "night";
-  onThemeChange: (mode: "day" | "night") => void;
-  language: LanguageCode;
-  onLanguageChange: (language: LanguageCode) => void;
-  tabLabels: Record<SectionKey, string>;
-};
 
 /**
  * Cabeçalho estilizado usado na camada de conteúdo principal.

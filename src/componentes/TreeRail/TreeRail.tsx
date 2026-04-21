@@ -1,29 +1,8 @@
-import { useEffect, useLayoutEffect, useRef, useState, type ReactNode } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import type { TreeRailEntry, TreeRailLeafLine, TreeRailProps, TreeRailSide } from "../../utils/Types";
 import "./TreeRail.css";
 
-export type TreeRailSide = "left" | "right";
-
-export type TreeRailLeafLine = {
-  label: string;
-  value: string;
-};
-
-export type TreeRailEntry = {
-  id: string;
-  kind: "root" | "knot";
-  label: string;
-  side?: TreeRailSide;
-  /** Título da folha; linha divisória só entre este bloco e `leafBody`. */
-  leafTitle?: string;
-  /** Linhas com rótulo + valor (só campos não vazios na origem). */
-  leafBody?: TreeRailLeafLine[];
-};
-
-type TreeRailProps = {
-  entries: TreeRailEntry[];
-  /** Título (ex.: Formação) — o rail liga-se visualmente a este bloco e mede o topo do spine. */
-  heading?: ReactNode;
-};
+export type { TreeRailEntry, TreeRailLeafLine, TreeRailSide };
 
 function getScrollParent(el: HTMLElement | null): HTMLElement | null {
   if (!el) return null;

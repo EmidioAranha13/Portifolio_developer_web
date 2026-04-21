@@ -1,10 +1,6 @@
 import { forwardRef } from "react";
+import type { CardBoxProps } from "../../utils/Types";
 import "./CardBox.css";
-
-type CardBoxProps = React.PropsWithChildren<{
-  className?: string;
-}> &
-  React.HTMLAttributes<HTMLDivElement>;
 
 /**
  * Container reutilizável de cartão com efeito de vidro.

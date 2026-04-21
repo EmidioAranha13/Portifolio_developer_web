@@ -1,9 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
+import type { FloatingBallsProps } from "../../utils/Types";
 import "./FloatingBalls.css";
-
-type FloatingBallsProps = {
-  children?: React.ReactNode;
-};
 
 const FloatingBalls: React.FC<FloatingBallsProps> = ({ children }) => {
   const containerRef = useRef<HTMLDivElement | null>(null);

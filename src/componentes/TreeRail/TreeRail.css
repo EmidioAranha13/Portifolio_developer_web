@@ -162,11 +162,13 @@
   transform-origin: left center;
 }
 
+/* Estado oculto da branch: retraída no eixo X. */
 .tree-rail:not(.tree-rail--motion-off) .tree-rail__row:not(.tree-rail__row--visible) .tree-rail__node--branch-left::after,
 .tree-rail:not(.tree-rail--motion-off) .tree-rail__row:not(.tree-rail__row--visible) .tree-rail__node--branch-right::after {
   transform: translateY(-50%) scaleX(0);
 }
 
+/* Estado visível da branch: expansão horizontal com delay da row. */
 .tree-rail:not(.tree-rail--motion-off) .tree-rail__row--visible .tree-rail__node--branch-left::after,
 .tree-rail:not(.tree-rail--motion-off) .tree-rail__row--visible .tree-rail__node--branch-right::after {
   transform: translateY(-50%) scaleX(1);
@@ -183,16 +185,19 @@
   box-shadow: 0 6px 16px rgba(0, 0, 0, 0.16);
 }
 
+/* Folha oculta (lado direito): some com fade + deslocamento para dentro. */
 .tree-rail:not(.tree-rail--motion-off) .tree-rail__row:not(.tree-rail__row--visible) .tree-rail__leaf-shell--right {
   opacity: 0;
   transform: translate3d(-10px, 0, 0);
 }
 
+/* Folha oculta (lado esquerdo): mesma lógica, espelhada. */
 .tree-rail:not(.tree-rail--motion-off) .tree-rail__row:not(.tree-rail__row--visible) .tree-rail__leaf-shell--left {
   opacity: 0;
   transform: translate3d(10px, 0, 0);
 }
 
+/* Folha visível: retorna ao lugar e faz fade-in escalonado. */
 .tree-rail:not(.tree-rail--motion-off) .tree-rail__row--visible .tree-rail__leaf-shell {
   opacity: 1;
   transform: translate3d(0, 0, 0);
@@ -201,11 +206,13 @@
     transform 0.5s cubic-bezier(0.22, 1, 0.36, 1) calc(var(--row-reveal-delay, 0ms) + 0.34s);
 }
 
+/* Row oculta: bloco inteiro inicia deslocado e transparente. */
 .tree-rail:not(.tree-rail--motion-off) .tree-rail__row:not(.tree-rail__row--visible) {
   opacity: 0;
   transform: translate3d(0, 14px, 0);
 }
 
+/* Row visível: fade-in + retorno ao eixo Y original. */
 .tree-rail:not(.tree-rail--motion-off) .tree-rail__row--visible {
   opacity: 1;
   transform: translate3d(0, 0, 0);
@@ -215,12 +222,14 @@
 }
 
 /* Transições de saída só após a primeira entrada (evita “piscar” no primeiro paint). */
+/* Saída da row ao deixar viewport (scroll reverso): fade-out + recuo. */
 .tree-rail:not(.tree-rail--motion-off).tree-rail--exit-ready .tree-rail__row:not(.tree-rail__row--visible) {
   transition:
     opacity 0.42s cubic-bezier(0.55, 0.06, 0.68, 0.19) calc(var(--row-hide-delay, 0ms) + 0.2s),
     transform 0.42s cubic-bezier(0.55, 0.06, 0.68, 0.19) calc(var(--row-hide-delay, 0ms) + 0.2s);
 }
 
+/* Saída da branch: recolhe a linha lateral com timing próprio. */
 .tree-rail:not(.tree-rail--motion-off).tree-rail--exit-ready
   .tree-rail__row:not(.tree-rail__row--visible)
   .tree-rail__node--branch-left::after,
@@ -230,6 +239,7 @@
   transition: transform 0.42s cubic-bezier(0.55, 0.06, 0.68, 0.19) calc(var(--row-hide-delay, 0ms) + 0.1s);
 }
 
+/* Saída da folha: fade-out e deslocamento no sentido de origem. */
 .tree-rail:not(.tree-rail--motion-off).tree-rail--exit-ready
   .tree-rail__row:not(.tree-rail__row--visible)
   .tree-rail__leaf-shell--right,
@@ -241,16 +251,19 @@
     transform 0.38s cubic-bezier(0.55, 0.06, 0.68, 0.19) var(--row-hide-delay, 0ms);
 }
 
+/* Reduced motion: rows sempre estáticas e visíveis. */
 .tree-rail--motion-off .tree-rail__row {
   opacity: 1;
   transform: none;
 }
 
+/* Reduced motion: folhas sem animação, sempre visíveis. */
 .tree-rail--motion-off .tree-rail__leaf-shell {
   opacity: 1;
   transform: none;
 }
 
+/* Reduced motion: branch fixa expandida (sem transições). */
 .tree-rail--motion-off .tree-rail__node--branch-left::after,
 .tree-rail--motion-off .tree-rail__node--branch-right::after {
   transform: translateY(-50%) scaleX(1);
@@ -289,6 +302,10 @@
     color-mix(in srgb, rgb(96, 96, 102) 52%, var(--app-main-bg)) 100%
   );
   border-width: 0px;
+  /* Prewarm de composição para reduzir atraso do backdrop ao surgir. */
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  will-change: transform, backdrop-filter;
   box-shadow:
     0 8px 20px rgba(0, 0, 0, 0.12),
     inset 0 1px 0 color-mix(in srgb, var(--app-main-text) 10%, transparent);

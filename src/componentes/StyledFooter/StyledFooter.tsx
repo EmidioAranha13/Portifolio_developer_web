@@ -1,8 +1,5 @@
+import type { StyledFooterProps } from "../../utils/Types";
 import "./StyledFooter.css";
-
-type StyledFooterProps = {
-  text: string;
-};
 
 /**
  * Rodapé estilizado da aplicação com identidade visual do cabeçalho.

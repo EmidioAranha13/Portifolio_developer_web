@@ -1,13 +1,7 @@
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
+import type { SectionKey } from "../utils/Types";
 
-export type SectionKey =
-  | "about"
-  | "education"
-  | "experience"
-  | "skills"
-  | "certifications"
-  | "projects"
-  | "contact";
+export type { SectionKey };
 
 const initialState = {
   isSidebarOpen: false,

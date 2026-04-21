@@ -1,27 +1,9 @@
-import type { AnchorHTMLAttributes, ButtonHTMLAttributes, CSSProperties } from "react";
+import type { CSSProperties } from "react";
+import type {
+  CustomBulletButtonButtonProps,
+  CustomBulletButtonProps,
+} from "../../utils/Types";
 import "./CustomBulletButton.css";
-
-type CustomBulletButtonVariant = "primary" | "outline";
-type CustomBulletButtonIcon = "download" | "paperPlane";
-
-type CommonProps = {
-  label: string;
-  variant: CustomBulletButtonVariant;
-  icon: CustomBulletButtonIcon;
-  className?: string;
-};
-
-type ButtonProps = CommonProps &
-  Omit<ButtonHTMLAttributes<HTMLButtonElement>, "children"> & {
-    href?: undefined;
-  };
-
-type LinkProps = CommonProps &
-  Omit<AnchorHTMLAttributes<HTMLAnchorElement>, "children"> & {
-    href: string;
-  };
-
-type CustomBulletButtonProps = ButtonProps | LinkProps;
 
 /**
  * Botão reutilizável da seção hero com variantes visuais e ícone à direita.
@@ -62,7 +44,7 @@ const CustomBulletButton: React.FC<CustomBulletButtonProps> = (props) => {
     );
   }
 
-  const { type = "button", ...buttonProps } = props as ButtonProps;
+  const { type = "button", ...buttonProps } = props as CustomBulletButtonButtonProps;
   return (
     <button type={type} className={classes} {...buttonProps}>
       {content}

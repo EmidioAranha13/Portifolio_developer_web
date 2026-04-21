@@ -1,19 +1,8 @@
 import { useMemo, useRef, useState } from "react";
+import type { LanguageCode, LanguageOption, LanguageSelectorProps } from "../../utils/Types";
 import "./LanguageSelector.css";
 
-export type LanguageCode = "BR" | "EN" | "JA";
-
-type LanguageSelectorProps = {
-  value?: LanguageCode;
-  defaultValue?: LanguageCode;
-  onChange?: (language: LanguageCode) => void;
-};
-
-type LanguageOption = {
-  code: LanguageCode;
-  label: string;
-  flagUrl: string;
-};
+export type { LanguageCode };
 
 const OPTIONS: LanguageOption[] = [
   {

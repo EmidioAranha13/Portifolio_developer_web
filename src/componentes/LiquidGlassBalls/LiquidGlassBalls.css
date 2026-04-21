@@ -11,8 +11,7 @@
   --glass-backdrop-contrast: 125%;
   position: relative;
   width: 100%;
-  /* Mesmo fundo e bolhas sob o header; conteúdo textual começa abaixo da barra. */
-  padding-top: var(--app-header-height);
+  padding-top: 0;
   min-height: 100dvh;
   height: auto;
   /* hidden + visible força overflow-y: auto no eixo Y (scroll duplo). clip não cria scrollport. */

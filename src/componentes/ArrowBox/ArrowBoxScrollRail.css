@@ -1,10 +1,10 @@
 /* Rail fixo: “thumb” = ArrowBox vertical (só desktop, ver TS). */
 .app-arrows-scroll-rail {
   position: fixed;
-  top: var(--app-header-height);
+  top: 0;
   right: 0;
   width: 48px;
-  height: calc(100dvh - var(--app-header-height));
+  height: 100dvh;
   z-index: 12;
   pointer-events: none;
   contain: layout style;

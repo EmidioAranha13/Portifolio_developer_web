@@ -4,7 +4,14 @@ import {
   useState,
   type RefObject,
 } from "react";
+import type {
+  ArrowBoxOrientation,
+  ArrowBoxProps,
+  ScrollbarThumbPhase,
+} from "../../utils/Types";
 import "./ArrowBox.css";
+
+export type { ArrowBoxOrientation, ScrollbarThumbPhase };
 
 /** Quantidade de setas na onda do pílula horizontal / por coluna no mobile. */
 const WAVE_ARROW_COUNT = 9;
@@ -23,10 +30,6 @@ const MIN_VERTICAL_ARROWS = 12;
 const MAX_VERTICAL_ARROWS = 160;
 const MIN_SCROLLBAR_ARROWS = 14;
 const MAX_SCROLLBAR_ARROWS = 220;
-
-export type ArrowBoxOrientation = "horizontal" | "vertical";
-
-export type ScrollbarThumbPhase = "top" | "middle" | "bottom";
 
 function approxArrowSizePx(): number {
   if (typeof window === "undefined") return 34;
@@ -184,14 +187,6 @@ function ArrowWaveTrack({
     </div>
   );
 }
-
-type ArrowBoxProps = {
-  orientation?: ArrowBoxOrientation;
-  /** `scrollbar`: coluna densa para o thumb da barra de scroll. */
-  verticalVariant?: "hero" | "scrollbar";
-  /** Fase do scroll (só `verticalVariant="scrollbar"`). */
-  scrollbarScrollPhase?: ScrollbarThumbPhase;
-};
 
 const ArrowBox: React.FC<
   ArrowBoxProps

@@ -6,11 +6,9 @@ import {
   useState,
   type CSSProperties,
   type PointerEvent as ReactPointerEvent,
-  type RefObject,
 } from "react";
-import ArrowBox, {
-  type ScrollbarThumbPhase,
-} from "./ArrowBox";
+import ArrowBox from "./ArrowBox";
+import type { ArrowBoxScrollRailProps, ScrollbarThumbPhase } from "../../utils/Types";
 import "./ArrowBoxScrollRail.css";
 
 const MIN_THUMB_PX = 80;
@@ -24,10 +22,6 @@ function initialUseArrowsBar(): boolean {
   );
 }
 
-type ArrowBoxScrollRailProps = {
-  scrollRootRef: RefObject<HTMLElement | null>;
-};
-
 /**
  * Barra de scroll customizada: o “thumb” reutiliza o visual do
  * {@link ArrowBox} em orientação vertical.
@@ -36,6 +30,7 @@ type ArrowBoxScrollRailProps = {
  */
 export default function ArrowBoxScrollRail({
   scrollRootRef,
+  contentSyncKey,
 }: ArrowBoxScrollRailProps) {
   const railRef = useRef<HTMLDivElement>(null);
   const thumbRef = useRef<HTMLDivElement>(null);
@@ -111,6 +106,10 @@ export default function ArrowBoxScrollRail({
     root.addEventListener("scroll", syncThumbAndChrome, { passive: true });
     const roRoot = new ResizeObserver(syncThumbAndChrome);
     roRoot.observe(root);
+    const contentEl = root.querySelector(".content");
+    const roContent =
+      contentEl instanceof HTMLElement ? new ResizeObserver(syncThumbAndChrome) : null;
+    if (contentEl instanceof HTMLElement && roContent) roContent.observe(contentEl);
 
     const rail = railRef.current;
     const roRail = rail ? new ResizeObserver(syncThumbAndChrome) : null;
@@ -121,6 +120,7 @@ export default function ArrowBoxScrollRail({
     return () => {
       root.removeEventListener("scroll", syncThumbAndChrome);
       roRoot.disconnect();
+      roContent?.disconnect();
       roRail?.disconnect();
       window.removeEventListener("resize", syncThumbAndChrome);
     };
@@ -128,9 +128,23 @@ export default function ArrowBoxScrollRail({
 
   useEffect(() => {
     if (!useArrowsBar) return;
-    const id = requestAnimationFrame(() => syncThumbAndChrome());
-    return () => cancelAnimationFrame(id);
-  }, [useArrowsBar, syncThumbAndChrome]);
+    let raf2 = 0;
+    let raf3 = 0;
+    const raf1 = requestAnimationFrame(() => {
+      syncThumbAndChrome();
+      raf2 = requestAnimationFrame(() => {
+        syncThumbAndChrome();
+        raf3 = requestAnimationFrame(() => syncThumbAndChrome());
+      });
+    });
+    const t = window.setTimeout(() => syncThumbAndChrome(), 120);
+    return () => {
+      cancelAnimationFrame(raf1);
+      cancelAnimationFrame(raf2);
+      cancelAnimationFrame(raf3);
+      window.clearTimeout(t);
+    };
+  }, [useArrowsBar, contentSyncKey, syncThumbAndChrome]);
 
   const onThumbPointerDown = (e: ReactPointerEvent<HTMLDivElement>) => {
     if (!canScrollRef.current) return;

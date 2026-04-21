@@ -5,18 +5,15 @@ import LoadingScreen from "./componentes/LoadingScreen/LoadingScreen";
 import StyledHeader from "./componentes/StyledHeader/StyledHeader";
 import StyledFooter from "./componentes/StyledFooter/StyledFooter";
 import CardBox from "./componentes/CardBox/CardBox";
-import type { LanguageCode } from "./componentes/LanguageSelector/LanguageSelector";
+import type { GlassPreset, LanguageCode, SectionKey, ThemeMode } from "./utils/Types";
 import { infoTextsCollection } from "./utils/infoTextsCollection";
 import ArrowBoxScrollRail from "./componentes/ArrowBox/ArrowBoxScrollRail";
 import ProfilePage from "./pages/profile/ProfilePage";
 import EducationPage from "./pages/education/EducationPage";
 import type { RootState } from "./store/index";
-import type { SectionKey } from "./store/uiSlice";
 import "./App.css";
 import "./styles/glassSurface.css";
 
-type GlassPreset = "soft" | "crystal" | "liquid-strong";
-type ThemeMode = "day" | "night";
 const DEFAULT_LANGUAGE: LanguageCode = "BR";
 
 /** Chave no `localStorage` para lembrar o tema escolhido pelo usuário. */
@@ -147,18 +144,18 @@ function App() {
         />
       )}
 
-      <StyledHeader
-        themeMode={themeMode}
-        onThemeChange={setThemeMode}
-        language={language}
-        onLanguageChange={setLanguage}
-        tabLabels={tabTitleBySection}
-      />
       <main className="app-main">
         <LiquidGlassBalls preset={preset}>
           <div ref={containerRef} className="container styled-scrollbars">
+            <StyledHeader
+              themeMode={themeMode}
+              onThemeChange={setThemeMode}
+              language={language}
+              onLanguageChange={setLanguage}
+              tabLabels={tabTitleBySection}
+            />
             <div className="content">
-              <div key={activeSection} className="page-fade">
+              <div className="page-fade">
                 {activeSection === "about" ? (
                   <ProfilePage infoTexts={infoTexts} languageKey={languageKey} />
                 ) : activeSection === "education" ? (
@@ -179,7 +176,7 @@ function App() {
           <span>1 soft | 2 crystal | 3 liquid-strong</span>
         </div> */}
         </LiquidGlassBalls>
-        <ArrowBoxScrollRail scrollRootRef={containerRef} />
+        <ArrowBoxScrollRail scrollRootRef={containerRef} contentSyncKey={activeSection} />
       </main>
     </div>
   );
