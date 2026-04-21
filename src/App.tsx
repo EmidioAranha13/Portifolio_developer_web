@@ -8,8 +8,9 @@ import CardBox from "./componentes/CardBox/CardBox";
 import type { GlassPreset, LanguageCode, SectionKey, ThemeMode } from "./utils/Types";
 import { infoTextsCollection } from "./utils/infoTextsCollection";
 import ArrowBoxScrollRail from "./componentes/ArrowBox/ArrowBoxScrollRail";
-import ProfilePage from "./pages/profile/ProfilePage";
-import EducationPage from "./pages/education/EducationPage";
+import ProfilePage from "./pages/Profile/ProfilePage";
+import EducationPage from "./pages/Education/EducationPage";
+import ExperiencePage from "./pages/Experience/ExperiencePage";
 import type { RootState } from "./store/index";
 import "./App.css";
 import "./styles/glassSurface.css";
@@ -160,6 +161,8 @@ function App() {
                   <ProfilePage infoTexts={infoTexts} languageKey={languageKey} />
                 ) : activeSection === "education" ? (
                   <EducationPage title={tabTitleBySection.education} infoTexts={infoTexts} />
+                ) : activeSection === "experience" ? (
+                  <ExperiencePage title={tabTitleBySection.experience} infoTexts={infoTexts} />
                 ) : (
                   <CardBox className="page-placeholder-card">
                     <section className="page-placeholder">
