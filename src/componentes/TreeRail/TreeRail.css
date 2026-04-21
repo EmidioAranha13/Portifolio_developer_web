@@ -44,7 +44,6 @@
   bottom: var(--tree-spine-bottom, 0px);
   left: 50%;
   width: 0.5em;
-  /* border-radius: 999px; */
   transform: translateX(-50%);
   background: var(--tree-main-color);
   pointer-events: none;
@@ -79,6 +78,19 @@
 .tree-rail__row {
   --row-reveal-delay: 0ms;
   --row-hide-delay: 0ms;
+  /* Nó (entrada) + branch (::after); a folha alinha ao progresso da branch. */
+  --tree-node-enter-dur: 0.52s;
+  --tree-branch-grow-delay: 0.14s;
+  --tree-branch-grow-dur: 0.55s;
+  /* 0.9 = folha começa quando a branch está ~90% estendida (não espera 100%). */
+  --tree-leaf-open-branch-progress: 0.5;
+  --tree-leaf-open-delay: calc(
+    var(--row-reveal-delay, 0ms) + var(--tree-branch-grow-delay) +
+      (var(--tree-branch-grow-dur) * var(--tree-leaf-open-branch-progress))
+  );
+  /* Abertura da folha: um pouco mais longa + curva mais suave que a branch. */
+  --tree-leaf-open-dur: 0.68s;
+  --tree-leaf-open-ease: cubic-bezier(0.16, 1, 0.28, 1);
   position: relative;
   z-index: 1;
   display: grid;
@@ -145,7 +157,6 @@
   top: 50%;
   width: var(--tree-branch-length);
   height: 0.5em;
-  /* border-radius: 2em; */
   transform: translateY(-50%);
   transform-origin: center center;
 }
@@ -168,62 +179,56 @@
   transform: translateY(-50%) scaleX(0);
 }
 
-/* Estado visível da branch: expansão horizontal com delay da row. */
+/* Branch visível: cresce ao longo do eixo X (a folha usa --tree-leaf-open-delay a partir deste progresso). */
 .tree-rail:not(.tree-rail--motion-off) .tree-rail__row--visible .tree-rail__node--branch-left::after,
 .tree-rail:not(.tree-rail--motion-off) .tree-rail__row--visible .tree-rail__node--branch-right::after {
   transform: translateY(-50%) scaleX(1);
-  transition: transform 0.55s cubic-bezier(0.22, 1, 0.36, 1) calc(var(--row-reveal-delay, 0ms) + 0.14s);
+  transition: transform var(--tree-branch-grow-dur) cubic-bezier(0.22, 1, 0.36, 1)
+    calc(var(--row-reveal-delay, 0ms) + var(--tree-branch-grow-delay));
 }
 
 .tree-rail__leaf-shell {
   position: relative;
   width: 400px;
   max-width: 100%;
-  /* padding: 3px; */
   border-radius: 1.2em;
   border: 0.3em solid var(--color-night-grad-5);
   box-shadow: 0 6px 16px rgba(0, 0, 0, 0.16);
-}
-
-/* Folha oculta (lado direito): some com fade + deslocamento para dentro. */
-.tree-rail:not(.tree-rail--motion-off) .tree-rail__row:not(.tree-rail__row--visible) .tree-rail__leaf-shell--right {
-  opacity: 0;
-  transform: translate3d(-10px, 0, 0);
-}
-
-/* Folha oculta (lado esquerdo): mesma lógica, espelhada. */
-.tree-rail:not(.tree-rail--motion-off) .tree-rail__row:not(.tree-rail__row--visible) .tree-rail__leaf-shell--left {
-  opacity: 0;
-  transform: translate3d(10px, 0, 0);
-}
-
-/* Folha visível: retorna ao lugar e faz fade-in escalonado. */
-.tree-rail:not(.tree-rail--motion-off) .tree-rail__row--visible .tree-rail__leaf-shell {
+  isolation: isolate;
   opacity: 1;
-  transform: translate3d(0, 0, 0);
-  transition:
-    opacity 0.5s cubic-bezier(0.22, 1, 0.36, 1) calc(var(--row-reveal-delay, 0ms) + 0.34s),
-    transform 0.5s cubic-bezier(0.22, 1, 0.36, 1) calc(var(--row-reveal-delay, 0ms) + 0.34s);
+  transform: scaleX(1) translateZ(0);
 }
 
-/* Row oculta: bloco inteiro inicia deslocado e transparente. */
-.tree-rail:not(.tree-rail--motion-off) .tree-rail__row:not(.tree-rail__row--visible) {
+/* Folha fechada: scaleX(0); opacity 1 (sem fade) para o glass-surface. */
+.tree-rail:not(.tree-rail--motion-off) .tree-rail__row:not(.tree-rail__row--visible) .tree-rail__leaf-shell--right,
+.tree-rail:not(.tree-rail--motion-off) .tree-rail__row:not(.tree-rail__row--visible) .tree-rail__leaf-shell--left {
+  transform: scaleX(0) translateZ(0);
+  pointer-events: none;
+}
+
+/* Folha: início aos ~90% da branch; abertura mais longa e easing mais suave. */
+.tree-rail:not(.tree-rail--motion-off) .tree-rail__row--visible .tree-rail__leaf-shell {
+  transform: scaleX(1) translateZ(0);
+  pointer-events: auto;
+  transition: transform var(--tree-leaf-open-dur) var(--tree-leaf-open-ease) var(--tree-leaf-open-delay);
+}
+
+/* Nó central: fade + translateY (a .tree-rail__row não anima opacity, só o nó). */
+.tree-rail:not(.tree-rail--motion-off) .tree-rail__row:not(.tree-rail__row--visible) .tree-rail__node {
   opacity: 0;
   transform: translate3d(0, 14px, 0);
 }
 
-/* Row visível: fade-in + retorno ao eixo Y original. */
-.tree-rail:not(.tree-rail--motion-off) .tree-rail__row--visible {
+.tree-rail:not(.tree-rail--motion-off) .tree-rail__row--visible .tree-rail__node {
   opacity: 1;
   transform: translate3d(0, 0, 0);
   transition:
-    opacity 0.52s cubic-bezier(0.22, 1, 0.36, 1) var(--row-reveal-delay, 0ms),
-    transform 0.52s cubic-bezier(0.22, 1, 0.36, 1) var(--row-reveal-delay, 0ms);
+    opacity var(--tree-node-enter-dur) cubic-bezier(0.22, 1, 0.36, 1) var(--row-reveal-delay, 0ms),
+    transform var(--tree-node-enter-dur) cubic-bezier(0.22, 1, 0.36, 1) var(--row-reveal-delay, 0ms);
 }
 
-/* Transições de saída só após a primeira entrada (evita “piscar” no primeiro paint). */
-/* Saída da row ao deixar viewport (scroll reverso): fade-out + recuo. */
-.tree-rail:not(.tree-rail--motion-off).tree-rail--exit-ready .tree-rail__row:not(.tree-rail__row--visible) {
+/* Saída do nó ao sair do viewport. */
+.tree-rail:not(.tree-rail--motion-off).tree-rail--exit-ready .tree-rail__row:not(.tree-rail__row--visible) .tree-rail__node {
   transition:
     opacity 0.42s cubic-bezier(0.55, 0.06, 0.68, 0.19) calc(var(--row-hide-delay, 0ms) + 0.2s),
     transform 0.42s cubic-bezier(0.55, 0.06, 0.68, 0.19) calc(var(--row-hide-delay, 0ms) + 0.2s);
@@ -239,28 +244,26 @@
   transition: transform 0.42s cubic-bezier(0.55, 0.06, 0.68, 0.19) calc(var(--row-hide-delay, 0ms) + 0.1s);
 }
 
-/* Saída da folha: fade-out e deslocamento no sentido de origem. */
+/* Saída da folha: recolhe em scaleX (só transform). */
 .tree-rail:not(.tree-rail--motion-off).tree-rail--exit-ready
   .tree-rail__row:not(.tree-rail__row--visible)
   .tree-rail__leaf-shell--right,
 .tree-rail:not(.tree-rail--motion-off).tree-rail--exit-ready
   .tree-rail__row:not(.tree-rail__row--visible)
   .tree-rail__leaf-shell--left {
-  transition:
-    opacity 0.38s cubic-bezier(0.55, 0.06, 0.68, 0.19) var(--row-hide-delay, 0ms),
-    transform 0.38s cubic-bezier(0.55, 0.06, 0.68, 0.19) var(--row-hide-delay, 0ms);
+  transition: transform 0.42s cubic-bezier(0.55, 0.06, 0.68, 0.19) var(--row-hide-delay, 0ms);
 }
 
-/* Reduced motion: rows sempre estáticas e visíveis. */
-.tree-rail--motion-off .tree-rail__row {
+.tree-rail--motion-off .tree-rail__node {
   opacity: 1;
   transform: none;
+  transition: none;
 }
 
-/* Reduced motion: folhas sem animação, sempre visíveis. */
 .tree-rail--motion-off .tree-rail__leaf-shell {
   opacity: 1;
   transform: none;
+  transition: none;
 }
 
 /* Reduced motion: branch fixa expandida (sem transições). */
@@ -276,10 +279,12 @@
 
 .tree-rail__leaf-shell--right {
   margin-inline-start: max(0px, calc(var(--tree-branch-length) - var(--tree-gap)));
+  transform-origin: left center;
 }
 
 .tree-rail__leaf-shell--left {
   margin-inline-end: max(0px, calc(var(--tree-branch-length) - var(--tree-gap)));
+  transform-origin: right center;
 }
 
 .tree-rail__leaf-card {
@@ -352,6 +357,10 @@
   height: 3px;
   border-radius: 999px;
   background: #ffffff;
+}
+
+.App.theme-day .tree-rail__leaf-divider {
+  background: #000000;
 }
 
 @media (max-width: 860px) {
