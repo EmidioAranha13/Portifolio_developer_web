@@ -4,29 +4,52 @@ import "./MenuBoxSellection.css";
 export type MenuBoxSellectionItem = {
   id: string;
   label: string;
-  /** Placeholder até haver imagens reais. */
-  sampleColor: string;
+  role: string;
+  time_working: string;
+  actions: string[];
+  projects: Array<{
+    project: string;
+    resume: string;
+  }>;
+  /** Logo opcional do item (renderizada dentro do círculo). */
+  imageSrc?: string;
 };
 
 const DEFAULT_ITEMS: MenuBoxSellectionItem[] = [
-  { id: "ex1", label: "Exemplo 1", sampleColor: "var(--green1)" },
-  { id: "ex2", label: "Exemplo 2", sampleColor: "var(--orange1)" },
-  { id: "ex3", label: "Exemplo 3", sampleColor: "var(--blue1)" },
+  {
+    id: "ex1",
+    label: "Exemplo 1",
+    role: "Cargo exemplo",
+    time_working: "Período exemplo",
+    actions: [],
+    projects: [],
+  },
+  {
+    id: "ex2",
+    label: "Exemplo 2",
+    role: "Cargo exemplo",
+    time_working: "Período exemplo",
+    actions: [],
+    projects: [],
+  },
+  {
+    id: "ex3",
+    label: "Exemplo 3",
+    role: "Cargo exemplo",
+    time_working: "Período exemplo",
+    actions: [],
+    projects: [],
+  },
 ];
 
 type MenuBoxSellectionProps = {
   items?: MenuBoxSellectionItem[];
-  /** Rótulo fixo no topo da coluna (não é aba), estilo cabeçalho tipo Formação. */
-  bulletText?: string;
 };
 
 /**
  * Abas laterais (cada uma com `glass-surface`) + painel à direita com `glass-surface`.
  */
-const MenuBoxSellection: React.FC<MenuBoxSellectionProps> = ({
-  items = DEFAULT_ITEMS,
-  bulletText = "Experiências",
-}) => {
+const MenuBoxSellection: React.FC<MenuBoxSellectionProps> = ({ items = DEFAULT_ITEMS }) => {
   const baseId = useId();
   const [selectedId, setSelectedId] = useState(items[0]?.id ?? "");
 
@@ -36,17 +59,17 @@ const MenuBoxSellection: React.FC<MenuBoxSellectionProps> = ({
     setSelectedId(id);
   }, []);
 
-  const panelLabelledBy =
-    active != null ? `${baseId}-bullet ${baseId}-tab-${active.id}` : `${baseId}-bullet`;
+  const activeActions = active?.actions ?? [];
+  const activeProjects = active?.projects ?? [];
+
+  const formatAction = (text: string, isLast: boolean): string => {
+    const base = text.trim().replace(/[.;]+$/g, "");
+    return `${base}${isLast ? "." : ";"}`;
+  };
 
   return (
     <div className="menu-box-sellection">
       <div className="menu-box-sellection__sidebar">
-        <div className="menu-box-sellection__bullet glass-surface">
-          <h2 id={`${baseId}-bullet`} className="menu-box-sellection__bullet-title">
-            {bulletText}
-          </h2>
-        </div>
         <nav className="menu-box-sellection__list" role="tablist" aria-label="Seleção de conteúdo">
           {items.map((item) => {
             const selected = item.id === selectedId;
@@ -59,15 +82,19 @@ const MenuBoxSellection: React.FC<MenuBoxSellectionProps> = ({
                 aria-selected={selected}
                 aria-controls={`${baseId}-panel`}
                 tabIndex={selected ? 0 : -1}
+                aria-label={item.label}
                 className={`menu-box-sellection__tab glass-surface${selected ? " menu-box-sellection__tab--selected" : ""}`}
                 onClick={() => selectTab(item.id)}
               >
-                <span
-                  className="menu-box-sellection__tab-icon"
-                  style={{ background: item.sampleColor }}
-                  aria-hidden
-                />
-                <span className="menu-box-sellection__tab-label">{item.label}</span>
+                <span className="menu-box-sellection__tab-icon" aria-hidden>
+                  {item.imageSrc ? (
+                    <img
+                      className="menu-box-sellection__tab-icon-image"
+                      src={item.imageSrc}
+                      alt=""
+                    />
+                  ) : null}
+                </span>
               </button>
             );
           })}
@@ -77,15 +104,47 @@ const MenuBoxSellection: React.FC<MenuBoxSellectionProps> = ({
       <section
         id={`${baseId}-panel`}
         role="tabpanel"
-        aria-labelledby={panelLabelledBy}
+        aria-labelledby={active ? `${baseId}-tab-${active.id}` : undefined}
         className="menu-box-sellection__panel glass-surface"
       >
-        <h2 className="menu-box-sellection__panel-title">{active?.label}</h2>
+        <h2 className="menu-box-sellection__panel-title">
+          <span className="menu-box-sellection__panel-title-text">{active?.label}</span>
+        </h2>
         <div className="menu-box-sellection__panel-rule" aria-hidden />
         <div className="menu-box-sellection__panel-body">
-          <p className="menu-box-sellection__panel-placeholder">
-            Conteúdo associado a <strong>{active?.label}</strong>.
+          <p className="menu-box-sellection__panel-role">
+            <strong>Cargo: </strong>
+            {active?.role}
           </p>
+          <p className="menu-box-sellection__panel-time-working">{active?.time_working}</p>
+
+          <div className="menu-box-sellection__panel-group">
+            <p className="menu-box-sellection__panel-group-title">Atribuições:</p>
+            <ul className="menu-box-sellection__panel-actions">
+              {activeActions.map((action, index) => (
+                <li key={`${active?.id}-action-${index}`} className="menu-box-sellection__panel-action-item">
+                  <span className="menu-box-sellection__panel-action-dot" aria-hidden>
+                    •
+                  </span>
+                  <span>{formatAction(action, index === activeActions.length - 1)}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div className="menu-box-sellection__panel-group">
+            <p className="menu-box-sellection__panel-group-title menu-box-sellection__panel-group-title--projects">
+              Projetos Relevantes:
+            </p>
+            <div className="menu-box-sellection__panel-projects">
+              {activeProjects.map((project, index) => (
+                <div key={`${active?.id}-project-${index}`} className="menu-box-sellection__panel-project-item">
+                  <p className="menu-box-sellection__panel-project-name">{project.project}</p>
+                  <p className="menu-box-sellection__panel-project-resume">{project.resume}</p>
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
       </section>
     </div>

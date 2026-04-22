@@ -2,18 +2,57 @@
   width: 100%;
   min-width: 0;
   max-width: 1100px;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
   margin-inline: auto;
+  gap: clamp(14px, 3vw, 24px);
   padding-block: clamp(8px, 2vw, 16px);
 }
 
-.experience-page__sr-only {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  padding: 0;
-  margin: -1px;
-  overflow: hidden;
-  clip: rect(0, 0, 0, 0);
-  white-space: nowrap;
-  border: 0;
+.experience-page__heading {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  align-self: flex-start;
+  padding: clamp(10px, 1.8vw, 14px) clamp(18px, 3vw, 28px);
+  border-radius: 3em;
+  border: 0.3em solid var(--color-night-grad-1) !important;
+  box-shadow:
+    0 10px 26px rgba(0, 0, 0, 0.18),
+    inset 0 1px 0 color-mix(in srgb, var(--app-main-text) 10%, transparent);
+}
+
+.App.theme-day .experience-page__heading {
+  border-color: var(--color-day-grad-1) !important;
+}
+
+.experience-page__heading.glass-surface {
+  --glass-backdrop-bg: color-mix(in srgb, rgb(96, 96, 102) 48%, transparent);
+  --glass-fallback-bg: linear-gradient(
+    155deg,
+    color-mix(in srgb, rgb(96, 96, 102) 72%, var(--app-main-bg)) 0%,
+    color-mix(in srgb, rgb(96, 96, 102) 52%, var(--app-main-bg)) 100%
+  );
+}
+
+.App.theme-day .experience-page__heading.glass-surface {
+  --glass-backdrop-bg: color-mix(in srgb, rgb(114, 114, 114) 48%, transparent);
+  --glass-fallback-bg: linear-gradient(
+    155deg,
+    color-mix(in srgb, rgb(204, 204, 204) 72%, var(--app-main-bg)) 0%,
+    color-mix(in srgb, rgb(204, 204, 204) 52%, var(--app-main-bg)) 100%
+  );
+}
+
+.experience-page__title {
+  margin: 0;
+  text-align: center;
+  font-size: clamp(1.45rem, 2.75vw, 1.95rem);
+  font-weight: 800;
+  line-height: 1.15;
+  background: var(--header-90-gradient);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
 }

@@ -44,6 +44,73 @@ export const infoTextsCollection = {
         "Noções de CI | CD para Deploy de sistemas",
       ],
     },
+    experience_page: {
+      items: [
+        {
+          id: "delta",
+          label: "Delta Sollutions",
+          role: "Desenvolvedor Full Stack",
+          time_working: "2021 - Atual",
+          actions: [
+            "Desenvolvimento e manutenção de aplicações web corporativas.",
+            "Integração entre frontend, backend e serviços externos.",
+            "Evolução de interface com foco em UX/UI e performance.",
+          ],
+          projects: [
+            {
+              project: "Portal Corporativo de Gestão",
+              resume: "Plataforma web para acompanhamento de operações e indicadores internos.",
+            },
+            {
+              project: "Integrações de APIs internas",
+              resume: "Consolidação de dados de múltiplos sistemas em uma única interface.",
+            },
+          ],
+        },
+        {
+          id: "icts",
+          label: "ICTS",
+          role: "Desenvolvedor de Software",
+          time_working: "2019 - 2021",
+          actions: [
+            "Implementação de módulos de sistema com boas práticas de arquitetura.",
+            "Apoio técnico em refinamento de requisitos e validação de entregas.",
+            "Correção de bugs e melhorias contínuas de estabilidade.",
+          ],
+          projects: [
+            {
+              project: "Sistema de Auditoria Operacional",
+              resume: "Módulos de registro e consulta de evidências para processos internos.",
+            },
+            {
+              project: "Painel de Indicadores",
+              resume: "Dashboard para análise de resultados e apoio à tomada de decisão.",
+            },
+          ],
+        },
+        {
+          id: "freelance",
+          label: "Freelancer",
+          role: "Desenvolvedor Freelancer",
+          time_working: "2017 - Atual",
+          actions: [
+            "Desenvolvimento de soluções sob demanda para clientes diversos.",
+            "Criação de interfaces responsivas e integrações com APIs.",
+            "Suporte pós-entrega e evolução de funcionalidades.",
+          ],
+          projects: [
+            {
+              project: "Sites institucionais customizados",
+              resume: "Projetos com identidade visual própria e foco em presença digital.",
+            },
+            {
+              project: "Aplicações web de gestão",
+              resume: "Ferramentas para cadastro, acompanhamento e relatórios operacionais.",
+            },
+          ],
+        },
+      ],
+    },
     education_page: {
       leafLabels: {
         institution: "Instituição:",
@@ -195,6 +262,73 @@ export const infoTextsCollection = {
         "Basic knowledge of CI/CD for system deployment",
       ],
     },
+    experience_page: {
+      items: [
+        {
+          id: "delta",
+          label: "Delta Sollutions",
+          role: "Full Stack Developer",
+          time_working: "2021 - Present",
+          actions: [
+            "Develop and maintain corporate web applications.",
+            "Integrate frontend, backend, and external services.",
+            "Improve UI/UX and performance in continuous delivery cycles.",
+          ],
+          projects: [
+            {
+              project: "Corporate Management Portal",
+              resume: "Web platform to track operations and internal KPIs.",
+            },
+            {
+              project: "Internal API Integrations",
+              resume: "Unified data from multiple systems into a single interface.",
+            },
+          ],
+        },
+        {
+          id: "icts",
+          label: "ICTS",
+          role: "Software Developer",
+          time_working: "2019 - 2021",
+          actions: [
+            "Implemented core modules using clean architecture principles.",
+            "Supported requirement refinement and delivery validation.",
+            "Fixed bugs and improved system stability.",
+          ],
+          projects: [
+            {
+              project: "Operational Audit System",
+              resume: "Modules for evidence registration and internal process tracking.",
+            },
+            {
+              project: "KPI Dashboard",
+              resume: "Analytics dashboard to support data-driven decisions.",
+            },
+          ],
+        },
+        {
+          id: "freelance",
+          label: "Freelancer",
+          role: "Freelance Developer",
+          time_working: "2017 - Present",
+          actions: [
+            "Built tailor-made solutions for different clients.",
+            "Created responsive interfaces and API integrations.",
+            "Provided post-delivery support and feature evolution.",
+          ],
+          projects: [
+            {
+              project: "Custom Institutional Websites",
+              resume: "Projects focused on brand identity and digital presence.",
+            },
+            {
+              project: "Web Management Applications",
+              resume: "Operational tools for records, tracking, and reports.",
+            },
+          ],
+        },
+      ],
+    },
     education_page: {
       leafLabels: {
         institution: "Institution:",
@@ -247,6 +381,73 @@ export const infoTextsCollection = {
         "タスクの整理、定義および管理",
         "新しいツールへの柔軟な対応力と適応力",
         "CI/CDによるデプロイに関する基礎知識",
+      ],
+    },
+    experience_page: {
+      items: [
+        {
+          id: "delta",
+          label: "Delta Sollutions",
+          role: "フルスタック開発者",
+          time_working: "2021 - 現在",
+          actions: [
+            "企業向けWebアプリケーションの開発・保守を担当。",
+            "フロントエンド、バックエンド、外部サービスの連携を実装。",
+            "UX/UIとパフォーマンスの継続的な改善を実施。",
+          ],
+          projects: [
+            {
+              project: "業務管理ポータル",
+              resume: "社内業務と主要指標を可視化するWebプラットフォーム。",
+            },
+            {
+              project: "社内API統合",
+              resume: "複数システムのデータを単一インターフェースへ統合。",
+            },
+          ],
+        },
+        {
+          id: "icts",
+          label: "ICTS",
+          role: "ソフトウェア開発者",
+          time_working: "2019 - 2021",
+          actions: [
+            "クリーンアーキテクチャに基づく主要機能を実装。",
+            "要件整理と成果物検証を技術面でサポート。",
+            "不具合修正と安定性向上を継続的に実施。",
+          ],
+          projects: [
+            {
+              project: "業務監査システム",
+              resume: "証跡登録と内部プロセス追跡のためのモジュールを開発。",
+            },
+            {
+              project: "KPIダッシュボード",
+              resume: "データ分析と意思決定を支援する可視化基盤。",
+            },
+          ],
+        },
+        {
+          id: "freelance",
+          label: "フリーランス",
+          role: "フリーランス開発者",
+          time_working: "2017 - 現在",
+          actions: [
+            "多様なクライアント向けに受託開発を実施。",
+            "レスポンシブUIとAPI連携を含む機能を構築。",
+            "納品後の保守と機能拡張を継続サポート。",
+          ],
+          projects: [
+            {
+              project: "コーポレートサイト制作",
+              resume: "ブランド表現と情報発信を重視したWeb制作案件。",
+            },
+            {
+              project: "業務管理Webアプリ",
+              resume: "登録、進捗管理、レポート出力を行う業務支援ツール。",
+            },
+          ],
+        },
       ],
     },
     education_page: {
