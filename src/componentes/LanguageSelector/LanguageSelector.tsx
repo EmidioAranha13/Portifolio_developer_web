@@ -1,6 +1,6 @@
-import { useMemo, useRef, useState } from "react";
+import { useState } from "react";
+import StyledSelector from "../StyledSelector/StyledSelector";
 import type { LanguageCode, LanguageOption, LanguageSelectorProps } from "../../utils/Types";
-import "./LanguageSelector.css";
 
 export type { LanguageCode };
 
@@ -38,14 +38,7 @@ const LanguageSelector: React.FC<LanguageSelectorProps> = ({
   onChange,
 }) => {
   const [internalValue, setInternalValue] = useState<LanguageCode>(defaultValue);
-  const [isOpen, setIsOpen] = useState(false);
-  const containerRef = useRef<HTMLDivElement | null>(null);
   const selectedCode = value ?? internalValue;
-
-  const selectedOption = useMemo(
-    () => OPTIONS.find((option) => option.code === selectedCode) ?? OPTIONS[0],
-    [selectedCode]
-  );
 
   /**
    * Aplica a troca de idioma.
@@ -56,55 +49,22 @@ const LanguageSelector: React.FC<LanguageSelectorProps> = ({
   const selectLanguage = (nextCode: LanguageCode) => {
     if (!value) setInternalValue(nextCode);
     onChange?.(nextCode);
-    setIsOpen(false);
   };
 
   return (
-    <div className="language-selector" ref={containerRef}>
-      <button
-        type="button"
-        className="language-selector-trigger"
-        onClick={() => setIsOpen((previous) => !previous)}
-        aria-haspopup="listbox"
-        aria-expanded={isOpen}
-        aria-label="Selecionar idioma"
-      >
-        <span className="language-selector-code">{selectedOption.code}</span>
-        <span className="language-selector-divider">|</span>
-        <img
-          className="language-selector-flag"
-          src={selectedOption.flagUrl}
-          alt={`Bandeira ${selectedOption.label}`}
-        />
-      </button>
-
-      {isOpen && (
-        <div
-          className="language-selector-menu glass-surface"
-          role="listbox"
-          aria-label="Idiomas"
-        >
-          {OPTIONS.map((option) => (
-            <button
-              key={option.code}
-              type="button"
-              className={`language-selector-option ${option.code === selectedCode ? "active" : ""}`}
-              onClick={() => selectLanguage(option.code)}
-              role="option"
-              aria-selected={option.code === selectedCode}
-            >
-              <span>{option.code}</span>
-              <span className="language-selector-divider">|</span>
-              <img
-                className="language-selector-flag"
-                src={option.flagUrl}
-                alt={`Bandeira ${option.label}`}
-              />
-            </button>
-          ))}
-        </div>
-      )}
-    </div>
+    <StyledSelector
+      value={selectedCode}
+      options={OPTIONS.map((option) => ({
+        value: option.code,
+        label: option.code,
+        iconSrc: option.flagUrl,
+        iconAlt: `Bandeira ${option.label}`,
+      }))}
+      onChange={(nextCode) => selectLanguage(nextCode as LanguageCode)}
+      ariaLabel="Selecionar idioma"
+      variant="default"
+      className="language-selector"
+    />
   );
 };
 

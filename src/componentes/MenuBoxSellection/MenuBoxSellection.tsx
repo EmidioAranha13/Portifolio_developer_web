@@ -1,19 +1,9 @@
 import { useCallback, useId, useState } from "react";
+import CarouselPhoto from "../CarouselPhoto/CarouselPhoto";
+import type { MenuBoxSellectionItem } from "../../utils/Types";
 import "./MenuBoxSellection.css";
 
-export type MenuBoxSellectionItem = {
-  id: string;
-  label: string;
-  role: string;
-  time_working: string;
-  actions: string[];
-  projects: Array<{
-    project: string;
-    resume: string;
-  }>;
-  /** Logo opcional do item (renderizada dentro do círculo). */
-  imageSrc?: string;
-};
+export type { MenuBoxSellectionItem };
 
 const DEFAULT_ITEMS: MenuBoxSellectionItem[] = [
   {
@@ -21,35 +11,52 @@ const DEFAULT_ITEMS: MenuBoxSellectionItem[] = [
     label: "Exemplo 1",
     role: "Cargo exemplo",
     time_working: "Período exemplo",
+    photos: [],
     actions: [],
-    projects: [],
+    projects: [
+      { project: "Projeto exemplo", resume: "Resumo exemplo", tasks_executed: "Funções no projeto" },
+    ],
   },
   {
     id: "ex2",
     label: "Exemplo 2",
     role: "Cargo exemplo",
     time_working: "Período exemplo",
+    photos: [],
     actions: [],
-    projects: [],
+    projects: [
+      { project: "Projeto exemplo", resume: "Resumo exemplo", tasks_executed: "Funções no projeto" },
+    ],
   },
   {
     id: "ex3",
     label: "Exemplo 3",
     role: "Cargo exemplo",
     time_working: "Período exemplo",
+    photos: [],
     actions: [],
-    projects: [],
+    projects: [
+      { project: "Projeto exemplo", resume: "Resumo exemplo", tasks_executed: "Funções no projeto" },
+    ],
   },
 ];
 
 type MenuBoxSellectionProps = {
   items?: MenuBoxSellectionItem[];
+  roleTitle?: string;
+  actionsTitle?: string;
+  projectsTitle?: string;
 };
 
 /**
  * Abas laterais (cada uma com `glass-surface`) + painel à direita com `glass-surface`.
  */
-const MenuBoxSellection: React.FC<MenuBoxSellectionProps> = ({ items = DEFAULT_ITEMS }) => {
+const MenuBoxSellection: React.FC<MenuBoxSellectionProps> = ({
+  items = DEFAULT_ITEMS,
+  roleTitle = "Cargo",
+  actionsTitle = "Atribuições",
+  projectsTitle = "Projetos Relevantes",
+}) => {
   const baseId = useId();
   const [selectedId, setSelectedId] = useState(items[0]?.id ?? "");
 
@@ -113,13 +120,14 @@ const MenuBoxSellection: React.FC<MenuBoxSellectionProps> = ({ items = DEFAULT_I
         <div className="menu-box-sellection__panel-rule" aria-hidden />
         <div className="menu-box-sellection__panel-body">
           <p className="menu-box-sellection__panel-role">
-            <strong>Cargo: </strong>
+            <strong>{roleTitle}: </strong>
             {active?.role}
           </p>
           <p className="menu-box-sellection__panel-time-working">{active?.time_working}</p>
+          <CarouselPhoto photos={active?.photos ?? []} />
 
           <div className="menu-box-sellection__panel-group">
-            <p className="menu-box-sellection__panel-group-title">Atribuições:</p>
+            <p className="menu-box-sellection__panel-group-title">{actionsTitle}:</p>
             <ul className="menu-box-sellection__panel-actions">
               {activeActions.map((action, index) => (
                 <li key={`${active?.id}-action-${index}`} className="menu-box-sellection__panel-action-item">
@@ -134,13 +142,20 @@ const MenuBoxSellection: React.FC<MenuBoxSellectionProps> = ({ items = DEFAULT_I
 
           <div className="menu-box-sellection__panel-group">
             <p className="menu-box-sellection__panel-group-title menu-box-sellection__panel-group-title--projects">
-              Projetos Relevantes:
+              {projectsTitle}:
             </p>
             <div className="menu-box-sellection__panel-projects">
               {activeProjects.map((project, index) => (
                 <div key={`${active?.id}-project-${index}`} className="menu-box-sellection__panel-project-item">
-                  <p className="menu-box-sellection__panel-project-name">{project.project}</p>
-                  <p className="menu-box-sellection__panel-project-resume">{project.resume}</p>
+                  <p className="menu-box-sellection__panel-project-index">({index + 1})</p>
+                  <div className="menu-box-sellection__panel-project-content">
+                    <p className="menu-box-sellection__panel-project-name">{project.project}</p>
+                    <p className="menu-box-sellection__panel-project-resume">{project.resume}</p>
+                    <p className="menu-box-sellection__panel-project-tasks">
+                      <strong>Responsabilidade: </strong>
+                      {project.tasks_executed}
+                    </p>
+                  </div>
                 </div>
               ))}
             </div>

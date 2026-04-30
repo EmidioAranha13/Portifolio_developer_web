@@ -1,0 +1,95 @@
+.styled-selector {
+  position: relative;
+}
+
+.styled-selector__trigger {
+  min-width: 90px;
+  height: 44px;
+  border: none;
+  border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  cursor: pointer;
+  color: var(--header-text-color);
+  font-weight: 700;
+  padding-inline: 12px;
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.28),
+    0 8px 18px rgba(0, 0, 0, 0.22);
+}
+
+.styled-selector__trigger--default {
+  background: color-mix(in srgb, var(--color-white) 34%, transparent);
+}
+
+.styled-selector__trigger--theme-gradient {
+  background: color-mix(in srgb, var(--app-main-bg) 76%, transparent);
+  border: 2px solid transparent;
+  background-image:
+    linear-gradient(
+      color-mix(in srgb, var(--app-main-bg) 76%, transparent),
+      color-mix(in srgb, var(--app-main-bg) 76%, transparent)
+    ),
+    var(--header-90-gradient);
+  background-origin: border-box;
+  background-clip: padding-box, border-box;
+}
+
+.styled-selector__trigger:focus,
+.styled-selector__trigger:focus-visible,
+.styled-selector__option:focus,
+.styled-selector__option:focus-visible {
+  outline: none;
+}
+
+.styled-selector__start-icon,
+.styled-selector__option-icon {
+  width: 18px;
+  height: 18px;
+  object-fit: contain;
+  flex-shrink: 0;
+}
+
+.styled-selector__divider {
+  opacity: 0.8;
+  line-height: 1;
+}
+
+.styled-selector__option-icon {
+  border-radius: 50%;
+}
+
+.styled-selector__menu {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  min-width: 150px;
+  border-radius: 14px;
+  padding: 6px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  z-index: 80;
+}
+
+.styled-selector__option {
+  border: none;
+  border-radius: 10px;
+  min-height: 34px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  cursor: pointer;
+  color: var(--app-main-text);
+  background: transparent;
+  font-weight: 700;
+  text-align: left;
+  padding: 6px 8px;
+}
+
+.styled-selector__option.is-active {
+  background: color-mix(in srgb, var(--color-white) 25%, transparent);
+}

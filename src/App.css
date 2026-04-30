@@ -88,6 +88,12 @@
   --orange1: rgba(255, 100, 0, 0.25);
   --yellow1: rgba(255, 255, 0, 0.25);
   --magenta1: rgba(255, 0, 150, 0.25);
+
+  /* Skill line tags */
+  --skill-line-frontend: #48a9ff;
+  --skill-line-backend: #d4a200;
+  --skill-line-mobile: #1f4ea8;
+  --skill-line-cloud: #b012b0;
 }
 
 @media (max-width: 1024px) {

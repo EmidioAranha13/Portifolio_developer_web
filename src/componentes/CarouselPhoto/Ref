@@ -1,0 +1,55 @@
+<div classname="carousel">
+    <div classname="group">
+        <div classname="card"> 1 </div>
+        <div classname="card"> 3 </div>
+        <div classname="card"> 3 </div>
+    </div>
+    <div classname="group" aria-hidden="true">
+        <div classname="card"> 1 </div>
+        <div classname="card"> 3 </div>
+        <div classname="card"> 3 </div>
+    </div>
+</div>
+
+css:
+
+.carousel {
+    margin: 100px auto;
+    width: 90%;
+    border: 5px solid red;
+    displey: flex;
+    overflow-x: auto;
+}
+
+.carousel::-webkit-scrollbar {
+    display: none;
+}
+
+.group {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1em;
+    animation: spin 10s linear infinite;
+    padding-right: 1em;
+}
+
+.card {
+    flex: 0 0 5em;
+    height: 5em;
+    padding: 1em;
+    border-radius: 1em;
+    background-color: #f0f0f0;
+    font-size: 2em;
+    text-align: center;
+    align-content: center;
+}
+
+@keyframes spin {
+    from {
+        translate: 0%;
+    }
+    to {
+        translate: 100%;
+    }
+}

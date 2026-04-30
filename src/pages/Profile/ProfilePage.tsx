@@ -141,7 +141,7 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ infoTexts, languageKey }) => 
           >
             <div className="profile-about-heading-stack">
               <h2 id="profile-about-heading" className="profile-about-title">
-                <span className="profile-about-title-text">{"Atribuições Gerais"}</span>
+                <span className="profile-about-title-text">{infoTexts.profile_page.second_title}</span>
               </h2>
               <div className="profile-about-heading-rule" aria-hidden="true" />
             </div>

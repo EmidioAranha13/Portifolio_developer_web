@@ -352,3 +352,69 @@ export type CustomBulletButtonLinkProps = CustomBulletButtonCommonProps &
 export type CustomBulletButtonProps =
   | CustomBulletButtonButtonProps
   | CustomBulletButtonLinkProps;
+
+/**
+ * Linhas de frente para categorização visual de cards de habilidades.
+ *
+ * **Usado em:** `SkillPage.tsx` (tag de tecnologia por card).
+ */
+export type SkillCardLine = "frontend" | "backend" | "mobile" | "cloud";
+
+/**
+ * Estrutura de um card da página de habilidades.
+ *
+ * **Usado em:** `SkillPage.tsx` (lista de cards e render).
+ */
+export type SkillCardItem = {
+  id: string;
+  title: string;
+  description: string;
+  years: string;
+  line: SkillCardLine;
+  imageSrc?: string;
+};
+
+/**
+ * Item de conteúdo usado no componente de experiência com abas.
+ *
+ * **Usado em:** `MenuBoxSellection.tsx` e `ExperiencePage.tsx`.
+ */
+export type MenuBoxSellectionItem = {
+  id: string;
+  label: string;
+  role: string;
+  time_working: string;
+  photos: string[];
+  actions: string[];
+  projects: Array<{
+    project: string;
+    resume: string;
+    tasks_executed: string;
+  }>;
+  imageSrc?: string;
+};
+
+/**
+ * Opção exibida no `StyledSelector`.
+ */
+export type StyledSelectOption = {
+  value: string;
+  label: string;
+  iconSrc?: string;
+  iconAlt?: string;
+};
+
+/**
+ * Props do seletor reutilizável com dropdown customizado.
+ */
+export type StyledSelectorProps = {
+  value: string;
+  options: StyledSelectOption[];
+  onChange: (value: string) => void;
+  ariaLabel: string;
+  variant?: "default" | "theme-gradient";
+  className?: string;
+  optionClassNameByValue?: Record<string, string>;
+  startIconSrc?: string;
+  startIconAlt?: string;
+};
