@@ -93,7 +93,10 @@
   --skill-line-frontend: #48a9ff;
   --skill-line-backend: #d4a200;
   --skill-line-mobile: #1f4ea8;
-  --skill-line-cloud: #b012b0;
+  --skill-line-devops: #b012b0;
+  --skill-line-design: #d946ef;
+  --skill-line-management: #0f766e;
+  --skill-line-database: #0ea5a8;
 }
 
 @media (max-width: 1024px) {

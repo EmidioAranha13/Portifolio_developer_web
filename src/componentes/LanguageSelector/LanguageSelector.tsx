@@ -1,6 +1,7 @@
 import { useState } from "react";
 import StyledSelector from "../StyledSelector/StyledSelector";
 import type { LanguageCode, LanguageOption, LanguageSelectorProps } from "../../utils/Types";
+import "./LanguageSelector.css";
 
 export type { LanguageCode };
 

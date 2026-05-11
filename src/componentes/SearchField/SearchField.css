@@ -1,0 +1,44 @@
+.search-field {
+  height: 44px;
+  border-radius: 999px;
+  border: 2px solid transparent;
+  background-image:
+    linear-gradient(
+      color-mix(in srgb, var(--app-main-bg) 72%, transparent),
+      color-mix(in srgb, var(--app-main-bg) 72%, transparent)
+    ),
+    var(--header-90-gradient);
+  background-origin: border-box;
+  background-clip: padding-box, border-box;
+  box-shadow:
+    0 8px 18px rgba(0, 0, 0, 0.2),
+    inset 0 0 0 1px color-mix(in srgb, var(--color-white) 24%, transparent);
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 12px;
+}
+
+.search-field__icon {
+  width: 18px;
+  height: 18px;
+  object-fit: contain;
+  opacity: 0.9;
+}
+
+.App.theme-day .search-field__icon {
+  filter: brightness(0) saturate(100%);
+}
+
+.search-field__input {
+  width: clamp(160px, 20vw, 240px);
+  border: none;
+  outline: none;
+  background: transparent;
+  color: var(--app-main-text);
+  font-size: 0.9rem;
+}
+
+.search-field__input::placeholder {
+  color: color-mix(in srgb, var(--app-main-text) 64%, transparent);
+}

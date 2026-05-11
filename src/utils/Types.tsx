@@ -358,7 +358,78 @@ export type CustomBulletButtonProps =
  *
  * **Usado em:** `SkillPage.tsx` (tag de tecnologia por card).
  */
-export type SkillCardLine = "frontend" | "backend" | "mobile" | "cloud";
+export type SkillCardLine =
+  | "frontend"
+  | "backend"
+  | "mobile"
+  | "devops"
+  | "design"
+  | "management"
+  | "database";
+
+/**
+ * Chaves dos arquivos em `assets/skills-badges` (mapeadas em `SkillPage.tsx`).
+ * Várias chaves exibem um único bloco com as imagens lado a lado.
+ */
+export type SkillBadgeKey =
+  | "react"
+  | "react_native"
+  | "javascript"
+  | "typescript"
+  | "html"
+  | "css"
+  | "redux"
+  | "material_ui"
+  | "bootstrap"
+  | "handlebars"
+  | "style_dictionary"
+  | "styled_components"
+  | "node"
+  | "express"
+  | "sequelize"
+  | "rest_api"
+  | "graphql"
+  | "spring_boot"
+  | "docker"
+  | "aws"
+  | "figma"
+  | "sql"
+  | "mysql"
+  | "mssql"
+  | "postgresql"
+  | "android_studio"
+  | "kotlin"
+  | "jetpack_compose"
+  | "java"
+  | "c_family"
+  | "rust"
+  | "python"
+  | "git_github"
+  | "bpmn"
+  | "uml"
+  | "storybook"
+  | "pandas"
+  | "jest"
+  | "agile"
+  | "default";
+
+/**
+ * Entrada de habilidade em `infoTextsCollection.skill_page.skills`.
+ *
+ * **Usado em:** `infoTextsCollection.tsx`, `SkillPage.tsx`.
+ */
+export type SkillPageSkill = {
+  title: string;
+  description: string;
+  years: string;
+  projects: string;
+  /** URL externa opcional quando não houver `badges`. */
+  img: string;
+  /** Badges locais (`skills-badges`); ordem preservada no layout composto. */
+  badges?: SkillBadgeKey[];
+  /** Uma ou mais linhas de frente (ex.: frontend e backend). */
+  types: SkillCardLine[];
+};
 
 /**
  * Estrutura de um card da página de habilidades.
@@ -370,8 +441,11 @@ export type SkillCardItem = {
   title: string;
   description: string;
   years: string;
-  line: SkillCardLine;
-  imageSrc?: string;
+  projects: string;
+  lines: SkillCardLine[];
+  badgeKeys: SkillBadgeKey[];
+  /** URLs resolvidas (uma imagem ou várias para composição). */
+  imageSrcs: string[];
 };
 
 /**

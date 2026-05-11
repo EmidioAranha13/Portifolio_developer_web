@@ -1,0 +1,273 @@
+/* ── Página ─────────────────────────────────────────────── */
+.cert-page {
+  width: 100%;
+  min-width: 0;
+  max-width: 1100px;
+  margin-inline: auto;
+  display: flex;
+  flex-direction: column;
+  gap: clamp(14px, 3vw, 24px);
+  padding-block: clamp(8px, 2vw, 16px);
+}
+
+/* ── Heading (padrão das outras páginas) ────────────────── */
+.cert-page__heading {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  align-self: flex-start;
+  padding: clamp(10px, 1.8vw, 14px) clamp(18px, 3vw, 28px);
+  border-radius: 3em;
+  border: 0.3em solid var(--color-night-grad-1) !important;
+  box-shadow:
+    0 10px 26px rgba(0, 0, 0, 0.18),
+    inset 0 1px 0 color-mix(in srgb, var(--app-main-text) 10%, transparent);
+}
+
+.App.theme-day .cert-page__heading {
+  border-color: var(--color-day-grad-1) !important;
+}
+
+.cert-page__heading.glass-surface {
+  --glass-backdrop-bg: color-mix(in srgb, rgb(96, 96, 102) 48%, transparent);
+  --glass-fallback-bg: linear-gradient(
+    155deg,
+    color-mix(in srgb, rgb(96, 96, 102) 72%, var(--app-main-bg)) 0%,
+    color-mix(in srgb, rgb(96, 96, 102) 52%, var(--app-main-bg)) 100%
+  );
+}
+
+.App.theme-day .cert-page__heading.glass-surface {
+  --glass-backdrop-bg: color-mix(in srgb, rgb(114, 114, 114) 48%, transparent);
+  --glass-fallback-bg: linear-gradient(
+    155deg,
+    color-mix(in srgb, rgb(204, 204, 204) 72%, var(--app-main-bg)) 0%,
+    color-mix(in srgb, rgb(204, 204, 204) 52%, var(--app-main-bg)) 100%
+  );
+}
+
+.cert-page__title {
+  margin: 0;
+  text-align: center;
+  font-size: clamp(1.45rem, 2.75vw, 1.95rem);
+  font-weight: 800;
+  line-height: 1.15;
+  background: var(--header-90-gradient);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* ── Grid de cards ──────────────────────────────────────── */
+.cert-page__grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(12px, 1.8vw, 18px);
+}
+
+/* Botão-container do card (sem estilo próprio) */
+.cert-page__card-button {
+  border: none;
+  padding: 0;
+  background: transparent;
+  text-align: inherit;
+  cursor: pointer;
+  width: 100%;
+}
+
+/* ── Card compacto "estilo cartão" ──────────────────────── */
+.cert-page__card {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(6px, 0.9vw, 9px);
+  padding: clamp(8px, 1.2vw, 11px);
+  border-radius: 1rem;
+  transition:
+    transform 200ms ease-out,
+    box-shadow 200ms ease-out;
+  will-change: transform;
+}
+
+.cert-page__card-button:hover .cert-page__card,
+.cert-page__card-button:focus-visible .cert-page__card {
+  transform: translateY(-5px) scale(1.025);
+  box-shadow:
+    0 16px 36px rgba(0, 0, 0, 0.32),
+    inset 0 0 0 1px color-mix(in srgb, var(--app-main-text) 20%, transparent);
+}
+
+/* Área de preview — proporção 4:3 */
+.cert-page__preview-wrapper {
+  border-radius: 0.75rem;
+  overflow: hidden;
+  background: #fff;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.22);
+  aspect-ratio: 4 / 3;
+  position: relative;
+}
+
+/* iframe maior do que o wrapper → desloca a toolbar para fora */
+.cert-page__preview {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  /* Altura extra empurra a toolbar nativa pra baixo do overflow:hidden */
+  height: calc(100% + 80px);
+  border: none;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.cert-page__card-title {
+  margin: 0;
+  font-size: clamp(0.82rem, 1vw, 0.92rem);
+  font-weight: 700;
+  color: color-mix(in srgb, var(--app-main-text) 88%, transparent);
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ── Modal backdrop ─────────────────────────────────────── */
+.cert-page__modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: color-mix(in srgb, #000 72%, transparent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 160;
+  padding: clamp(12px, 2vw, 24px);
+}
+
+/* ── Modal: grid de duas colunas ────────────────────────── */
+.cert-page__modal {
+  display: grid;
+  grid-template-columns: 1fr clamp(220px, 28%, 320px);
+  width: min(1100px, 96vw);
+  height: min(88vh, 780px);
+  border-radius: 1.2rem;
+  overflow: hidden;
+  box-shadow: 0 20px 48px rgba(0, 0, 0, 0.65);
+}
+
+/* Coluna esquerda: o PDF */
+.cert-page__modal-pdf-col {
+  height: 100%;
+  background: #fff;
+  overflow: hidden;
+}
+
+.cert-page__modal-pdf {
+  width: 100%;
+  height: 100%;
+  border: none;
+  display: block;
+}
+
+/* Coluna direita: painel de informações escuro */
+.cert-page__modal-info-col {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  background: #131317;
+  border-left: 1px solid rgba(255, 255, 255, 0.08);
+  overflow: hidden;
+}
+
+/* Botão fechar — canto superior direito do painel escuro */
+.cert-page__modal-close {
+  align-self: flex-end;
+  margin: 12px 12px 0 0;
+  flex-shrink: 0;
+  width: 32px;
+  height: 32px;
+  border-radius: 999px;
+  border: none;
+  cursor: pointer;
+  font-size: 1.35rem;
+  font-weight: 700;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgba(255, 255, 255, 0.85);
+  background: rgba(255, 255, 255, 0.12);
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.18),
+    0 4px 12px rgba(0, 0, 0, 0.5);
+  transition: background 140ms ease;
+}
+
+.cert-page__modal-close:hover {
+  background: rgba(255, 255, 255, 0.22);
+}
+
+/* Corpo do painel com as informações */
+.cert-page__modal-info-body {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  gap: clamp(8px, 1.2vw, 14px);
+  padding: clamp(16px, 2.4vw, 28px);
+  overflow-y: auto;
+}
+
+.cert-page__modal-institution {
+  margin: 0;
+  font-size: clamp(0.78rem, 1vw, 0.85rem);
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.45);
+}
+
+.cert-page__modal-cert-title {
+  margin: 0;
+  font-size: clamp(1.05rem, 1.5vw, 1.3rem);
+  font-weight: 800;
+  line-height: 1.25;
+  color: rgba(255, 255, 255, 0.92);
+}
+
+.cert-page__modal-divider {
+  height: 1px;
+  background: rgba(255, 255, 255, 0.1);
+  flex-shrink: 0;
+}
+
+.cert-page__modal-resume {
+  margin: 0;
+  font-size: clamp(0.84rem, 1.05vw, 0.92rem);
+  line-height: 1.55;
+  color: rgba(255, 255, 255, 0.68);
+}
+
+/* ── Responsivo ─────────────────────────────────────────── */
+@media (max-width: 960px) {
+  .cert-page__grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 700px) {
+  /* Modal empilha verticalmente em telas pequenas */
+  .cert-page__modal {
+    grid-template-columns: 1fr;
+    grid-template-rows: 55% auto;
+    height: min(92vh, 700px);
+  }
+
+  .cert-page__modal-info-col {
+    border-left: none;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+  }
+}
+
+@media (max-width: 560px) {
+  .cert-page__grid {
+    grid-template-columns: 1fr;
+  }
+}

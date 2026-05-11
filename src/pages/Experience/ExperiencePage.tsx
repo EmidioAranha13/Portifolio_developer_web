@@ -70,6 +70,7 @@ const ExperiencePage: React.FC<ExperiencePageProps> = ({ title, infoTexts }) => 
         roleTitle={infoTexts?.experience_page.role_title}
         actionsTitle={infoTexts?.experience_page.actions_title}
         projectsTitle={infoTexts?.experience_page.projects_title}
+        responsibilityTitle={infoTexts?.experience_page.responsibility_title}
       />
     </div>
   );

@@ -12,6 +12,7 @@ import ProfilePage from "./pages/Profile/ProfilePage";
 import EducationPage from "./pages/Education/EducationPage";
 import ExperiencePage from "./pages/Experience/ExperiencePage";
 import SkillPage from "./pages/SkillPage/SkillPage";
+import CertificationsPage from "./pages/Certifications/CertificationsPage";
 import type { RootState } from "./store/index";
 import "./App.css";
 import "./styles/glassSurface.css";
@@ -166,6 +167,8 @@ function App() {
                   <ExperiencePage title={tabTitleBySection.experience} infoTexts={infoTexts} />
                 ) : activeSection === "skills" ? (
                   <SkillPage title={tabTitleBySection.skills} infoTexts={infoTexts} />
+                ) : activeSection === "certifications" ? (
+                  <CertificationsPage title={tabTitleBySection.certifications} infoTexts={infoTexts} />
                 ) : (
                   <CardBox className="page-placeholder-card">
                     <section className="page-placeholder">

@@ -46,6 +46,7 @@ type MenuBoxSellectionProps = {
   roleTitle?: string;
   actionsTitle?: string;
   projectsTitle?: string;
+  responsibilityTitle?: string;
 };
 
 /**
@@ -56,6 +57,7 @@ const MenuBoxSellection: React.FC<MenuBoxSellectionProps> = ({
   roleTitle = "Cargo",
   actionsTitle = "Atribuições",
   projectsTitle = "Projetos Relevantes",
+  responsibilityTitle = "Responsabilidade",
 }) => {
   const baseId = useId();
   const [selectedId, setSelectedId] = useState(items[0]?.id ?? "");
@@ -152,7 +154,7 @@ const MenuBoxSellection: React.FC<MenuBoxSellectionProps> = ({
                     <p className="menu-box-sellection__panel-project-name">{project.project}</p>
                     <p className="menu-box-sellection__panel-project-resume">{project.resume}</p>
                     <p className="menu-box-sellection__panel-project-tasks">
-                      <strong>Responsabilidade: </strong>
+                      <strong>{responsibilityTitle}: </strong>
                       {project.tasks_executed}
                     </p>
                   </div>
