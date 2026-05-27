@@ -2,20 +2,8 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import CardBox from "../../componentes/CardBox/CardBox";
 import type { InfoTexts } from "../../utils/infoTextsCollection";
-import cert1 from "../../assets/certifies/Certificado_1.png";
-import cert2 from "../../assets/certifies/Certificado_2.png";
-import cert3 from "../../assets/certifies/Certificado_3.png";
-import cert4 from "../../assets/certifies/Certificado_4.png";
-import cert5 from "../../assets/certifies/Certificado_5.png";
-import cert6 from "../../assets/certifies/Certificado_6.png";
-import cert7 from "../../assets/certifies/Certificado_7.png";
-import c1 from "../../assets/certifies/C1.pdf";
-import c2 from "../../assets/certifies/C2.pdf";
-import c3 from "../../assets/certifies/C3.pdf";
-import c4 from "../../assets/certifies/C4.pdf";
-import c5 from "../../assets/certifies/C5.pdf";
-import c6 from "../../assets/certifies/C6.pdf";
-import c7 from "../../assets/certifies/C7.pdf";
+import { CERTIFICATE_IMAGES } from "../../utils/certificateAssets";
+import type { CertificateCardItem } from "../../utils/Types";
 import "./CertificationsPage.css";
 
 type CertificationsPageProps = {
@@ -23,81 +11,11 @@ type CertificationsPageProps = {
   infoTexts?: InfoTexts;
 };
 
-type CertificateItem = {
-  id: string;
-  title: string;
-  institution: string;
-  resume: string;
-  img: string;
-};
-
-export const CERTIFICATE_PDFS: Record<string, string> = {
-  c1,
-  c2,
-  c3,
-  c4,
-  c5,
-  c6,
-  c7,
-};
-
-const CERTIFICATES: CertificateItem[] = [
-  {
-    id: "c1",
-    title: "Bacharel em Ciência da Computação",
-    institution: "UFAM (Universidade Federal do Amazonas)",
-    resume: "Certificado de conclusão de curso de Bacharelado em Ciência da Computação pela Universidade Federal do Amazonas (UFAM).",
-    img: cert1,
-  },
-  {
-    id: "c2",
-    title: "DevTitans",
-    institution: "UFAM (Universidade Federal do Amazonas)",
-    resume: "Descrição do certificado em breve.",
-    img: cert2,
-  },
-  {
-    id: "c3",
-    title: "Certificado 3",
-    institution: "Instituição 3",
-    resume: "Descrição do certificado em breve.",
-    img: cert3,
-  },
-  {
-    id: "c4",
-    title: "Certificado 4",
-    institution: "Instituição 4",
-    resume: "Descrição do certificado em breve.",
-    img: cert4,
-  },
-  {
-    id: "c5",
-    title: "Certificado 5",
-    institution: "Instituição 5",
-    resume: "Descrição do certificado em breve.",
-    img: cert5,
-  },
-  {
-    id: "c6",
-    title: "Certificado 6",
-    institution: "Instituição 6",
-    resume: "Descrição do certificado em breve.",
-    img: cert6,
-  },
-  {
-    id: "c7",
-    title: "Certificado 7",
-    institution: "Instituição 7",
-    resume: "Descrição do certificado em breve.",
-    img: cert7,
-  },
-];
-
 const MIN_ZOOM = 1;
 const MAX_ZOOM = 3;
 const ZOOM_STEP = 0.25;
 
-const CertificationsPage: React.FC<CertificationsPageProps> = ({ title }) => {
+const CertificationsPage: React.FC<CertificationsPageProps> = ({ title, infoTexts }) => {
   const [activeId, setActiveId] = useState<string | null>(null);
   const [zoomLevel, setZoomLevel] = useState(MIN_ZOOM);
   const [naturalSize, setNaturalSize] = useState<{ width: number; height: number } | null>(null);
@@ -105,7 +23,16 @@ const CertificationsPage: React.FC<CertificationsPageProps> = ({ title }) => {
   const modalImageRef = useRef<HTMLImageElement>(null);
   const viewportRef = useRef<HTMLDivElement>(null);
 
-  const activeCertificate = CERTIFICATES.find((item) => item.id === activeId) ?? null;
+  const certificates: CertificateCardItem[] = useMemo(
+    () =>
+      (infoTexts?.certificate_page?.certificates ?? []).map((cert) => ({
+        ...cert,
+        imgSrc: CERTIFICATE_IMAGES[cert.img],
+      })),
+    [infoTexts],
+  );
+
+  const activeCertificate = certificates.find((item) => item.id === activeId) ?? null;
 
   useEffect(() => {
     setZoomLevel(MIN_ZOOM);
@@ -202,7 +129,7 @@ const CertificationsPage: React.FC<CertificationsPageProps> = ({ title }) => {
       </div>
 
       <section className="cert-page__grid" aria-label="Certificados">
-        {CERTIFICATES.map((cert) => (
+        {certificates.map((cert) => (
           <button
             key={cert.id}
             type="button"
@@ -213,11 +140,7 @@ const CertificationsPage: React.FC<CertificationsPageProps> = ({ title }) => {
             <CardBox className="cert-page__card">
               <p className="cert-page__card-title">{cert.title}</p>
               <div className="cert-page__preview-wrapper" aria-hidden="true">
-                <img
-                  src={cert.img}
-                  alt=""
-                  className="cert-page__preview"
-                />
+                <img src={cert.imgSrc} alt="" className="cert-page__preview" />
               </div>
             </CardBox>
           </button>
@@ -238,7 +161,6 @@ const CertificationsPage: React.FC<CertificationsPageProps> = ({ title }) => {
                 aria-label={activeCertificate.title}
                 onClick={(event) => event.stopPropagation()}
               >
-                {/* Coluna esquerda: imagem do certificado */}
                 <div className="cert-page__modal-pdf-col">
                   <div className="cert-page__modal-zoom-controls glass-surface">
                     <button
@@ -264,7 +186,7 @@ const CertificationsPage: React.FC<CertificationsPageProps> = ({ title }) => {
                     <img
                       ref={modalImageRef}
                       key={activeCertificate.id}
-                      src={activeCertificate.img}
+                      src={activeCertificate.imgSrc}
                       alt={activeCertificate.title}
                       className="cert-page__modal-pdf"
                       style={
@@ -280,7 +202,6 @@ const CertificationsPage: React.FC<CertificationsPageProps> = ({ title }) => {
                   </div>
                 </div>
 
-                {/* Coluna direita: informações + botão fechar */}
                 <div className="cert-page__modal-info-col">
                   <button
                     type="button"
@@ -291,12 +212,12 @@ const CertificationsPage: React.FC<CertificationsPageProps> = ({ title }) => {
                     ×
                   </button>
                   <div className="cert-page__modal-info-body">
-                    <h2 className="cert-page__modal-cert-title">
-                      {activeCertificate.title}
-                    </h2>
                     <p className="cert-page__modal-institution">
                       {activeCertificate.institution}
                     </p>
+                    <h2 className="cert-page__modal-cert-title">
+                      {activeCertificate.title}
+                    </h2>
                     <div className="cert-page__modal-divider" aria-hidden />
                     <p className="cert-page__modal-resume">
                       {activeCertificate.resume}

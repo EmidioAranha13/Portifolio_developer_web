@@ -414,6 +414,45 @@ export type SkillBadgeKey =
   | "default";
 
 /**
+ * Identificador de um certificado (imagem e PDF em `certificateAssets.ts`).
+ *
+ * **Usado em:** `infoTextsCollection.tsx`, `CertificationsPage.tsx`.
+ */
+export type CertificateId = "c1" | "c2" | "c3" | "c4" | "c5" | "c6" | "c7";
+
+/**
+ * Item de certificado em `infoTextsCollection.certificate_page.certificates`.
+ *
+ * **Usado em:** `infoTextsCollection.tsx`, `CertificationsPage.tsx`.
+ */
+export type CertificateItem = {
+  id: CertificateId;
+  title: string;
+  institution: string;
+  resume: string;
+  /** Chave do asset de imagem (mesma família que `id`). */
+  img: CertificateId;
+};
+
+/**
+ * Conteúdo da página de certificações por idioma.
+ *
+ * **Usado em:** `infoTextsCollection.tsx`, `CertificationsPage.tsx`.
+ */
+export type CertificatePage = {
+  certificates: CertificateItem[];
+};
+
+/**
+ * Card de certificado com URL da imagem já resolvida.
+ *
+ * **Usado em:** `CertificationsPage.tsx`.
+ */
+export type CertificateCardItem = CertificateItem & {
+  imgSrc: string;
+};
+
+/**
  * Entrada de habilidade em `infoTextsCollection.skill_page.skills`.
  *
  * **Usado em:** `infoTextsCollection.tsx`, `SkillPage.tsx`.
