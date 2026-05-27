@@ -1336,15 +1336,15 @@ export const infoTextsCollection = {
           title: "Bachelor's Degree in Computer Science",
           institution: "UFAM (Federal University of Amazonas)",
           resume:
-            "The Rector of the Federal University of Amazonas (UFAM), exercising his powers and considering the completion of the Computer Science course on June 28, 2022, confers the degree of Bachelor in Computer Science upon Emídio José Aranha Cardoso Filho, Brazilian, born in the state of Amazonas on November 13, 1997, and grants this DIPLOMA so that he may enjoy all legal rights and prerogatives. Manaus, July 14, 2022.",
+            "The Rector of the Federal University of Amazonas (UFAM), exercising the authority granted by the institution and considering the completion of the Computer Science program on June 28, 2022, hereby confers upon Emídio José Aranha Cardoso Filho the degree of Bachelor of Computer Science. This diploma grants all legal rights and academic privileges associated with the title. Issued in Manaus on July 14, 2022.",
           img: "c1",
         },
         {
           id: "c2",
-          title: "DevTitans Extension Certificate",
+          title: "DevTitans Extension Program Certificate",
           institution: "UFAM (Federal University of Amazonas)",
           resume:
-            'Certificate confirming that Emídio José Aranha Cardoso Filho participated in the 6th cohort of the "DevTITANS - Training and Development in Android Technologies for Embedded Systems" project, coordinated by Horácio Antônio Braga Fernandes de Oliveira, held from August 22, 2024 to February 27, 2025, promoted by UFAM\'s Extension Office. Total workload: 240 hours.',
+            "Certificate awarded to Emídio José Aranha Cardoso Filho for participating in the 6th cohort of the project 'DevTITANS - Training and Development in Android Technologies for Embedded Systems', coordinated by Horácio Antônio Braga Fernandes de Oliveira, held from August 22, 2024 to February 27, 2025, promoted by UFAM’s Extension Office, with a total workload of 240 hours.",
           img: "c2",
         },
         {
@@ -1352,7 +1352,7 @@ export const infoTextsCollection = {
           title: "JavaScript & TypeScript from Basic to Advanced",
           institution: "Udemy",
           resume:
-            "Complete JavaScript and TypeScript course from basics to advanced, focused on full stack development with modern front-end and back-end technologies. Covers Vanilla JS, Node.js, Express, MongoDB, MySQL, MariaDB, React, Redux, React Hooks, Webpack, Babel, and TypeScript. Students build real projects with CRUD, authentication, REST APIs, and login systems using Sessions and JWT. Also covers Linux deployment with NGINX, PM2, SSL/TLS, Git, SSH, security practices, OOP, SOLID, Jest testing, RegEx, Design Patterns, Redux Saga, Next.js, Strapi, SSR, SSG, ISR, SQL databases, and Knex Query Builder. Includes HTML5 and CSS3 bonus modules.",
+            "Comprehensive course covering JavaScript and TypeScript from foundational concepts to advanced full stack development practices. Topics include Vanilla JavaScript, Node.js, Express, MongoDB, MySQL, MariaDB, React, Redux, React Hooks, Webpack, Babel, and TypeScript. The program also explores CRUD applications, authentication systems using Sessions and JWT, Linux deployment with NGINX and PM2, SSL/TLS configuration, Git workflows, object-oriented programming, SOLID principles, automated testing with Jest, design patterns, and modern frontend/backend integrations using Next.js and Strapi.",
           img: "c3",
         },
         {
@@ -1360,15 +1360,15 @@ export const infoTextsCollection = {
           title: "React + Redux, Material UI, Hooks, TypeScript and REST APIs",
           institution: "Udemy",
           resume:
-            "Course focused on building modern web applications with React and current front-end ecosystem tools. Covers JavaScript, ECMAScript, TypeScript, HTML, CSS, Bootstrap, and Material UI for responsive interfaces. Teaches React fundamentals: components, state, props, class and functional components, and React Hooks. Includes REST API integration with HTTP libraries and Redux for state management. Emphasizes building complete applications from scratch with best practices.",
+            "Course focused on modern frontend application development using React and technologies from the contemporary JavaScript ecosystem. Covered subjects include JavaScript, TypeScript, HTML, CSS, Bootstrap, Material UI, React class and functional components, Hooks, Redux, REST API integration, and scalable project architecture. The course emphasizes best practices, reusable component design, and practical implementation of modern web applications.",
           img: "c4",
         },
         {
           id: "c5",
-          title: "React + Redux Course: Fundamentals and 2 Apps from Absolute ZERO!",
+          title: "React + Redux Course: Fundamentals and 2 Applications from Scratch",
           institution: "Udemy",
           resume:
-            "Hands-on web development course with React and modern JavaScript, focused on building complete applications from scratch. Covers React, Redux, and Webpack fundamentals before real projects. Includes back-end technologies such as Node.js, Express, and MongoDB, plus advanced topics like dynamic forms and middlewares. Features a Next.js section with SSR, static rendering, routing, and a full CRUD using Firebase, Firestore, TailwindCSS, and TypeScript.",
+            "Hands-on course dedicated to building complete web applications using React and Redux from the ground up. The content covers React fundamentals, Redux state management, Webpack configuration, backend integration with Node.js, Express, and MongoDB, as well as advanced concepts such as dynamic forms and middleware. The program also introduces Next.js, SSR, Firebase, Firestore, TailwindCSS, and TypeScript for the development of scalable and production-ready applications.",
           img: "c5",
         },
         {
@@ -1376,7 +1376,7 @@ export const infoTextsCollection = {
           title: "Understanding and Documenting REST / RESTful APIs",
           institution: "Udemy",
           resume:
-            "Course focused on RESTful API concepts and fundamentals, teaching how to design, understand, and document modern APIs in any programming language. Covers REST architecture, RESTful maturity model, API best practices, cURL for request testing, Media Types, API versioning, and caching techniques. Includes authentication with OAuth and JWT, plus API documentation with Swagger.",
+            "Course dedicated to RESTful API architecture, concepts, and documentation practices. The curriculum includes REST maturity models, HTTP communication principles, API versioning, Media Types, caching strategies, authentication using OAuth and JWT, cURL usage for request testing, and API documentation through Swagger. Designed for developers seeking a deeper understanding of modern API development standards and integration practices.",
           img: "c6",
         },
         {
@@ -1384,7 +1384,7 @@ export const infoTextsCollection = {
           title: "Web Development with PHP and MySQL Database",
           institution: "Udemy",
           resume:
-            "Web development course using PHP and MySQL for dynamic, database-driven websites. Covers PHP back-end fundamentals, essential SQL concepts, and MySQL. Students learn authentication and login systems, database-connected applications, database design and management, encrypted passwords, SQL Injection protection, and web development best practices.",
+            "Web development course centered on PHP and MySQL for creating dynamic, database-driven applications. The course explores backend development with PHP, SQL fundamentals, relational database management, authentication systems, encrypted password handling, and protection against SQL Injection vulnerabilities. It also covers best practices for integrating web applications with relational databases and building secure server-side solutions.",
           img: "c7",
         },
       ] satisfies CertificateItem[],
@@ -1862,15 +1862,15 @@ export const infoTextsCollection = {
           title: "コンピュータサイエンス学士",
           institution: "UFAM（アマゾナス連邦大学）",
           resume:
-            "アマゾナス連邦大学（UFAM）学長は、2022年6月28日にコンピュータサイエンス課程を修了したことを踏まえ、エミジオ・ジョゼ・アラーニャ・カルドソ・フィリョにコンピュータサイエンス学士の称号を授与し、本学位証を授与する。マナウス、2022年7月14日。",
+            "アマゾナス連邦大学（UFAM）は、2022年6月28日にコンピュータサイエンス課程を修了したEmídio José Aranha Cardoso Filho氏に対し、コンピュータサイエンス学士の学位を授与しました。本 дипломаは法律上の権利および学術的特権を認めるものです。2022年7月14日、マナウスにて発行。",
           img: "c1",
         },
         {
           id: "c2",
-          title: "DevTitans 拡張プログラム修了証",
+          title: "DevTitans エクステンションプログラム修了証",
           institution: "UFAM（アマゾナス連邦大学）",
           resume:
-            "エミジオ・ジョゼ・アラーニャ・カルドソ・フィリョが、UFAM 拡張部門が主催する「DevTITANS - 組み込みシステム向けAndroid技術の研修と開発」プロジェクト第6期（2024年8月22日〜2025年2月27日、240時間）に参加したことを証明する。",
+            "Emídio José Aranha Cardoso Filho氏は、「DevTITANS - 組み込みシステム向けAndroid技術トレーニングと開発」第6期プログラムに参加しました。本プログラムはHorácio Antônio Braga Fernandes de Oliveira氏の指導のもと、2024年8月22日から2025年2月27日まで実施され、総学習時間は240時間です。",
           img: "c2",
         },
         {
@@ -1878,39 +1878,39 @@ export const infoTextsCollection = {
           title: "JavaScript & TypeScript 基礎から上級まで",
           institution: "Udemy",
           resume:
-            "JavaScriptとTypeScriptの基礎から上級までを学ぶフルスタック開発コース。Vanilla JS、Node.js、Express、MongoDB、MySQL、React、Redux、TypeScript、REST API、JWT認証、Jest、Next.jsなどを含む。",
+            "JavaScriptとTypeScriptを基礎から上級レベルまで学ぶフルスタック開発コースです。Vanilla JavaScript、Node.js、Express、MongoDB、MySQL、React、Redux、Webpack、Babelなどを学習します。CRUD開発、JWT認証、Linuxデプロイ、Git、SOLID原則、Jestテスト、Next.jsやStrapiを使用したモダン開発も含まれています。",
           img: "c3",
         },
         {
           id: "c4",
-          title: "React + Redux、Material UI、Hooks、TypeScript、REST API",
+          title: "React + Redux, Material UI, Hooks, TypeScript と REST API",
           institution: "Udemy",
           resume:
-            "Reactとモダンなフロントエンド技術を用いたWebアプリケーション開発コース。コンポーネント、Hooks、Redux、TypeScript、Material UI、REST API連携を学ぶ。",
+            "Reactを使用したモダンフロントエンド開発コースです。JavaScript、TypeScript、HTML、CSS、Bootstrap、Material UI、React Hooks、Redux、REST API連携などを学習します。再利用可能なコンポーネント設計や実践的なWebアプリケーション構築に重点を置いています。",
           img: "c4",
         },
         {
           id: "c5",
-          title: "React + Redux：基礎とゼロからの2つのアプリ",
+          title: "React + Redux コース：基礎と2つの実践アプリ開発",
           institution: "Udemy",
           resume:
-            "React、Redux、Webpackの基礎から実践プロジェクトまでを扱うコース。Node.js、Express、MongoDB、Next.js、Firebase、TypeScriptを含む。",
+            "ReactとReduxを使用してゼロからWebアプリケーションを構築する実践コースです。React基礎、Redux状態管理、Webpack設定、Node.js、Express、MongoDBとの連携を学習します。また、Next.js、Firebase、Firestore、TailwindCSS、TypeScriptを使用した最新開発手法も含まれています。",
           img: "c5",
         },
         {
           id: "c6",
-          title: "REST / RESTful API の理解とドキュメント化",
+          title: "REST / RESTful API の理解とドキュメント作成",
           institution: "Udemy",
           resume:
-            "RESTful APIの設計、理解、ドキュメント化を学ぶコース。認証（OAuth、JWT）、Swagger、APIのベストプラクティスを含む。",
+            "RESTful APIの設計、概念、ドキュメント作成を学ぶコースです。REST成熟度モデル、HTTP通信、APIバージョニング、Media Types、キャッシュ戦略、OAuth・JWT認証、cURLによるテスト、SwaggerによるAPIドキュメント作成を学習します。",
           img: "c6",
         },
         {
           id: "c7",
-          title: "PHPとMySQLによるWeb開発",
+          title: "PHP と MySQL を使用したWeb開発",
           institution: "Udemy",
           resume:
-            "PHPとMySQLを用いた動的Webサイト開発コース。認証、データベース連携、SQLインジェクション対策、セキュリティの基礎を学ぶ。",
+            "PHPとMySQLを利用した動的Webアプリケーション開発コースです。PHPバックエンド開発、SQL基礎、リレーショナルデータベース管理、ログインシステム、パスワード暗号化、SQL Injection対策などを学習します。安全で効率的なサーバーサイド開発に重点を置いています。",
           img: "c7",
         },
       ] satisfies CertificateItem[],
