@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { lazy, Suspense, useCallback, useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import LiquidGlassBalls from "./componentes/LiquidGlassBalls/LiquidGlassBalls";
 import LoadingScreen from "./componentes/LoadingScreen/LoadingScreen";
@@ -8,14 +8,28 @@ import CardBox from "./componentes/CardBox/CardBox";
 import type { GlassPreset, LanguageCode, SectionKey, ThemeMode } from "./utils/Types";
 import { infoTextsCollection } from "./utils/infoTextsCollection";
 import ArrowBoxScrollRail from "./componentes/ArrowBox/ArrowBoxScrollRail";
-import ProfilePage from "./pages/Profile/ProfilePage";
-import EducationPage from "./pages/Education/EducationPage";
-import ExperiencePage from "./pages/Experience/ExperiencePage";
-import SkillPage from "./pages/SkillPage/SkillPage";
-import CertificationsPage from "./pages/Certifications/CertificationsPage";
 import type { RootState } from "./store/index";
 import "./App.css";
 import "./styles/glassSurface.css";
+
+/**
+ * Lazy load: cada `import()` vira um arquivo JS separado (chunk).
+ * O navegador só baixa o chunk quando a seção é exibida pela primeira vez.
+ */
+const ProfilePage = lazy(() => import("./pages/Profile/ProfilePage"));
+const EducationPage = lazy(() => import("./pages/Education/EducationPage"));
+const ExperiencePage = lazy(() => import("./pages/Experience/ExperiencePage"));
+const SkillPage = lazy(() => import("./pages/SkillPage/SkillPage"));
+const CertificationsPage = lazy(() => import("./pages/Certifications/CertificationsPage"));
+
+/** Exibido enquanto o chunk da página ainda está sendo baixado. */
+function PageSectionFallback() {
+  return (
+    <div className="page-section-fallback" role="status" aria-live="polite">
+      <p className="page-section-fallback__text">Carregando…</p>
+    </div>
+  );
+}
 
 const DEFAULT_LANGUAGE: LanguageCode = "BR";
 
@@ -159,23 +173,28 @@ function App() {
             />
             <div className="content">
               <div className="page-fade">
-                {activeSection === "about" ? (
-                  <ProfilePage infoTexts={infoTexts} languageKey={languageKey} />
-                ) : activeSection === "education" ? (
-                  <EducationPage title={tabTitleBySection.education} infoTexts={infoTexts} />
-                ) : activeSection === "experience" ? (
-                  <ExperiencePage title={tabTitleBySection.experience} infoTexts={infoTexts} />
-                ) : activeSection === "skills" ? (
-                  <SkillPage title={tabTitleBySection.skills} infoTexts={infoTexts} />
-                ) : activeSection === "certifications" ? (
-                  <CertificationsPage title={tabTitleBySection.certifications} infoTexts={infoTexts} />
-                ) : (
-                  <CardBox className="page-placeholder-card">
-                    <section className="page-placeholder">
-                      <h2>{tabTitleBySection[activeSection]}</h2>
-                    </section>
-                  </CardBox>
-                )}
+                <Suspense fallback={<PageSectionFallback />}>
+                  {activeSection === "about" ? (
+                    <ProfilePage infoTexts={infoTexts} languageKey={languageKey} />
+                  ) : activeSection === "education" ? (
+                    <EducationPage title={tabTitleBySection.education} infoTexts={infoTexts} />
+                  ) : activeSection === "experience" ? (
+                    <ExperiencePage title={tabTitleBySection.experience} infoTexts={infoTexts} />
+                  ) : activeSection === "skills" ? (
+                    <SkillPage title={tabTitleBySection.skills} infoTexts={infoTexts} />
+                  ) : activeSection === "certifications" ? (
+                    <CertificationsPage
+                      title={tabTitleBySection.certifications}
+                      infoTexts={infoTexts}
+                    />
+                  ) : (
+                    <CardBox className="page-placeholder-card">
+                      <section className="page-placeholder">
+                        <h2>{tabTitleBySection[activeSection]}</h2>
+                      </section>
+                    </CardBox>
+                  )}
+                </Suspense>
               </div>
             </div>
             <StyledFooter text={infoTexts.footerRights} />

@@ -30,6 +30,7 @@
   /* Theme tokens */
   --app-main-bg: var(--color-night-surface);
   --app-main-text: var(--color-white);
+  --app-modal-z: 250;
   --header-text-color: var(--color-white);
   --header-active-text-color: var(--color-white);
   --header-underline-color: var(--color-white);
@@ -283,6 +284,21 @@ body,
   justify-content: center;
   align-items: flex-start;
   padding-bottom: 28px;
+}
+
+.page-section-fallback {
+  width: 100%;
+  min-height: min(420px, 55dvh);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.page-section-fallback__text {
+  margin: 0;
+  font-size: clamp(1rem, 1.4vw, 1.15rem);
+  font-weight: 600;
+  color: color-mix(in srgb, var(--app-main-text) 72%, transparent);
 }
 
 .page-placeholder {

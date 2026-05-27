@@ -73,6 +73,13 @@
   text-align: inherit;
   cursor: pointer;
   width: 100%;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.cert-page__card-button:focus,
+.cert-page__card-button:focus-visible {
+  outline: none;
+  box-shadow: none;
 }
 
 /* ── Card compacto "estilo cartão" ──────────────────────── */
@@ -88,8 +95,7 @@
   will-change: transform;
 }
 
-.cert-page__card-button:hover .cert-page__card,
-.cert-page__card-button:focus-visible .cert-page__card {
+.cert-page__card-button:hover .cert-page__card {
   transform: translateY(-5px) scale(1.025);
   box-shadow:
     0 16px 36px rgba(0, 0, 0, 0.32),
@@ -106,17 +112,12 @@
   position: relative;
 }
 
-/* iframe maior do que o wrapper → desloca a toolbar para fora */
 .cert-page__preview {
-  position: absolute;
-  top: 0;
-  left: 0;
   width: 100%;
-  /* Altura extra empurra a toolbar nativa pra baixo do overflow:hidden */
-  height: calc(100% + 80px);
-  border: none;
-  pointer-events: none;
-  overflow: hidden;
+  height: 100%;
+  object-fit: contain;
+  object-position: center;
+  display: block;
 }
 
 .cert-page__card-title {
@@ -138,8 +139,9 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 160;
+  z-index: var(--app-modal-z, 250);
   padding: clamp(12px, 2vw, 24px);
+  pointer-events: auto;
 }
 
 /* ── Modal: grid de duas colunas ────────────────────────── */
@@ -153,18 +155,115 @@
   box-shadow: 0 20px 48px rgba(0, 0, 0, 0.65);
 }
 
-/* Coluna esquerda: o PDF */
+/* Coluna esquerda: imagem do certificado */
 .cert-page__modal-pdf-col {
+  position: relative;
   height: 100%;
+  min-height: 0;
   background: #fff;
   overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.cert-page__modal-zoom-controls {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  z-index: 3;
+  display: inline-flex;
+  gap: 0;
+  overflow: hidden;
+  border-radius: 8px;
+  pointer-events: auto;
+  margin-right: 12px;
+}
+
+.cert-page__modal-zoom-controls.glass-surface {
+  --glass-backdrop-bg: color-mix(in srgb, rgb(28, 28, 34) 58%, transparent);
+  --glass-fallback-bg: linear-gradient(
+    155deg,
+    color-mix(in srgb, rgb(42, 42, 50) 88%, transparent) 0%,
+    color-mix(in srgb, rgb(24, 24, 30) 82%, transparent) 100%
+  );
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow:
+    0 8px 22px rgba(0, 0, 0, 0.28),
+    inset 0 1px 0 rgba(255, 255, 255, 0.14);
+}
+
+.App.theme-day .cert-page__modal-zoom-controls.glass-surface {
+  --glass-backdrop-bg: color-mix(in srgb, rgb(36, 36, 44) 62%, transparent);
+  --glass-fallback-bg: linear-gradient(
+    155deg,
+    color-mix(in srgb, rgb(52, 52, 60) 86%, transparent) 0%,
+    color-mix(in srgb, rgb(30, 30, 38) 80%, transparent) 100%
+  );
+}
+
+.cert-page__modal-zoom-btn {
+  width: 40px;
+  height: 34px;
+  border: none;
+  border-radius: 0;
+  cursor: pointer;
+  font-size: 1.25rem;
+  font-weight: 700;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgba(255, 255, 255, 0.94);
+  background: transparent;
+  -webkit-tap-highlight-color: transparent;
+  transition:
+    background 140ms ease,
+    opacity 140ms ease;
+}
+
+.cert-page__modal-zoom-btn:focus,
+.cert-page__modal-zoom-btn:focus-visible {
+  outline: none;
+  box-shadow: none;
+}
+
+.cert-page__modal-zoom-btn--out {
+  border-radius: 8px 0 0 8px;
+  border-right: 1px solid rgba(255, 255, 255, 0.14);
+}
+
+.cert-page__modal-zoom-btn--in {
+  border-radius: 0 8px 8px 0;
+}
+
+.cert-page__modal-zoom-btn:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.cert-page__modal-zoom-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.cert-page__modal-viewport {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow: auto;
+  padding: 0;
+  display: grid;
+  place-items: center;
 }
 
 .cert-page__modal-pdf {
-  width: 100%;
-  height: 100%;
-  border: none;
   display: block;
+  max-width: none;
+  max-height: none;
+  flex-shrink: 0;
+  object-fit: contain;
+  object-position: center;
+  transition:
+    width 180ms ease-out,
+    height 180ms ease-out;
 }
 
 /* Coluna direita: painel de informações escuro */
