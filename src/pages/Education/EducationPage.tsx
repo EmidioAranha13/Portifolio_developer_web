@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import TreeRail, {
   type TreeRailEntry,
   type TreeRailLeafLine,
@@ -41,7 +41,9 @@ function activityToLeafLines(activity: EducationActivity, leafLabels: EducationL
   return lines;
 }
 
-function toTreeEntries(infoTexts: InfoTexts): TreeRailEntry[] {
+const EDUCATION_MOBILE_MAX_WIDTH_PX = 860;
+
+function toTreeEntries(infoTexts: InfoTexts, leavesOnRightOnly = false): TreeRailEntry[] {
   const educationPage = infoTexts.education_page;
   const educationItems = educationPage?.education ?? [];
   const leafLabels = educationPage?.leafLabels;
@@ -56,7 +58,11 @@ function toTreeEntries(infoTexts: InfoTexts): TreeRailEntry[] {
     });
 
     item.activities.forEach((activity, activityIndex) => {
-      const side: TreeRailSide = activityCount % 2 === 0 ? "right" : "left";
+      const side: TreeRailSide = leavesOnRightOnly
+        ? "right"
+        : activityCount % 2 === 0
+          ? "right"
+          : "left";
       const endedKey = slug(activity.ended || `act-${activityIndex}`);
       const title = activity.title.trim();
       const leafBody = leafLabels ? activityToLeafLines(activity, leafLabels) : [];
@@ -79,7 +85,20 @@ function toTreeEntries(infoTexts: InfoTexts): TreeRailEntry[] {
  * Página Formação: rail em árvore de formações.
  */
 const EducationPage: React.FC<EducationPageProps> = ({ title, infoTexts }) => {
-  const entries = useMemo(() => toTreeEntries(infoTexts), [infoTexts]);
+  const [leavesOnRightOnly, setLeavesOnRightOnly] = useState(false);
+
+  useEffect(() => {
+    const media = window.matchMedia(`(max-width: ${EDUCATION_MOBILE_MAX_WIDTH_PX}px)`);
+    const sync = () => setLeavesOnRightOnly(media.matches);
+    sync();
+    media.addEventListener("change", sync);
+    return () => media.removeEventListener("change", sync);
+  }, []);
+
+  const entries = useMemo(
+    () => toTreeEntries(infoTexts, leavesOnRightOnly),
+    [infoTexts, leavesOnRightOnly],
+  );
 
   return (
     <div className="education-page">

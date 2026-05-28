@@ -8,6 +8,7 @@ import CardBox from "./componentes/CardBox/CardBox";
 import type { GlassPreset, LanguageCode, SectionKey, ThemeMode } from "./utils/Types";
 import { infoTextsCollection } from "./utils/infoTextsCollection";
 import ArrowBoxScrollRail from "./componentes/ArrowBox/ArrowBoxScrollRail";
+import LoadingOrbitSpinner from "./componentes/LoadingOrbitSpinner/LoadingOrbitSpinner";
 import type { RootState } from "./store/index";
 import "./App.css";
 import "./styles/glassSurface.css";
@@ -21,12 +22,13 @@ const EducationPage = lazy(() => import("./pages/Education/EducationPage"));
 const ExperiencePage = lazy(() => import("./pages/Experience/ExperiencePage"));
 const SkillPage = lazy(() => import("./pages/SkillPage/SkillPage"));
 const CertificationsPage = lazy(() => import("./pages/Certifications/CertificationsPage"));
+const ContactMePage = lazy(() => import("./pages/ContactMe/ContactMePage"));
 
 /** Exibido enquanto o chunk da página ainda está sendo baixado. */
 function PageSectionFallback() {
   return (
-    <div className="page-section-fallback" role="status" aria-live="polite">
-      <p className="page-section-fallback__text">Carregando…</p>
+    <div className="page-section-fallback">
+      <LoadingOrbitSpinner label="Carregando…" />
     </div>
   );
 }
@@ -187,6 +189,8 @@ function App() {
                       title={tabTitleBySection.certifications}
                       infoTexts={infoTexts}
                     />
+                  ) : activeSection === "contact" ? (
+                    <ContactMePage title={tabTitleBySection.contact} infoTexts={infoTexts} />
                   ) : (
                     <CardBox className="page-placeholder-card">
                       <section className="page-placeholder">

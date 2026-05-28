@@ -337,38 +337,82 @@
 
 @media (max-width: 720px) {
   .menu-box-sellection {
-    --menu-tab-width-active: auto;
-    --menu-tab-width-rest: auto;
-    --menu-sidebar-width: auto;
+    --menu-tab-width-active: clamp(64px, 17vw, 76px);
+    --menu-tab-width-rest: clamp(52px, 14vw, 64px);
+    --menu-tab-height-active: clamp(68px, 17vw, 80px);
+    --menu-tab-height-rest: clamp(54px, 14vw, 66px);
     flex-direction: column;
+    align-items: stretch;
   }
 
   .menu-box-sellection__sidebar {
     flex: none;
-    width: auto;
+    width: 100%;
+    align-items: flex-start;
   }
 
   .menu-box-sellection__list {
     flex-direction: row;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
     justify-content: flex-start;
+    align-items: flex-end;
+    width: auto;
+    max-width: 100%;
     gap: 0;
   }
 
+  /* Telha no topo: arredondado só em cima (como a aba do meio, espelhada). */
   .menu-box-sellection__tab.glass-surface {
-    flex: 0 0 auto;
+    width: var(--menu-tab-width-rest);
+    height: var(--menu-tab-height-rest);
     min-width: 0;
-    width: auto;
-    border-radius: 0;
+    border-radius: 999px 999px 0 0;
+    border-bottom: none;
+    transition:
+      box-shadow 0.24s ease,
+      background 0.24s ease,
+      border-color 0.24s ease,
+      width 0.24s ease,
+      height 0.24s ease,
+      padding-block-start 0.24s ease,
+      padding-inline 0.24s ease;
+  }
+
+  .menu-box-sellection__tab + .menu-box-sellection__tab.glass-surface {
+    border-left: none;
+  }
+
+  .menu-box-sellection__tab--selected.glass-surface {
+    width: var(--menu-tab-width-active);
+    height: var(--menu-tab-height-active);
+    padding-block-start: clamp(12px, 1.8vw, 14px);
+    padding-block-end: clamp(8px, 1.2vw, 10px);
+    padding-inline: clamp(8px, 1.2vw, 10px);
+    border-bottom-color: transparent !important;
+    box-shadow: 0 12px 30px color-mix(in srgb, var(--color-night-grad-1) 38%, transparent);
+  }
+
+  .App.theme-day .menu-box-sellection__tab--selected.glass-surface {
+    box-shadow: 0 13px 31px color-mix(in srgb, var(--color-day-grad-1) 34%, transparent);
+  }
+
+  .menu-box-sellection__tab-icon {
+    width: clamp(36px, 10vw, 44px);
+    height: clamp(36px, 10vw, 44px);
   }
 
   .menu-box-sellection__panel.glass-surface {
-    border-radius: 0 0 1.25rem 1.25rem;
-    border-left: 1px solid var(--color-night-grad-1);
-    border-top: none;
+    flex: 1 1 auto;
+    width: 100%;
+    min-width: 0;
+    border: 5px solid var(--color-night-grad-1);
+    border-radius: 0 1.25rem 1.25rem 1.25rem;
+    box-shadow:
+      0 8px 20px rgba(0, 0, 0, 0.12),
+      inset 0 1px 0 color-mix(in srgb, var(--app-main-text) 10%, transparent);
   }
 
   .App.theme-day .menu-box-sellection__panel.glass-surface {
-    border-left-color: var(--color-day-grad-1);
+    border-color: var(--color-day-grad-1);
   }
 }

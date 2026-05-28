@@ -1,0 +1,36 @@
+.form-text-field {
+  width: 100%;
+  min-width: 0;
+  height: 44px;
+  border-radius: 999px;
+  border: 2px solid transparent;
+  background-image:
+    linear-gradient(
+      color-mix(in srgb, var(--app-main-bg) 72%, transparent),
+      color-mix(in srgb, var(--app-main-bg) 72%, transparent)
+    ),
+    var(--header-90-gradient);
+  background-origin: border-box;
+  background-clip: padding-box, border-box;
+  box-shadow:
+    0 8px 18px rgba(0, 0, 0, 0.2),
+    inset 0 0 0 1px color-mix(in srgb, var(--color-white) 24%, transparent);
+  display: flex;
+  align-items: center;
+  padding: 0 14px;
+}
+
+.form-text-field__input {
+  width: 100%;
+  min-width: 0;
+  border: none;
+  outline: none;
+  background: transparent;
+  color: var(--app-main-text);
+  font-size: 0.9rem;
+  font-family: inherit;
+}
+
+.form-text-field__input::placeholder {
+  color: color-mix(in srgb, var(--app-main-text) 64%, transparent);
+}
