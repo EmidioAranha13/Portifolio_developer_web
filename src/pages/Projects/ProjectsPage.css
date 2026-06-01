@@ -1,0 +1,250 @@
+.projects-page {
+  width: 100%;
+  min-width: 0;
+  max-width: 1100px;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  margin-inline: auto;
+  gap: clamp(14px, 3vw, 24px);
+  padding-block: clamp(8px, 2vw, 16px);
+}
+
+.projects-page__heading {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  align-self: flex-start;
+  padding: clamp(10px, 1.8vw, 14px) clamp(18px, 3vw, 28px);
+  border-radius: 3em;
+  border: 0.3em solid var(--color-night-grad-1) !important;
+  box-shadow:
+    0 10px 26px rgba(0, 0, 0, 0.18),
+    inset 0 1px 0 color-mix(in srgb, var(--app-main-text) 10%, transparent);
+}
+
+.App.theme-day .projects-page__heading {
+  border-color: var(--color-day-grad-1) !important;
+}
+
+.projects-page__heading.glass-surface {
+  --glass-backdrop-bg: color-mix(in srgb, rgb(96, 96, 102) 48%, transparent);
+  --glass-fallback-bg: linear-gradient(
+    155deg,
+    color-mix(in srgb, rgb(96, 96, 102) 72%, var(--app-main-bg)) 0%,
+    color-mix(in srgb, rgb(96, 96, 102) 52%, var(--app-main-bg)) 100%
+  );
+}
+
+.App.theme-day .projects-page__heading.glass-surface {
+  --glass-backdrop-bg: color-mix(in srgb, rgb(114, 114, 114) 48%, transparent);
+  --glass-fallback-bg: linear-gradient(
+    155deg,
+    color-mix(in srgb, rgb(204, 204, 204) 72%, var(--app-main-bg)) 0%,
+    color-mix(in srgb, rgb(204, 204, 204) 52%, var(--app-main-bg)) 100%
+  );
+}
+
+.projects-page__title {
+  margin: 0;
+  text-align: center;
+  font-size: clamp(1.45rem, 2.75vw, 1.95rem);
+  font-weight: 800;
+  line-height: 1.15;
+  background: var(--header-90-gradient);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.projects-page__content.glass-surface {
+  width: 100%;
+  min-width: 0;
+  min-height: min(320px, 42dvh);
+  padding: clamp(20px, 3vw, 32px) clamp(18px, 2.8vw, 26px);
+  border-radius: 1.25rem;
+  border: none !important;
+  --glass-backdrop-bg: color-mix(in srgb, rgb(96, 96, 102) 48%, transparent);
+  --glass-fallback-bg: linear-gradient(
+    155deg,
+    color-mix(in srgb, rgb(96, 96, 102) 72%, var(--app-main-bg)) 0%,
+    color-mix(in srgb, rgb(96, 96, 102) 52%, var(--app-main-bg)) 100%
+  );
+  box-shadow:
+    0 8px 20px rgba(0, 0, 0, 0.12),
+    inset 0 1px 0 color-mix(in srgb, var(--app-main-text) 10%, transparent);
+}
+
+.App.theme-day .projects-page__content.glass-surface {
+  --glass-backdrop-bg: color-mix(in srgb, rgb(114, 114, 114) 48%, transparent);
+  --glass-fallback-bg: linear-gradient(
+    155deg,
+    color-mix(in srgb, rgb(204, 204, 204) 72%, var(--app-main-bg)) 0%,
+    color-mix(in srgb, rgb(204, 204, 204) 52%, var(--app-main-bg)) 100%
+  );
+}
+
+.projects-page__contributions {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(14px, 2.2vw, 20px);
+  min-width: 0;
+}
+
+.projects-page__contributions-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 10px 16px;
+}
+
+.projects-page__section-title {
+  margin: 0;
+  font-size: clamp(1.05rem, 1.9vw, 1.25rem);
+  font-weight: 800;
+  line-height: 1.2;
+  background: var(--header-90-gradient);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.projects-page__github-link {
+  font-size: clamp(0.82rem, 1.35vw, 0.92rem);
+  font-weight: 600;
+  color: var(--app-main-text);
+  text-decoration: none;
+  opacity: 0.88;
+  transition: opacity 0.18s ease;
+}
+
+.projects-page__github-link:hover {
+  opacity: 1;
+  text-decoration: underline;
+}
+
+.projects-page__calendar-wrap {
+  width: 100%;
+  min-width: 0;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  padding-bottom: 4px;
+}
+
+.projects-page__calendar-wrap .react-activity-calendar {
+  width: max-content;
+  max-width: none;
+  margin-inline: auto;
+  color: var(--app-main-text);
+}
+
+.projects-page__calendar-wrap .react-activity-calendar text {
+  fill: var(--app-main-text);
+}
+
+.projects-page__calendar-wrap .react-activity-calendar__legend-weekday text {
+  fill: color-mix(in srgb, var(--app-main-text) 72%, transparent);
+}
+
+/* Estatísticas — 4 colunas com divisória em degradê (mesma lógica do ProfileSectionRail) */
+.projects-page__stats {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0;
+  width: 100%;
+  min-width: 0;
+  min-height: clamp(7.5rem, 20vh, 11.5rem);
+  margin-top: clamp(20px, 3.5vw, 32px);
+  padding-block: clamp(18px, 3vw, 28px);
+}
+
+.projects-page__stat {
+  flex: 1 1 0;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(4px, 0.75vw, 8px);
+  padding-inline: clamp(6px, 1.2vw, 12px);
+  text-align: center;
+}
+
+.projects-page__stat-label {
+  margin: 0;
+  font-size: clamp(0.72rem, 1.25vw, 0.88rem);
+  font-weight: 700;
+  line-height: 1.25;
+  letter-spacing: 0.02em;
+  color: var(--app-main-text);
+  opacity: 0.92;
+}
+
+.projects-page__stat-value {
+  margin: 0;
+  font-size: clamp(2.25rem, 5.5vw, 3.5rem);
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  color: var(--color-night-grad-2);
+  text-shadow:
+    0 0 8px color-mix(in srgb, var(--color-night-grad-2) 48%, transparent),
+    0 0 16px color-mix(in srgb, var(--color-night-grad-3) 32%, transparent),
+    0 2px 4px rgba(0, 0, 0, 0.22);
+}
+
+.App.theme-day .projects-page__stat-value {
+  color: var(--color-day-grad-4);
+  text-shadow:
+    0 0 8px color-mix(in srgb, var(--color-day-grad-4) 52%, transparent),
+    0 0 18px color-mix(in srgb, var(--color-day-grad-3) 34%, transparent),
+    0 2px 5px color-mix(in srgb, var(--color-day-grad-4) 18%, transparent);
+}
+
+.projects-page__stat-divider {
+  flex: 0 0 3px;
+  width: 3px;
+  align-self: center;
+  height: clamp(6.75rem, 19vh, 10.5rem);
+  min-height: clamp(6.75rem, 19vh, 10.5rem);
+  border-radius: 999px;
+  background: linear-gradient(
+    180deg,
+    var(--color-night-grad-1) 0%,
+    var(--color-night-grad-2) 25%,
+    var(--color-night-grad-3) 50%,
+    var(--color-night-grad-4) 75%,
+    var(--color-night-grad-5) 100%
+  );
+  pointer-events: none;
+}
+
+.App.theme-day .projects-page__stat-divider {
+  background: linear-gradient(
+    180deg,
+    var(--color-day-grad-1) 0%,
+    var(--color-day-grad-2) 25%,
+    var(--color-day-grad-3) 50%,
+    var(--color-day-grad-4) 75%,
+    var(--color-day-grad-5) 100%
+  );
+}
+
+@media (max-width: 640px) {
+  .projects-page__stats {
+    flex-wrap: wrap;
+    row-gap: clamp(16px, 4vw, 24px);
+    justify-content: center;
+  }
+
+  .projects-page__stat {
+    flex: 1 1 calc(50% - 12px);
+    max-width: calc(50% - 12px);
+  }
+
+  .projects-page__stat-divider {
+    display: none;
+  }
+}

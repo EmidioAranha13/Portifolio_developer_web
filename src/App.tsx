@@ -23,6 +23,7 @@ const ExperiencePage = lazy(() => import("./pages/Experience/ExperiencePage"));
 const SkillPage = lazy(() => import("./pages/SkillPage/SkillPage"));
 const CertificationsPage = lazy(() => import("./pages/Certifications/CertificationsPage"));
 const ContactMePage = lazy(() => import("./pages/ContactMe/ContactMePage"));
+const ProjectsPage = lazy(() => import("./pages/Projects/ProjectsPage"));
 
 /** Exibido enquanto o chunk da página ainda está sendo baixado. */
 function PageSectionFallback() {
@@ -43,9 +44,6 @@ function PageSectionFallback() {
 }
 
 const DEFAULT_LANGUAGE: LanguageCode = "BR";
-
-/** Debug: mantém o fallback de carregamento visível na aba Projetos. */
-const DEBUG_PROJECTS_LOADING_FALLBACK = true;
 
 /** Chave no `localStorage` para lembrar o tema escolhido pelo usuário. */
 const THEME_STORAGE_KEY = "portfolio-theme";
@@ -203,8 +201,12 @@ function App() {
                     />
                   ) : activeSection === "contact" ? (
                     <ContactMePage title={tabTitleBySection.contact} infoTexts={infoTexts} />
-                  ) : activeSection === "projects" && DEBUG_PROJECTS_LOADING_FALLBACK ? (
-                    <PageSectionFallback />
+                  ) : activeSection === "projects" ? (
+                    <ProjectsPage
+                      title={tabTitleBySection.projects}
+                      themeMode={themeMode}
+                      infoTexts={infoTexts}
+                    />
                   ) : (
                     <CardBox className="page-placeholder-card">
                       <section className="page-placeholder">
