@@ -2,7 +2,7 @@ import React, { useEffect, useMemo, useRef, useState } from "react";
 import type { BallConfig, LiquidGlassBallsProps } from "../../utils/Types";
 import "./LiquidGlassBalls.css";
 
-const BALL_COUNT_DESKTOP = 60;
+const BALL_COUNT_DESKTOP = 40;
 const BALL_COUNT_MOBILE = 30;
 /** Alinhado ao layout “compacto” do portfólio (860px). */
 const MOBILE_BALLS_MEDIA = "(max-width: 860px)";
