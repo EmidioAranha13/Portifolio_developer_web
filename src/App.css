@@ -78,6 +78,7 @@
   --hero-text-shadow-color: rgba(0, 0, 0, 0.38);
   /* Espaço reservado abaixo do header fixo (alinhado ao min-height do StyledHeader). */
   --app-header-height: 64px;
+  --app-footer-height: 88px;
 
   /* Glass balls colors */
   --ball-size: 100px;
@@ -287,11 +288,60 @@ body,
 }
 
 .page-section-fallback {
+  box-sizing: border-box;
   width: 100%;
-  min-height: min(420px, 55dvh);
+  min-height: calc(100dvh - var(--app-header-height) - var(--app-footer-height));
   display: flex;
   align-items: center;
   justify-content: center;
+  padding: clamp(20px, 4vw, 40px) 0;
+}
+
+/* Mesmo vidro que Sobre mim: CardBox → .card-box.glass-surface (CardBox.css + glassSurface.css) */
+.page-section-fallback__card.card-box {
+  flex: 0 1 auto;
+  width: auto;
+  max-width: min(420px, calc(100vw - 48px));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.page-section-fallback__content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(10px, 1.6vw, 16px);
+}
+
+.page-section-fallback__spinner-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 188px;
+  height: 188px;
+  flex: 0 0 auto;
+}
+
+.page-section-fallback__spinner-wrap .loading-orbit-spinner {
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+}
+
+.page-section-fallback__label {
+  margin: 0;
+  font-size: clamp(1rem, 1.85vw, 1.12rem);
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  line-height: 1.2;
+  background: var(--header-90-gradient);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
 }
 
 .page-placeholder {

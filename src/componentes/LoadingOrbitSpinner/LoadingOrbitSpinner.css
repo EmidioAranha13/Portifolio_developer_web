@@ -1,4 +1,13 @@
 .loading-orbit-spinner {
+  --orbit-glass-backdrop: color-mix(in srgb, rgb(96, 96, 102) 48%, transparent);
+  --orbit-glass-highlight-strong: 0.62;
+  --orbit-glass-highlight-soft: 0.14;
+  --orbit-glass-inner-glow: 0.34;
+  --orbit-glass-inner-shadow: 0.14;
+  --orbit-glass-blur: 7px;
+  --orbit-glass-saturate: 205%;
+  --orbit-glass-contrast: 125%;
+
   display: flex;
   align-items: center;
   justify-content: center;
@@ -8,52 +17,73 @@
   pointer-events: none;
 }
 
+.App.theme-day .loading-orbit-spinner {
+  --orbit-glass-backdrop: color-mix(in srgb, rgb(114, 114, 114) 48%, transparent);
+  --orbit-glass-highlight-strong: 0.36;
+  --orbit-glass-highlight-soft: 0.08;
+  --orbit-glass-inner-glow: 0.22;
+  --orbit-glass-inner-shadow: 0.08;
+  --orbit-glass-saturate: 245%;
+  --orbit-glass-contrast: 142%;
+}
+
 .loading-orbit-spinner__stage {
   position: relative;
   width: 0;
   height: 0;
+  background: transparent;
 }
 
+/* Anel em degradê do tema */
 .loading-orbit-spinner__ball {
   position: absolute;
   top: 0;
   left: 0;
+  box-sizing: border-box;
   width: 3.2em;
   height: 3.2em;
   margin: -1.6em 0 0 -1.6em;
+  padding: 2px;
   border-radius: 50%;
-  --ball-color: var(--blue1);
-  --loader-ball-tint-mix: 94%;
-  --loader-highlight-strong: 0.62;
-  --loader-highlight-soft: 0.14;
+  background: var(--header-90-gradient);
+  box-shadow: 0 10px 18px rgba(0, 0, 0, 0.16);
   --orbit-radius: 50px;
   --angle: 0deg;
-  background:
-    radial-gradient(
-      circle at 24% 22%,
-      rgba(255, 255, 255, var(--loader-highlight-strong)) 0%,
-      rgba(255, 255, 255, 0.18) 22%,
-      rgba(255, 255, 255, 0) 48%
-    ),
-    radial-gradient(
-      circle at 72% 75%,
-      rgba(255, 255, 255, var(--loader-highlight-soft)) 0%,
-      rgba(255, 255, 255, 0) 52%
-    ),
-    color-mix(in srgb, var(--ball-color) var(--loader-ball-tint-mix), white calc(100% - var(--loader-ball-tint-mix)));
-  border: 1px solid rgba(255, 255, 255, 0.46);
-  box-shadow:
-    inset 0 0 14px rgba(255, 255, 255, 0.34),
-    inset 0 -8px 12px rgba(255, 255, 255, 0.14),
-    0 12px 20px rgba(0, 0, 0, 0.18);
-  backdrop-filter: blur(7px) saturate(235%) contrast(132%);
-  -webkit-backdrop-filter: blur(7px) saturate(235%) contrast(132%);
   will-change: transform;
   transform: translateZ(0);
   animation: loading-orbit-spinner-orbit 1.35s cubic-bezier(0.4, 0.03, 0.2, 1) infinite;
 }
 
-.loading-orbit-spinner__ball::before {
+/* Interior: liquid glass neutro (mesma base que .card-box.glass-surface) */
+.loading-orbit-spinner__ball-glass {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background:
+    radial-gradient(
+      circle at 24% 22%,
+      rgba(255, 255, 255, var(--orbit-glass-highlight-strong)) 0%,
+      rgba(255, 255, 255, 0.18) 22%,
+      rgba(255, 255, 255, 0) 48%
+    ),
+    radial-gradient(
+      circle at 72% 75%,
+      rgba(255, 255, 255, var(--orbit-glass-highlight-soft)) 0%,
+      rgba(255, 255, 255, 0) 52%
+    ),
+    var(--orbit-glass-backdrop);
+  box-shadow:
+    inset 0 0 14px rgba(255, 255, 255, var(--orbit-glass-inner-glow)),
+    inset 0 -8px 12px rgba(255, 255, 255, var(--orbit-glass-inner-shadow));
+  backdrop-filter: blur(var(--orbit-glass-blur)) saturate(var(--orbit-glass-saturate))
+    contrast(var(--orbit-glass-contrast));
+  -webkit-backdrop-filter: blur(var(--orbit-glass-blur)) saturate(var(--orbit-glass-saturate))
+    contrast(var(--orbit-glass-contrast));
+}
+
+.loading-orbit-spinner__ball-glass::before {
   content: "";
   position: absolute;
   top: 11%;
@@ -65,7 +95,7 @@
   pointer-events: none;
 }
 
-.loading-orbit-spinner__ball::after {
+.loading-orbit-spinner__ball-glass::after {
   content: "";
   position: absolute;
   inset: 0;
@@ -74,18 +104,15 @@
   pointer-events: none;
 }
 
-.loading-orbit-spinner__ball--blue {
-  --ball-color: var(--blue1);
+.loading-orbit-spinner__ball--1 {
   --angle: 0deg;
 }
 
-.loading-orbit-spinner__ball--yellow {
-  --ball-color: var(--yellow1);
+.loading-orbit-spinner__ball--2 {
   --angle: 120deg;
 }
 
-.loading-orbit-spinner__ball--magenta {
-  --ball-color: var(--magenta1);
+.loading-orbit-spinner__ball--3 {
   --angle: 240deg;
 }
 
@@ -102,18 +129,52 @@
 @media (prefers-reduced-motion: reduce) {
   .loading-orbit-spinner__ball {
     animation: none;
-    opacity: 0.85;
+    opacity: 0.9;
   }
 
-  .loading-orbit-spinner__ball--blue {
+  .loading-orbit-spinner__ball--1 {
     transform: rotate(0deg) translateX(var(--orbit-radius)) rotate(0deg);
   }
 
-  .loading-orbit-spinner__ball--yellow {
+  .loading-orbit-spinner__ball--2 {
     transform: rotate(120deg) translateX(var(--orbit-radius)) rotate(-120deg);
   }
 
-  .loading-orbit-spinner__ball--magenta {
+  .loading-orbit-spinner__ball--3 {
     transform: rotate(240deg) translateX(var(--orbit-radius)) rotate(-240deg);
+  }
+}
+
+@media (prefers-reduced-transparency: reduce) {
+  .loading-orbit-spinner__ball-glass {
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    background:
+      radial-gradient(
+        circle at 24% 22%,
+        rgba(255, 255, 255, var(--orbit-glass-highlight-strong)) 0%,
+        rgba(255, 255, 255, 0.12) 28%,
+        rgba(255, 255, 255, 0) 52%
+      ),
+      linear-gradient(
+        155deg,
+        color-mix(in srgb, rgb(96, 96, 102) 72%, var(--app-main-bg)) 0%,
+        color-mix(in srgb, rgb(96, 96, 102) 52%, var(--app-main-bg)) 100%
+      );
+  }
+
+  .App.theme-day .loading-orbit-spinner__ball-glass {
+    background:
+      radial-gradient(
+        circle at 24% 22%,
+        rgba(255, 255, 255, var(--orbit-glass-highlight-strong)) 0%,
+        rgba(255, 255, 255, 0.1) 28%,
+        rgba(255, 255, 255, 0) 52%
+      ),
+      linear-gradient(
+        155deg,
+        color-mix(in srgb, rgb(204, 204, 204) 72%, var(--app-main-bg)) 0%,
+        color-mix(in srgb, rgb(204, 204, 204) 52%, var(--app-main-bg)) 100%
+      );
   }
 }

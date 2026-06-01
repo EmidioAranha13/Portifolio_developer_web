@@ -258,7 +258,7 @@
 
 .App.theme-day .contact-me-page__info-item-icon {
   opacity: 0.72;
-  filter: brightness(1.08) saturate(0.9);
+  filter: brightness(0) saturate(100%);
 }
 
 .contact-me-page__form {
@@ -290,9 +290,74 @@
   min-width: 0;
 }
 
+.contact-me-page__field-label-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  min-width: 0;
+}
+
+.contact-me-page__field-label-row .contact-me-page__label {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.contact-me-page__char-count {
+  flex: 0 0 auto;
+  font-size: clamp(0.78rem, 1.05vw, 0.88rem);
+  font-weight: 600;
+  line-height: 1.35;
+  font-variant-numeric: tabular-nums;
+  color: color-mix(in srgb, var(--app-main-text) 62%, transparent);
+  white-space: nowrap;
+}
+
 .contact-me-page__label {
   font-size: clamp(0.9rem, 1.25vw, 1rem);
   font-weight: 700;
   line-height: 1.35;
   color: color-mix(in srgb, var(--app-main-text) 88%, transparent);
+}
+
+.contact-me-page__field-error {
+  margin: 0;
+  font-size: clamp(0.78rem, 1.05vw, 0.88rem);
+  font-weight: 600;
+  line-height: 1.35;
+  color: color-mix(in srgb, #ff8a8a 92%, var(--app-main-text));
+}
+
+.contact-me-page__form-feedback {
+  margin: 0;
+  font-size: clamp(0.86rem, 1.15vw, 0.95rem);
+  font-weight: 600;
+  line-height: 1.45;
+}
+
+.contact-me-page__form-feedback--warning {
+  color: color-mix(in srgb, #ffd27a 90%, var(--app-main-text));
+}
+
+.contact-me-page__form-actions {
+  margin-top: clamp(4px, 1vw, 8px);
+  width: 100%;
+}
+
+.contact-me-page__form-actions .custom-bullet-button {
+  width: 100%;
+  min-width: 0;
+}
+
+.contact-me-page__form-actions .custom-bullet-button:disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
+  transform: none;
+  filter: none;
+}
+
+.form-text-field__input:disabled,
+.form-text-area__input:disabled {
+  cursor: not-allowed;
+  opacity: 0.72;
 }

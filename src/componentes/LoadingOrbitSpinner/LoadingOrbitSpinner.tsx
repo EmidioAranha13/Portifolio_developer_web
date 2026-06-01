@@ -7,7 +7,7 @@ type LoadingOrbitSpinnerProps = {
 };
 
 /**
- * Três bolas em órbita — mesmo visual do LoadingScreen, sem fundo nem colisão.
+ * Três esferas em órbita: vidro neutro (liquid glass) com contorno em degradê do tema.
  */
 const LoadingOrbitSpinner: React.FC<LoadingOrbitSpinnerProps> = ({
   label = "Carregando…",
@@ -18,9 +18,15 @@ const LoadingOrbitSpinner: React.FC<LoadingOrbitSpinnerProps> = ({
   return (
     <div className={rootClass} role="status" aria-live="polite" aria-label={label}>
       <div className="loading-orbit-spinner__stage" aria-hidden="true">
-        <div className="loading-orbit-spinner__ball loading-orbit-spinner__ball--blue" />
-        <div className="loading-orbit-spinner__ball loading-orbit-spinner__ball--yellow" />
-        <div className="loading-orbit-spinner__ball loading-orbit-spinner__ball--magenta" />
+        <div className="loading-orbit-spinner__ball loading-orbit-spinner__ball--1">
+          <div className="loading-orbit-spinner__ball-glass" />
+        </div>
+        <div className="loading-orbit-spinner__ball loading-orbit-spinner__ball--2">
+          <div className="loading-orbit-spinner__ball-glass" />
+        </div>
+        <div className="loading-orbit-spinner__ball loading-orbit-spinner__ball--3">
+          <div className="loading-orbit-spinner__ball-glass" />
+        </div>
       </div>
     </div>
   );

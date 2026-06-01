@@ -27,13 +27,25 @@ const ContactMePage = lazy(() => import("./pages/ContactMe/ContactMePage"));
 /** Exibido enquanto o chunk da página ainda está sendo baixado. */
 function PageSectionFallback() {
   return (
-    <div className="page-section-fallback">
-      <LoadingOrbitSpinner label="Carregando…" />
+    <div className="page-section-fallback" role="status" aria-live="polite" aria-busy="true">
+      <CardBox className="page-section-fallback__card">
+        <div className="page-section-fallback__content">
+          <div className="page-section-fallback__spinner-wrap">
+            <LoadingOrbitSpinner label="Carregando" />
+          </div>
+          <p className="page-section-fallback__label" aria-hidden="true">
+            Carregando
+          </p>
+        </div>
+      </CardBox>
     </div>
   );
 }
 
 const DEFAULT_LANGUAGE: LanguageCode = "BR";
+
+/** Debug: mantém o fallback de carregamento visível na aba Projetos. */
+const DEBUG_PROJECTS_LOADING_FALLBACK = true;
 
 /** Chave no `localStorage` para lembrar o tema escolhido pelo usuário. */
 const THEME_STORAGE_KEY = "portfolio-theme";
@@ -191,6 +203,8 @@ function App() {
                     />
                   ) : activeSection === "contact" ? (
                     <ContactMePage title={tabTitleBySection.contact} infoTexts={infoTexts} />
+                  ) : activeSection === "projects" && DEBUG_PROJECTS_LOADING_FALLBACK ? (
+                    <PageSectionFallback />
                   ) : (
                     <CardBox className="page-placeholder-card">
                       <section className="page-placeholder">

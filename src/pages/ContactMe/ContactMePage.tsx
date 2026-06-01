@@ -1,9 +1,14 @@
-import { useId, useState } from "react";
-import FormTextArea from "../../componentes/FormTextArea/FormTextArea";
+import { useForm, ValidationError } from "@formspree/react";
+import { useEffect, useId, useRef, useState, type FormEvent } from "react";
+import CustomBulletButton from "../../componentes/CustomBulletButton/CustomBulletButton";
+import FormTextArea, { MESSAGE_MAX_LENGTH } from "../../componentes/FormTextArea/FormTextArea";
 import FormTextField from "../../componentes/FormTextField/FormTextField";
+import Modal from "../../componentes/modal/Modal";
 import ProfileSectionRail from "../../componentes/ProfileSectionRail/ProfileSectionRail";
+import { formatE164PhoneInput, isValidE164Phone } from "../../utils/e164Phone";
 import type { InfoTexts } from "../../utils/infoTextsCollection";
 import arrow1 from "../../assets/arrow-1.png";
+import gmailIcon from "../../assets/gmail.png";
 import githubIcon from "../../assets/github.png";
 import linkedinIcon from "../../assets/linkedin.png";
 import localIcon from "../../assets/local.png";
@@ -15,22 +20,111 @@ type ContactMePageProps = {
   infoTexts: InfoTexts;
 };
 
+type ContactFormFields = {
+  name: string;
+  email: string;
+  yourContact: string;
+  subject: string;
+  message: string;
+};
+
+type FeedbackModalKind = "success" | "error" | "processing";
+
+const FORMSPREE_FORM_ID = import.meta.env.VITE_FORMSPREE_FORM_ID ?? "";
+
 /**
  * Página Contato: informações à esquerda e formulário à direita.
  */
 const ContactMePage: React.FC<ContactMePageProps> = ({ title: _title, infoTexts }) => {
   const formId = useId();
+  const formRef = useRef<HTMLFormElement>(null);
+  const pendingSubmissionRef = useRef(false);
   const page = infoTexts.contactme_page;
+  const formspreeEnabled = FORMSPREE_FORM_ID.length > 0;
+
+  const [state, handleSubmit, resetFormspree] = useForm<ContactFormFields>(
+    formspreeEnabled ? FORMSPREE_FORM_ID : "contact-form-not-configured"
+  );
 
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
+  const [yourContact, setYourContact] = useState("");
   const [subject, setSubject] = useState("");
   const [message, setMessage] = useState("");
+  const [feedbackModal, setFeedbackModal] = useState<FeedbackModalKind | null>(null);
 
   const nameId = `${formId}-name`;
   const emailId = `${formId}-email`;
+  const yourContactId = `${formId}-your-contact`;
   const subjectId = `${formId}-subject`;
   const messageId = `${formId}-message`;
+  const messageCountId = `${formId}-message-count`;
+
+  const resetFormFields = () => {
+    setName("");
+    setEmail("");
+    setYourContact("");
+    setSubject("");
+    setMessage("");
+    syncPhoneFieldValidity("");
+  };
+
+  const syncPhoneFieldValidity = (value: string) => {
+    const input = document.getElementById(yourContactId) as HTMLInputElement | null;
+    if (!input) return;
+
+    if (!value.trim() || isValidE164Phone(value)) {
+      input.setCustomValidity("");
+      return;
+    }
+
+    input.setCustomValidity(page.form_phone_invalid_message);
+  };
+
+  const handleYourContactChange = (value: string) => {
+    const formatted = formatE164PhoneInput(value);
+    setYourContact(formatted);
+    syncPhoneFieldValidity(formatted);
+  };
+
+  const closeFeedbackModal = () => {
+    setFeedbackModal(null);
+    resetFormspree();
+  };
+
+  useEffect(() => {
+    if (!pendingSubmissionRef.current || state.submitting) return;
+
+    pendingSubmissionRef.current = false;
+
+    if (state.succeeded) {
+      resetFormFields();
+      setFeedbackModal("success");
+      return;
+    }
+
+    if (state.errors) {
+      setFeedbackModal("error");
+    }
+  }, [state.succeeded, state.errors, state.submitting]);
+
+  const onFormSubmit = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+
+    if (!formspreeEnabled) return;
+
+    const form = formRef.current ?? event.currentTarget;
+
+    syncPhoneFieldValidity(yourContact);
+    if (!form.reportValidity()) return;
+
+    pendingSubmissionRef.current = true;
+    setFeedbackModal("processing");
+    void handleSubmit(event);
+  };
+
+  const isSubmitDisabled = state.submitting || !formspreeEnabled;
+  const submitLabel = state.submitting ? page.form_submitting_label : page.form_submit_label;
 
   return (
     <div className="contact-me-page">
@@ -59,6 +153,22 @@ const ContactMePage: React.FC<ContactMePageProps> = ({ title: _title, infoTexts 
                   <span className="contact-me-page__info-label">{page.phone_label}</span>
                   <a className="contact-me-page__info-link" href={`tel:${page.phone_href}`}>
                     {page.phone_link}
+                  </a>
+                </div>
+              </div>
+
+              <div className="contact-me-page__info-item contact-me-page__info-item--with-icon">
+                <img
+                  className="contact-me-page__info-item-icon"
+                  src={gmailIcon}
+                  alt=""
+                  aria-hidden
+                  decoding="async"
+                />
+                <div className="contact-me-page__info-item-body">
+                  <span className="contact-me-page__info-label">{page.myEmail_label}</span>
+                  <a className="contact-me-page__info-link" href={`mailto:${page.myEmail}`}>
+                    {page.myEmail_link}
                   </a>
                 </div>
               </div>
@@ -120,7 +230,12 @@ const ContactMePage: React.FC<ContactMePageProps> = ({ title: _title, infoTexts 
               </div>
             </aside>
 
-            <form className="contact-me-page__form" noValidate>
+            <form
+              ref={formRef}
+              className="contact-me-page__form"
+              onSubmit={onFormSubmit}
+              noValidate
+            >
               <div className="contact-me-page__field-row">
                 <div className="contact-me-page__field">
                   <label className="contact-me-page__label" htmlFor={nameId}>
@@ -128,26 +243,68 @@ const ContactMePage: React.FC<ContactMePageProps> = ({ title: _title, infoTexts 
                   </label>
                   <FormTextField
                     id={nameId}
+                    name="name"
                     value={name}
                     onChange={setName}
                     placeholder={page.name_placeholder}
                     autoComplete="name"
+                    required
+                    disabled={state.submitting}
+                  />
+                  <ValidationError
+                    prefix={page.name_label}
+                    field="name"
+                    errors={state.errors}
+                    className="contact-me-page__field-error"
                   />
                 </div>
 
                 <div className="contact-me-page__field">
-                  <label className="contact-me-page__label" htmlFor={emailId}>
-                    {page.email_label}
+                  <label className="contact-me-page__label" htmlFor={yourContactId}>
+                    {page.yourContact}
                   </label>
                   <FormTextField
-                    id={emailId}
-                    type="email"
-                    value={email}
-                    onChange={setEmail}
-                    placeholder={page.email_placeholder}
-                    autoComplete="email"
+                    id={yourContactId}
+                    name="yourContact"
+                    type="tel"
+                    value={yourContact}
+                    onChange={handleYourContactChange}
+                    placeholder={page.yourContact_placeholder}
+                    autoComplete="tel"
+                    inputMode="tel"
+                    required
+                    disabled={state.submitting}
+                  />
+                  <ValidationError
+                    prefix={page.yourContact}
+                    field="yourContact"
+                    errors={state.errors}
+                    className="contact-me-page__field-error"
                   />
                 </div>
+              </div>
+
+              <div className="contact-me-page__field">
+                <label className="contact-me-page__label" htmlFor={emailId}>
+                  {page.email_label}
+                </label>
+                <FormTextField
+                  id={emailId}
+                  name="email"
+                  type="email"
+                  value={email}
+                  onChange={setEmail}
+                  placeholder={page.email_placeholder}
+                  autoComplete="email"
+                  required
+                  disabled={state.submitting}
+                />
+                <ValidationError
+                  prefix={page.email_label}
+                  field="email"
+                  errors={state.errors}
+                  className="contact-me-page__field-error"
+                />
               </div>
 
               <div className="contact-me-page__field">
@@ -156,27 +313,91 @@ const ContactMePage: React.FC<ContactMePageProps> = ({ title: _title, infoTexts 
                 </label>
                 <FormTextField
                   id={subjectId}
+                  name="subject"
                   value={subject}
                   onChange={setSubject}
                   placeholder={page.subject_placeholder}
+                  required
+                  disabled={state.submitting}
+                />
+                <ValidationError
+                  prefix={page.subject_label}
+                  field="subject"
+                  errors={state.errors}
+                  className="contact-me-page__field-error"
                 />
               </div>
 
               <div className="contact-me-page__field">
-                <label className="contact-me-page__label" htmlFor={messageId}>
-                  {page.message_label}
-                </label>
+                <div className="contact-me-page__field-label-row">
+                  <label className="contact-me-page__label" htmlFor={messageId}>
+                    {page.message_label}
+                  </label>
+                  <span
+                    id={messageCountId}
+                    className="contact-me-page__char-count"
+                    aria-live="polite"
+                  >
+                    {message.length}/{MESSAGE_MAX_LENGTH}
+                  </span>
+                </div>
                 <FormTextArea
                   id={messageId}
+                  name="message"
                   value={message}
                   onChange={setMessage}
                   placeholder={page.message_placeholder}
+                  ariaDescribedBy={messageCountId}
+                  maxLength={MESSAGE_MAX_LENGTH}
+                  required
+                  disabled={state.submitting}
+                />
+                <ValidationError
+                  prefix={page.message_label}
+                  field="message"
+                  errors={state.errors}
+                  className="contact-me-page__field-error"
+                />
+              </div>
+
+              {!formspreeEnabled ? (
+                <p
+                  className="contact-me-page__form-feedback contact-me-page__form-feedback--warning"
+                  role="status"
+                >
+                  {page.form_config_missing_message}
+                </p>
+              ) : null}
+
+              <div className="contact-me-page__form-actions">
+                <CustomBulletButton
+                  type="submit"
+                  label={submitLabel}
+                  variant="primary"
+                  icon="paperPlane"
+                  disabled={isSubmitDisabled}
+                  aria-disabled={isSubmitDisabled}
                 />
               </div>
             </form>
           </div>
         </ProfileSectionRail>
       </div>
+
+      {feedbackModal ? (
+        <Modal
+          isOpen
+          onClose={closeFeedbackModal}
+          variant={feedbackModal}
+          closeLabel={page.form_modal_close_label}
+          processingTitle={page.form_modal_processing_title}
+          processingMessage={page.form_modal_processing_message}
+          successTitle={page.form_modal_success_title}
+          successMessage={page.form_success_message}
+          errorTitle={page.form_modal_error_title}
+          errorMessage={page.form_error_message}
+        />
+      ) : null}
     </div>
   );
 };
