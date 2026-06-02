@@ -434,6 +434,77 @@ export type CertificateItem = {
   img: CertificateId;
 };
 
+/** Chave da imagem de capa em `assets/projects/Delta/project_n.png`. */
+export type ProjectImageKey =
+  | "project_1"
+  | "project_2"
+  | "project_3"
+  | "project_4"
+  | "project_5"
+  | "project_6"
+  | "project_7"
+  | "project_8"
+  | "project_9"
+  | "project_10"
+  | "project_11"
+  | "project_12";
+
+/**
+ * Item do carrossel em `projects_page.carousel_cards`.
+ * `id` é o índice em `projects_page.project_details`.
+ */
+export type ProjectCarouselCard = {
+  id: number;
+  title: string;
+  description: string;
+  /** Cor de fundo quando `img` estiver vazio ou ausente. */
+  color: string;
+  /** Vazio ou ausente → usa `color`. */
+  img?: ProjectImageKey | "";
+};
+
+/**
+ * Conteúdo detalhado do projeto (modal / painel futuro), indexado por `ProjectCarouselCard.id`.
+ */
+export type ProjectDetail = {
+  title: string;
+  paragraphs: string[];
+};
+
+/** Card do carrossel com URL da imagem já resolvida (se houver `img`). */
+export type ProjectCarouselCardItem = ProjectCarouselCard & {
+  imageSrc?: string;
+};
+
+/**
+ * Conteúdo da página de projetos por idioma.
+ */
+export type ProjectsPage = {
+  contributions_title: string;
+  my_projects_title: string;
+  my_projects_placeholder: string;
+  contributions_total: string;
+  contributions_less: string;
+  contributions_more: string;
+  contributions_error: string;
+  github_profile_label: string;
+  stat_total_label: string;
+  stat_completed_label: string;
+  stat_personal_label: string;
+  stat_in_progress_label: string;
+  carousel_prev_label: string;
+  carousel_next_label: string;
+  carousel_aria_label: string;
+  carousel_cards: ProjectCarouselCard[];
+  project_details: ProjectDetail[];
+  stats: {
+    total: number;
+    completed: number;
+    personal: number;
+    in_progress: number;
+  };
+};
+
 /**
  * Conteúdo da página de certificações por idioma.
  *

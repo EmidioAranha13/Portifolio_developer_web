@@ -3,10 +3,93 @@ import type {
   EducationActivity,
   EducationLeafLabels,
   EducationYearEntry,
+  ProjectCarouselCard,
+  ProjectDetail,
+  ProjectImageKey,
   SkillPageSkill,
 } from "./Types";
 
 export type { EducationActivity, EducationLeafLabels, EducationYearEntry };
+
+const PROJECT_COUNT = 12;
+
+const PROJECT_CARD_COLORS = [
+  "#01689d",
+  "#17937c",
+  "#3fa874",
+  "#6bbe68",
+  "#9cd65d",
+  "#f84187",
+  "#f841ca",
+  "#b73bcf",
+  "#5f38cc",
+  "#13b4b9",
+  "#0a5c7a",
+  "#2d6a4f",
+] as const;
+
+const buildCarouselCards = (
+  entries: ReadonlyArray<{
+    title: string;
+    description: string;
+    color?: string;
+    img?: ProjectImageKey | "";
+  }>,
+): ProjectCarouselCard[] =>
+  entries.map((entry, index) => {
+    const card: ProjectCarouselCard = {
+      id: index,
+      title: entry.title,
+      description: entry.description,
+      color: entry.color ?? PROJECT_CARD_COLORS[index],
+    };
+    if (entry.img) card.img = entry.img;
+    return card;
+  });
+
+const buildProjectDetails = (
+  entries: ReadonlyArray<{ title: string; paragraphs: string[] }>,
+): ProjectDetail[] =>
+  entries.map((entry) => ({
+    title: entry.title,
+    paragraphs: entry.paragraphs,
+  }));
+
+/** Rascunhos BR — substitua título, descrição e parágrafos pelos dados reais. */
+const PROJECT_ENTRIES_BR = Array.from({ length: PROJECT_COUNT }, (_, index) => {
+  const n = index + 1;
+  return {
+    title: `Projeto ${n}`,
+    description: `Descrição resumida do projeto ${n}.`,
+    paragraphs: [`Conteúdo detalhado do projeto ${n} (em breve).`],
+  };
+});
+
+const PROJECT_ENTRIES_EN = Array.from({ length: PROJECT_COUNT }, (_, index) => {
+  const n = index + 1;
+  return {
+    title: `Project ${n}`,
+    description: `Short description for project ${n}.`,
+    paragraphs: [`Detailed content for project ${n} (coming soon).`],
+  };
+});
+
+const PROJECT_ENTRIES_JA = Array.from({ length: PROJECT_COUNT }, (_, index) => {
+  const n = index + 1;
+  return {
+    title: `プロジェクト ${n}`,
+    description: `プロジェクト ${n} の概要です。`,
+    paragraphs: [`プロジェクト ${n} の詳細（準備中）。`],
+  };
+});
+
+const PROJECT_CAROUSEL_BR = buildCarouselCards(PROJECT_ENTRIES_BR);
+const PROJECT_CAROUSEL_EN = buildCarouselCards(PROJECT_ENTRIES_EN);
+const PROJECT_CAROUSEL_JA = buildCarouselCards(PROJECT_ENTRIES_JA);
+
+const PROJECT_DETAILS_BR = buildProjectDetails(PROJECT_ENTRIES_BR);
+const PROJECT_DETAILS_EN = buildProjectDetails(PROJECT_ENTRIES_EN);
+const PROJECT_DETAILS_JA = buildProjectDetails(PROJECT_ENTRIES_JA);
 
 export const infoTextsCollection = {
   br: {
@@ -703,6 +786,8 @@ export const infoTextsCollection = {
     },
     projects_page: {
       contributions_title: "Contribuições no GitHub",
+      my_projects_title: "Sistemas Desenvolvidos",
+      my_projects_placeholder: "Em breve: lista de projetos.",
       contributions_total: "{{count}} contribuições no último ano",
       contributions_less: "Menos",
       contributions_more: "Mais",
@@ -712,6 +797,11 @@ export const infoTextsCollection = {
       stat_completed_label: "Projetos Completos",
       stat_personal_label: "Projetos Pessoais",
       stat_in_progress_label: "Em Andamento",
+      carousel_prev_label: "Projeto anterior",
+      carousel_next_label: "Próximo projeto",
+      carousel_aria_label: "Carrossel de projetos",
+      carousel_cards: PROJECT_CAROUSEL_BR,
+      project_details: PROJECT_DETAILS_BR,
       stats: {
         total: 12,
         completed: 6,
@@ -1453,6 +1543,8 @@ export const infoTextsCollection = {
     },
     projects_page: {
       contributions_title: "GitHub contributions",
+      my_projects_title: "Developed Systems",
+      my_projects_placeholder: "Coming soon: project list.",
       contributions_total: "{{count}} contributions in the last year",
       contributions_less: "Less",
       contributions_more: "More",
@@ -1462,11 +1554,16 @@ export const infoTextsCollection = {
       stat_completed_label: "Completed Projects",
       stat_personal_label: "Personal Projects",
       stat_in_progress_label: "In Progress",
+      carousel_prev_label: "Previous project",
+      carousel_next_label: "Next project",
+      carousel_aria_label: "Projects carousel",
+      carousel_cards: PROJECT_CAROUSEL_EN,
+      project_details: PROJECT_DETAILS_EN,
       stats: {
-        total: 0,
-        completed: 0,
-        personal: 0,
-        in_progress: 0,
+        total: 12,
+        completed: 6,
+        personal: 4,
+        in_progress: 1,
       },
     },
     contactme_page: {
@@ -2041,6 +2138,8 @@ export const infoTextsCollection = {
     },
     projects_page: {
       contributions_title: "GitHub コントリビューション",
+      my_projects_title: "開発実績",
+      my_projects_placeholder: "近日公開：プロジェクト一覧。",
       contributions_total: "過去1年で {{count}} 件のコントリビューション",
       contributions_less: "少",
       contributions_more: "多",
@@ -2050,11 +2149,16 @@ export const infoTextsCollection = {
       stat_completed_label: "完了プロジェクト",
       stat_personal_label: "個人プロジェクト",
       stat_in_progress_label: "進行中",
+      carousel_prev_label: "前のプロジェクト",
+      carousel_next_label: "次のプロジェクト",
+      carousel_aria_label: "プロジェクトカルーセル",
+      carousel_cards: PROJECT_CAROUSEL_JA,
+      project_details: PROJECT_DETAILS_JA,
       stats: {
-        total: 0,
-        completed: 0,
-        personal: 0,
-        in_progress: 0,
+        total: 12,
+        completed: 6,
+        personal: 4,
+        in_progress: 1,
       },
     },
     contactme_page: {
