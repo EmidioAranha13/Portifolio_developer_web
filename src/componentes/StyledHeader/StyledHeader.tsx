@@ -59,6 +59,7 @@ const StyledHeader: React.FC<StyledHeaderProps> = ({
   const tabsRef = useRef<HTMLElement>(null);
   const controlsRef = useRef<HTMLDivElement>(null);
   const menuIcon = new URL("../../assets/menu.png", import.meta.url).href;
+  const logoSrc = new URL("../../assets/main/Logo.png", import.meta.url).href;
 
   const recomputeCompactNav = useCallback(() => {
     const tabs = tabsRef.current;
@@ -115,16 +116,27 @@ const StyledHeader: React.FC<StyledHeaderProps> = ({
 
   return (
     <header ref={headerRef} className={`background${compactNav ? " header--compact-nav" : ""}`}>
-      <button
-        type="button"
-        className="mobile-menu-trigger"
-        aria-label="Abrir menu"
-        aria-expanded={isMobileMenuOpen}
-        aria-controls="mobile-header-drawer"
-        onClick={() => setIsMobileMenuOpen((previous) => !previous)}
-      >
-        <img src={menuIcon} alt="" aria-hidden="true" className="mobile-menu-icon" />
-      </button>
+      <div className="header-leading">
+        <button
+          type="button"
+          className="mobile-menu-trigger"
+          aria-label="Abrir menu"
+          aria-expanded={isMobileMenuOpen}
+          aria-controls="mobile-header-drawer"
+          onClick={() => setIsMobileMenuOpen((previous) => !previous)}
+        >
+          <img src={menuIcon} alt="" aria-hidden="true" className="mobile-menu-icon" />
+        </button>
+
+        <div className="header-brand">
+          <img
+            src={logoSrc}
+            alt="Logo Emídio Aranha"
+            className="header-brand__img"
+            decoding="async"
+          />
+        </div>
+      </div>
 
       <nav ref={tabsRef} className="tabs" aria-label="Seções do portfólio">
         {HEADER_TABS.map((tab) => (

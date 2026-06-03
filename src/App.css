@@ -77,7 +77,7 @@
   --hero-stroke-role-color: rgba(255, 255, 255, 0.28);
   --hero-text-shadow-color: rgba(0, 0, 0, 0.38);
   /* Espaço reservado abaixo do header fixo (alinhado ao min-height do StyledHeader). */
-  --app-header-height: 64px;
+  --app-header-height: 72px;
   --app-footer-height: 88px;
 
   /* Glass balls colors */
@@ -103,7 +103,7 @@
 
 @media (max-width: 1024px) {
   :root {
-    --app-header-height: 58px;
+    --app-header-height: 64px;
   }
 }
 

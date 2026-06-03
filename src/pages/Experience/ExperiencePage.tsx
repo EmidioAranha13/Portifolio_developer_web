@@ -3,6 +3,7 @@ import MenuBoxSellection from "../../componentes/MenuBoxSellection/MenuBoxSellec
 import type { MenuBoxSellectionItem } from "../../componentes/MenuBoxSellection/MenuBoxSellection";
 import deltaLogo from "../../assets/DELTA.png";
 import ictsLogo from "../../assets/ICTS.jpg";
+import freelanceLogo from "../../assets/main/Logo.png";
 import photoRotator1 from "../../assets/photo-rotator-1.jpg";
 import photoRotator2 from "../../assets/photo-rotator-2.jpg";
 import photoRotator3 from "../../assets/photo-rotator-3.jpg";
@@ -31,7 +32,7 @@ const ExperiencePage: React.FC<ExperiencePageProps> = ({ title, infoTexts }) => 
   const logoByExperienceId: Record<string, string | undefined> = {
     delta: deltaLogo,
     icts: ictsLogo,
-    freelance: undefined,
+    freelance: freelanceLogo,
   };
 
   const photoById: Record<string, string> = {

@@ -82,6 +82,7 @@
   touch-action: pan-y;
   cursor: grab;
   user-select: none;
+  border-radius: 20%;
   -webkit-mask-image: linear-gradient(
     to right,
     transparent 0%,
