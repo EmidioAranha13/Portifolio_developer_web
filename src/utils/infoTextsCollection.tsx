@@ -3,15 +3,19 @@ import type {
   EducationActivity,
   EducationLeafLabels,
   EducationYearEntry,
-  ProjectCarouselCard,
-  ProjectDetail,
+  Project,
   ProjectImageKey,
+  ProjectScreenItem,
   SkillPageSkill,
 } from "./Types";
 
 export type { EducationActivity, EducationLeafLabels, EducationYearEntry };
 
 const PROJECT_COUNT = 12;
+
+/** Placeholder do resumo do carrossel (~5 linhas no painel de projetos). */
+const PROJECT_SUMMARY_LOREM =
+  "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Proin eget tortor risus. Curabitur non nulla sit amet nisl tempus convallis quis ac lectus. Donec sollicitudin molestie malesuada. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae.";
 
 const PROJECT_CARD_COLORS = [
   "#01689d",
@@ -28,48 +32,50 @@ const PROJECT_CARD_COLORS = [
   "#2d6a4f",
 ] as const;
 
-const buildCarouselCards = (
+const DEFAULT_PROJECT_TECHNOLOGIES = ["React", "TypeScript", "Vite", "Node.js"] as const;
+
+const DEFAULT_PROJECT_SCREENS: ProjectScreenItem[] = [
+  { img: "" },
+  { img: "" },
+  { img: "" },
+];
+
+const buildProjects = (
   entries: ReadonlyArray<{
     title: string;
     description: string;
+    paragraphs: string[];
     color?: string;
     img?: ProjectImageKey | "";
+    technologies?: readonly string[];
+    screens?: readonly ProjectScreenItem[];
+    project_github_link?: string;
+    project_test_link?: string;
   }>,
-): ProjectCarouselCard[] =>
+): Project[] =>
   entries.map((entry, index) => {
-    const card: ProjectCarouselCard = {
+    const project: Project = {
       id: index,
       title: entry.title,
       description: entry.description,
       color: entry.color ?? PROJECT_CARD_COLORS[index],
+      paragraphs: entry.paragraphs,
+      technologies: entry.technologies
+        ? [...entry.technologies]
+        : [...DEFAULT_PROJECT_TECHNOLOGIES],
+      screens: (entry.screens ?? DEFAULT_PROJECT_SCREENS).map((screen) => ({ ...screen })),
+      project_github_link: entry.project_github_link ?? "",
+      project_test_link: entry.project_test_link ?? "",
     };
-    if (entry.img) card.img = entry.img;
-    return card;
+    if (entry.img) project.img = entry.img;
+    return project;
   });
-
-const buildProjectDetails = (
-  entries: ReadonlyArray<{ title: string; paragraphs: string[] }>,
-): ProjectDetail[] =>
-  entries.map((entry) => ({
-    title: entry.title,
-    paragraphs: entry.paragraphs,
-  }));
-
-/** Rascunhos BR — substitua título, descrição e parágrafos pelos dados reais. */
-const PROJECT_ENTRIES_BR = Array.from({ length: PROJECT_COUNT }, (_, index) => {
-  const n = index + 1;
-  return {
-    title: `Projeto ${n}`,
-    description: `Descrição resumida do projeto ${n}.`,
-    paragraphs: [`Conteúdo detalhado do projeto ${n} (em breve).`],
-  };
-});
 
 const PROJECT_ENTRIES_EN = Array.from({ length: PROJECT_COUNT }, (_, index) => {
   const n = index + 1;
   return {
     title: `Project ${n}`,
-    description: `Short description for project ${n}.`,
+    description: PROJECT_SUMMARY_LOREM,
     paragraphs: [`Detailed content for project ${n} (coming soon).`],
   };
 });
@@ -78,18 +84,13 @@ const PROJECT_ENTRIES_JA = Array.from({ length: PROJECT_COUNT }, (_, index) => {
   const n = index + 1;
   return {
     title: `プロジェクト ${n}`,
-    description: `プロジェクト ${n} の概要です。`,
+    description: PROJECT_SUMMARY_LOREM,
     paragraphs: [`プロジェクト ${n} の詳細（準備中）。`],
   };
 });
 
-const PROJECT_CAROUSEL_BR = buildCarouselCards(PROJECT_ENTRIES_BR);
-const PROJECT_CAROUSEL_EN = buildCarouselCards(PROJECT_ENTRIES_EN);
-const PROJECT_CAROUSEL_JA = buildCarouselCards(PROJECT_ENTRIES_JA);
-
-const PROJECT_DETAILS_BR = buildProjectDetails(PROJECT_ENTRIES_BR);
-const PROJECT_DETAILS_EN = buildProjectDetails(PROJECT_ENTRIES_EN);
-const PROJECT_DETAILS_JA = buildProjectDetails(PROJECT_ENTRIES_JA);
+const PROJECTS_EN = buildProjects(PROJECT_ENTRIES_EN);
+const PROJECTS_JA = buildProjects(PROJECT_ENTRIES_JA);
 
 export const infoTextsCollection = {
   br: {
@@ -792,6 +793,7 @@ export const infoTextsCollection = {
       contributions_less: "Menos",
       contributions_more: "Mais",
       contributions_error: "Não foi possível carregar as contribuições do GitHub.",
+      contributions_calendar_loading_label: "Carregando contribuições do GitHub",
       github_profile_label: "Ver perfil @EmidioAranha13",
       stat_total_label: "Projetos no Total",
       stat_completed_label: "Projetos Completos",
@@ -800,8 +802,110 @@ export const infoTextsCollection = {
       carousel_prev_label: "Projeto anterior",
       carousel_next_label: "Próximo projeto",
       carousel_aria_label: "Carrossel de projetos",
-      carousel_cards: PROJECT_CAROUSEL_BR,
-      project_details: PROJECT_DETAILS_BR,
+      carousel_learn_more_label: "Saiba mais",
+      carousel_summary_label: "Resumo do Projeto",
+      project_modal_close_label: "Fechar",
+      project_modal_screens_label: "Telas",
+      project_modal_github_label: "GitHub",
+      project_modal_live_label: "Testar",
+      project_modal_technologies_label: "Tecnologias: ",
+      // projects: PROJECTS_BR,
+      projects: [{
+        id: 0,
+        title: "Portifólio Web/Mobile",
+        description: "Portifólio web/mobile pessoal profissional totalmente desenvolvido em React. O principal intuito é mostrar meus projetos e habilidades de desenvolvimento de software.",
+        paragraphs: ["Parágrafo 1", "Parágrafo 2", "Parágrafo 3"],
+        color: "#01689d",
+        img: "",
+        technologies: ["React", "TypeScript", "Vite", "Node.js"],
+        screens: [],
+        project_github_link: "https://github.com/EmidioAranha13/proj1",
+        project_test_link: "https://github.com/EmidioAranha13/proj1",
+      }, {
+        id: 1,
+        title: "Air Quality App",
+        description: "Descrição do projeto 2",
+        paragraphs: ["Parágrafo 1", "Parágrafo 2", "Parágrafo 3"],
+        color: "#17937c",
+        img: "",
+        technologies: ["React", "TypeScript", "Vite", "Node.js"],
+        screens: [],
+        project_github_link: "https://github.com/EmidioAranha13/proj1",
+        project_test_link: "https://github.com/EmidioAranha13/proj1",
+      }, 
+      {
+        id: 2,
+        title: "Sistema de Visão: Detector",
+        description: "Descrição do projeto 3",
+        paragraphs: ["Parágrafo 1", "Parágrafo 2", "Parágrafo 3"],
+        color: "#3fa874",
+        img: "",
+        technologies: ["React", "TypeScript", "Vite", "Node.js"],
+        screens: [],
+        project_github_link: "https://github.com/EmidioAranha13/proj1",
+        project_test_link: "https://github.com/EmidioAranha13/proj1",
+      }, 
+      {
+        id: 3,
+        title: "Dashboard de Monitoramento",
+        description: "Descrição do projeto 4",
+        paragraphs: ["Parágrafo 1", "Parágrafo 2", "Parágrafo 3"],
+        color: "#6bbe68",
+        img: "",
+        technologies: ["React", "TypeScript", "Vite", "Node.js"],
+        screens: [],
+        project_github_link: "https://github.com/EmidioAranha13/proj1",
+        project_test_link: "https://github.com/EmidioAranha13/proj1", 
+      },
+      {
+        id: 4,
+        title: "Icomp Números",
+        description: "Descrição do projeto 5",
+        paragraphs: ["Parágrafo 1", "Parágrafo 2", "Parágrafo 3"],
+        color: "#9cd65d",
+        img: "",
+        technologies: ["React", "TypeScript", "Vite", "Node.js"],
+        screens: [],
+        project_github_link: "https://github.com/EmidioAranha13/proj1",
+        project_test_link: "https://github.com/EmidioAranha13/proj1",
+      },
+      {
+        id: 5,
+        title: "Sistema de Gerenciamento de PetShop",
+        description: "Descrição do projeto 6",
+        paragraphs: ["Parágrafo 1", "Parágrafo 2", "Parágrafo 3"],
+        color: "#f84187",
+        img: "",
+        technologies: ["React", "TypeScript", "Vite", "Node.js"],
+        screens: [],
+        project_github_link: "https://github.com/EmidioAranha13/proj1",
+        project_test_link: "https://github.com/EmidioAranha13/proj1",
+      },
+      {
+        id: 6,
+        title: "Condomunity",
+        description: "Descrição do projeto 7",
+        paragraphs: ["Parágrafo 1", "Parágrafo 2", "Parágrafo 3"],
+        color: "#f841ca",
+        img: "",
+        technologies: ["React", "TypeScript", "Vite", "Node.js"],
+        screens: [],
+        project_github_link: "https://github.com/EmidioAranha13/proj1",
+        project_test_link: "https://github.com/EmidioAranha13/proj1",
+      }, 
+      {
+        id: 8,
+        title: "Listagem de Projetos GitHub",
+        description: "Descrição do projeto 8",
+        paragraphs: ["Parágrafo 1", "Parágrafo 2", "Parágrafo 3"],
+        color: "#b73bcf",
+        img: "",
+        technologies: ["React", "TypeScript", "Vite", "Node.js"],
+        screens: [],
+        project_github_link: "https://github.com/EmidioAranha13/proj1",
+        project_test_link: "https://github.com/EmidioAranha13/proj1",
+      }
+    ],
       stats: {
         total: 12,
         completed: 6,
@@ -1549,6 +1653,7 @@ export const infoTextsCollection = {
       contributions_less: "Less",
       contributions_more: "More",
       contributions_error: "Could not load GitHub contributions.",
+      contributions_calendar_loading_label: "Loading GitHub contributions",
       github_profile_label: "View profile @EmidioAranha13",
       stat_total_label: "Total Projects",
       stat_completed_label: "Completed Projects",
@@ -1557,8 +1662,14 @@ export const infoTextsCollection = {
       carousel_prev_label: "Previous project",
       carousel_next_label: "Next project",
       carousel_aria_label: "Projects carousel",
-      carousel_cards: PROJECT_CAROUSEL_EN,
-      project_details: PROJECT_DETAILS_EN,
+      carousel_learn_more_label: "Learn more",
+      carousel_summary_label: "Project Summary",
+      project_modal_close_label: "Close",
+      project_modal_screens_label: "Screens",
+      project_modal_github_label: "GitHub",
+      project_modal_live_label: "Try it",
+      project_modal_technologies_label: "Technologies: ",
+      projects: PROJECTS_EN,
       stats: {
         total: 12,
         completed: 6,
@@ -2144,6 +2255,7 @@ export const infoTextsCollection = {
       contributions_less: "少",
       contributions_more: "多",
       contributions_error: "GitHub のコントリビューションを読み込めませんでした。",
+      contributions_calendar_loading_label: "GitHub のコントリビューションを読み込み中",
       github_profile_label: "プロフィール @EmidioAranha13 を見る",
       stat_total_label: "プロジェクト総数",
       stat_completed_label: "完了プロジェクト",
@@ -2152,8 +2264,14 @@ export const infoTextsCollection = {
       carousel_prev_label: "前のプロジェクト",
       carousel_next_label: "次のプロジェクト",
       carousel_aria_label: "プロジェクトカルーセル",
-      carousel_cards: PROJECT_CAROUSEL_JA,
-      project_details: PROJECT_DETAILS_JA,
+      carousel_learn_more_label: "詳しく見る",
+      carousel_summary_label: "プロジェクト概要",
+      project_modal_close_label: "閉じる",
+      project_modal_screens_label: "画面",
+      project_modal_github_label: "GitHub",
+      project_modal_live_label: "試す",
+      project_modal_technologies_label: "技術: ",
+      projects: PROJECTS_JA,
       stats: {
         total: 12,
         completed: 6,

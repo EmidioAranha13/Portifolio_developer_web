@@ -3,7 +3,7 @@ import { useEffect, useId, useRef, useState, type FormEvent } from "react";
 import CustomBulletButton from "../../componentes/CustomBulletButton/CustomBulletButton";
 import FormTextArea, { MESSAGE_MAX_LENGTH } from "../../componentes/FormTextArea/FormTextArea";
 import FormTextField from "../../componentes/FormTextField/FormTextField";
-import Modal from "../../componentes/modal/Modal";
+import { ContactMeResponseModal } from "../../componentes/modal";
 import ProfileSectionRail from "../../componentes/ProfileSectionRail/ProfileSectionRail";
 import { formatE164PhoneInput, isValidE164Phone } from "../../utils/e164Phone";
 import type { InfoTexts } from "../../utils/infoTextsCollection";
@@ -32,6 +32,10 @@ type FeedbackModalKind = "success" | "error" | "processing";
 
 const FORMSPREE_FORM_ID = import.meta.env.VITE_FORMSPREE_FORM_ID ?? "";
 
+/** Exibir botões de debug do modal (sem enviar ao Formspree). */
+const SHOW_CONTACT_FORM_DEBUG = false;
+const DEBUG_PROCESSING_MS = 5000;
+
 /**
  * Página Contato: informações à esquerda e formulário à direita.
  */
@@ -52,6 +56,7 @@ const ContactMePage: React.FC<ContactMePageProps> = ({ title: _title, infoTexts 
   const [subject, setSubject] = useState("");
   const [message, setMessage] = useState("");
   const [feedbackModal, setFeedbackModal] = useState<FeedbackModalKind | null>(null);
+  const debugProcessingTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const nameId = `${formId}-name`;
   const emailId = `${formId}-email`;
@@ -88,8 +93,30 @@ const ContactMePage: React.FC<ContactMePageProps> = ({ title: _title, infoTexts 
   };
 
   const closeFeedbackModal = () => {
+    if (debugProcessingTimerRef.current) {
+      clearTimeout(debugProcessingTimerRef.current);
+      debugProcessingTimerRef.current = null;
+    }
     setFeedbackModal(null);
     resetFormspree();
+  };
+
+  useEffect(
+    () => () => {
+      if (debugProcessingTimerRef.current) clearTimeout(debugProcessingTimerRef.current);
+    },
+    [],
+  );
+
+  const openDebugModal = (result: "success" | "error") => {
+    if (debugProcessingTimerRef.current) {
+      clearTimeout(debugProcessingTimerRef.current);
+    }
+    setFeedbackModal("processing");
+    debugProcessingTimerRef.current = setTimeout(() => {
+      debugProcessingTimerRef.current = null;
+      setFeedbackModal(result);
+    }, DEBUG_PROCESSING_MS);
   };
 
   useEffect(() => {
@@ -369,7 +396,11 @@ const ContactMePage: React.FC<ContactMePageProps> = ({ title: _title, infoTexts 
                 </p>
               ) : null}
 
-              <div className="contact-me-page__form-actions">
+              <div
+                className={`contact-me-page__form-actions${
+                  SHOW_CONTACT_FORM_DEBUG ? " contact-me-page__form-actions--debug" : ""
+                }`}
+              >
                 <CustomBulletButton
                   type="submit"
                   label={submitLabel}
@@ -378,6 +409,24 @@ const ContactMePage: React.FC<ContactMePageProps> = ({ title: _title, infoTexts 
                   disabled={isSubmitDisabled}
                   aria-disabled={isSubmitDisabled}
                 />
+                {SHOW_CONTACT_FORM_DEBUG ? (
+                  <>
+                    <button
+                      type="button"
+                      className="contact-me-page__debug-btn contact-me-page__debug-btn--success"
+                      onClick={() => openDebugModal("success")}
+                    >
+                      {page.form_debug_success_label}
+                    </button>
+                    <button
+                      type="button"
+                      className="contact-me-page__debug-btn contact-me-page__debug-btn--error"
+                      onClick={() => openDebugModal("error")}
+                    >
+                      {page.form_debug_error_label}
+                    </button>
+                  </>
+                ) : null}
               </div>
             </form>
           </div>
@@ -385,7 +434,7 @@ const ContactMePage: React.FC<ContactMePageProps> = ({ title: _title, infoTexts 
       </div>
 
       {feedbackModal ? (
-        <Modal
+        <ContactMeResponseModal
           isOpen
           onClose={closeFeedbackModal}
           variant={feedbackModal}

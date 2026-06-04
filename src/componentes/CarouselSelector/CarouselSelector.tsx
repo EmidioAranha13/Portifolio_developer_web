@@ -1,5 +1,5 @@
 import { useCallback, useRef, useState, type PointerEvent as ReactPointerEvent } from "react";
-import type { ProjectCarouselCardItem } from "../../utils/Types";
+import type { ProjectWithImage } from "../../utils/Types";
 import arrowDown from "../../assets/arrow-down.png";
 import "./CarouselSelector.css";
 
@@ -7,10 +7,13 @@ const SWIPE_THRESHOLD_PX = 48;
 const MAX_VISIBLE_OFFSET = 4;
 
 export type CarouselSelectorProps = {
-  items: ProjectCarouselCardItem[];
+  items: ProjectWithImage[];
   ariaLabel: string;
   prevLabel: string;
   nextLabel: string;
+  learnMoreLabel: string;
+  summaryLabel: string;
+  onActiveCardOpen?: (item: ProjectWithImage) => void;
 };
 
 /**
@@ -21,8 +24,12 @@ const CarouselSelector: React.FC<CarouselSelectorProps> = ({
   ariaLabel,
   prevLabel,
   nextLabel,
+  learnMoreLabel,
+  summaryLabel,
+  onActiveCardOpen,
 }) => {
   const [activeIndex, setActiveIndex] = useState(0);
+  const activeItem = items[activeIndex];
   const dragRef = useRef({ startX: 0, dragging: false });
   const count = items.length;
 
@@ -59,9 +66,16 @@ const CarouselSelector: React.FC<CarouselSelectorProps> = ({
     if (!dragRef.current.dragging) return;
     const delta = event.clientX - dragRef.current.startX;
     dragRef.current.dragging = false;
-    if (Math.abs(delta) < SWIPE_THRESHOLD_PX) goTo(index);
-    else if (delta > SWIPE_THRESHOLD_PX) goPrev();
-    else goNext();
+    if (Math.abs(delta) >= SWIPE_THRESHOLD_PX) {
+      if (delta > SWIPE_THRESHOLD_PX) goPrev();
+      else goNext();
+      return;
+    }
+    if (index === activeIndex) {
+      onActiveCardOpen?.(items[index]);
+      return;
+    }
+    goTo(index);
   };
 
   const onCardPointerCancel = (event: ReactPointerEvent<HTMLButtonElement>) => {
@@ -149,7 +163,7 @@ const CarouselSelector: React.FC<CarouselSelectorProps> = ({
                   onPointerDown={onCardPointerDown}
                   onPointerUp={(event) => onCardPointerUp(event, index)}
                   onPointerCancel={onCardPointerCancel}
-                  aria-label={`${item.title}. ${item.description}`}
+                  aria-label={item.title}
                   aria-current={isActive ? "true" : undefined}
                 >
                   <span
@@ -161,7 +175,9 @@ const CarouselSelector: React.FC<CarouselSelectorProps> = ({
                   <span className="carousel-selector__card-overlay" aria-hidden />
                   <span className="carousel-selector__card-content">
                     <span className="carousel-selector__card-title">{item.title}</span>
-                    <span className="carousel-selector__card-description">{item.description}</span>
+                    {isActive ? (
+                      <span className="carousel-selector__card-cta">{learnMoreLabel}</span>
+                    ) : null}
                   </span>
                 </button>
               );
@@ -184,6 +200,17 @@ const CarouselSelector: React.FC<CarouselSelectorProps> = ({
           />
         </button>
       </div>
+
+      {activeItem ? (
+        <div className="carousel-selector__summary" aria-live="polite">
+          <div className="carousel-selector__summary-panel">
+            <span className="carousel-selector__summary-tag">{summaryLabel}</span>
+            <p key={activeIndex} className="carousel-selector__summary-text">
+              {activeItem.description}
+            </p>
+          </div>
+        </div>
+      ) : null}
     </div>
   );
 };

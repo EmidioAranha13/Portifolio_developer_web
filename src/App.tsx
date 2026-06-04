@@ -154,6 +154,12 @@ function App() {
     }
   }, [themeMode]);
 
+  useEffect(() => {
+    const root = document.documentElement;
+    root.classList.remove("theme-day", "theme-night");
+    root.classList.add(themeMode === "day" ? "theme-day" : "theme-night");
+  }, [themeMode]);
+
   const handleLoaderFinish = useCallback(() => {
     containerRef.current?.scrollTo({ top: 0, left: 0, behavior: "auto" });
     setLoaderDone(true);

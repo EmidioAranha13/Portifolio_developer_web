@@ -344,9 +344,70 @@
   width: 100%;
 }
 
+.contact-me-page__form-actions--debug {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: stretch;
+  gap: clamp(8px, 1.2vw, 12px);
+}
+
 .contact-me-page__form-actions .custom-bullet-button {
   width: 100%;
   min-width: 0;
+}
+
+.contact-me-page__form-actions--debug .custom-bullet-button {
+  flex: 1 1 100%;
+  width: 100%;
+}
+
+.contact-me-page__debug-btn {
+  flex: 1 1 calc(50% - 6px);
+  min-height: 44px;
+  padding: 0 clamp(14px, 2vw, 18px);
+  border: none;
+  border-radius: 999px;
+  font-size: 0.9rem;
+  font-weight: 800;
+  line-height: 1;
+  color: #fff;
+  cursor: pointer;
+  box-shadow:
+    0 8px 18px rgba(0, 0, 0, 0.2),
+    inset 0 0 0 1px color-mix(in srgb, #fff 22%, transparent);
+  transition:
+    filter 0.2s ease,
+    transform 0.2s ease;
+}
+
+.contact-me-page__debug-btn:hover {
+  filter: brightness(1.06) saturate(1.05);
+  transform: translateY(-1px);
+}
+
+.contact-me-page__debug-btn--success {
+  background: linear-gradient(
+    90deg,
+    var(--color-night-grad-1) 0%,
+    var(--color-night-grad-3) 100%
+  );
+}
+
+.App.theme-day .contact-me-page__debug-btn--success {
+  background: linear-gradient(
+    90deg,
+    var(--color-day-grad-1) 0%,
+    var(--color-day-grad-4) 100%
+  );
+}
+
+.contact-me-page__debug-btn--error {
+  background: linear-gradient(90deg, #f87171 0%, #ef4444 55%, #dc2626 100%);
+}
+
+.contact-me-page__debug-btn:focus,
+.contact-me-page__debug-btn:focus-visible {
+  outline: none;
 }
 
 .contact-me-page__form-actions .custom-bullet-button:disabled {

@@ -26,6 +26,11 @@
   --color-night-grad-3: #3fa874;
   --color-night-grad-4: #6bbe68;
   --color-night-grad-5: #9cd65d;
+  --color-tema-grad-1: var(--color-night-grad-1);
+  --color-tema-grad-2: var(--color-night-grad-2);
+  --color-tema-grad-3: var(--color-night-grad-3);
+  --color-tema-grad-4: var(--color-night-grad-4);
+  --color-tema-grad-5: var(--color-night-grad-5);
 
   /* Theme tokens */
   --app-main-bg: var(--color-night-surface);
@@ -107,7 +112,13 @@
   }
 }
 
-.App.theme-day {
+.App.theme-day,
+:root.theme-day {
+  --color-tema-grad-1: var(--color-day-grad-1);
+  --color-tema-grad-2: var(--color-day-grad-2);
+  --color-tema-grad-3: var(--color-day-grad-3);
+  --color-tema-grad-4: var(--color-day-grad-4);
+  --color-tema-grad-5: var(--color-day-grad-5);
   --app-main-bg: var(--color-day-surface);
   --app-main-text: var(--color-black);
   --header-text-color: var(--color-black);

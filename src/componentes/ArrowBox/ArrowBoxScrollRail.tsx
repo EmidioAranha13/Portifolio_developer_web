@@ -14,12 +14,11 @@ import "./ArrowBoxScrollRail.css";
 const MIN_THUMB_PX = 80;
 const MIN_WIDTH_PX = 861;
 
-function initialUseArrowsBar(): boolean {
+function initialUseArrowsBar(placement: "viewport" | "local"): boolean {
   if (typeof window === "undefined") return false;
-  return (
-    window.matchMedia(`(min-width: ${MIN_WIDTH_PX}px)`).matches &&
-    !window.matchMedia("(prefers-reduced-motion: reduce)").matches
-  );
+  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return false;
+  if (placement === "local") return true;
+  return window.matchMedia(`(min-width: ${MIN_WIDTH_PX}px)`).matches;
 }
 
 /**
@@ -31,10 +30,11 @@ function initialUseArrowsBar(): boolean {
 export default function ArrowBoxScrollRail({
   scrollRootRef,
   contentSyncKey,
+  placement = "viewport",
 }: ArrowBoxScrollRailProps) {
   const railRef = useRef<HTMLDivElement>(null);
   const thumbRef = useRef<HTMLDivElement>(null);
-  const [useArrowsBar, setUseArrowsBar] = useState(initialUseArrowsBar);
+  const [useArrowsBar, setUseArrowsBar] = useState(() => initialUseArrowsBar(placement));
   const [railVisible, setRailVisible] = useState(false);
   const [scrollPhase, setScrollPhase] = useState<ScrollbarThumbPhase>("top");
   const canScrollRef = useRef(false);
@@ -45,7 +45,13 @@ export default function ArrowBoxScrollRail({
   useLayoutEffect(() => {
     const mqW = window.matchMedia(`(min-width: ${MIN_WIDTH_PX}px)`);
     const mqR = window.matchMedia("(prefers-reduced-motion: reduce)");
-    const sync = () => setUseArrowsBar(mqW.matches && !mqR.matches);
+    const sync = () => {
+      if (mqR.matches) {
+        setUseArrowsBar(false);
+        return;
+      }
+      setUseArrowsBar(placement === "local" ? true : mqW.matches);
+    };
     sync();
     mqW.addEventListener("change", sync);
     mqR.addEventListener("change", sync);
@@ -53,7 +59,7 @@ export default function ArrowBoxScrollRail({
       mqW.removeEventListener("change", sync);
       mqR.removeEventListener("change", sync);
     };
-  }, []);
+  }, [placement]);
 
   const syncThumbAndChrome = useCallback(() => {
     const root = scrollRootRef.current;
@@ -106,7 +112,9 @@ export default function ArrowBoxScrollRail({
     root.addEventListener("scroll", syncThumbAndChrome, { passive: true });
     const roRoot = new ResizeObserver(syncThumbAndChrome);
     roRoot.observe(root);
-    const contentEl = root.querySelector(".content");
+    const contentEl =
+      root.querySelector(".content") ??
+      root.querySelector(".project-about-modal__scroll-inner");
     const roContent =
       contentEl instanceof HTMLElement ? new ResizeObserver(syncThumbAndChrome) : null;
     if (contentEl instanceof HTMLElement && roContent) roContent.observe(contentEl);
@@ -215,12 +223,16 @@ export default function ArrowBoxScrollRail({
 
   if (!useArrowsBar) return null;
 
+  const railClass = [
+    "app-arrows-scroll-rail",
+    placement === "local" ? "app-arrows-scroll-rail--local" : "",
+    railVisible ? "" : "app-arrows-scroll-rail--hidden",
+  ]
+    .filter(Boolean)
+    .join(" ");
+
   return (
-    <div
-      ref={railRef}
-      className={`app-arrows-scroll-rail ${railVisible ? "" : "app-arrows-scroll-rail--hidden"}`}
-      aria-hidden="true"
-    >
+    <div ref={railRef} className={railClass} aria-hidden="true">
       <div
         className="app-arrows-scroll-rail__track"
         onPointerDown={onTrackPointerDown}

@@ -1,0 +1,386 @@
+.app-modal-backdrop:has(.project-about-modal__frame) {
+  align-items: stretch;
+  padding-block: 0;
+}
+
+.project-about-modal__frame {
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  align-self: stretch;
+  width: min(calc(680px + 48px), calc(96vw + 48px));
+  max-width: 100%;
+  height: 100%;
+  max-height: 100dvh;
+  min-height: 0;
+  margin-inline: auto;
+}
+
+.project-about-modal__rail-slot {
+  position: relative;
+  flex: 0 0 48px;
+  width: 48px;
+  min-height: 0;
+  align-self: stretch;
+}
+
+.project-about-modal__rail-slot .app-arrows-scroll-rail--local {
+  right: 0;
+  width: 100%;
+}
+
+.app-modal--content.project-about-modal {
+  --project-about-pad-x: clamp(18px, 3vw, 26px);
+  --project-about-pad-y: clamp(16px, 2.4vw, 22px);
+  flex: 1 1 auto;
+  min-width: 0;
+  width: min(680px, 96vw);
+  max-width: 100%;
+  max-height: 100dvh;
+  height: 100%;
+  padding: var(--project-about-pad-y) 0 0;
+  border: none;
+  border-radius: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+:root.theme-day .app-modal--content.project-about-modal.glass-surface {
+  --glass-backdrop-bg: color-mix(in srgb, rgb(114, 114, 114) 48%, transparent);
+  --glass-fallback-bg: linear-gradient(
+    155deg,
+    color-mix(in srgb, rgb(204, 204, 204) 72%, var(--app-main-bg)) 0%,
+    color-mix(in srgb, rgb(204, 204, 204) 52%, var(--app-main-bg)) 100%
+  );
+  box-shadow:
+    0 8px 20px color-mix(in srgb, var(--color-tema-grad-4) 14%, transparent),
+    inset 0 1px 0 color-mix(in srgb, var(--app-main-text) 10%, transparent);
+}
+
+.app-modal--content.project-about-modal .app-modal__title-slot {
+  flex: 0 0 auto;
+  padding-inline: var(--project-about-pad-x);
+  align-items: center;
+}
+
+.app-modal--content.project-about-modal .app-modal__title-slot.app-modal__title-slot--split {
+  align-items: center;
+}
+
+.app-modal--content.project-about-modal .app-modal__title-slot .app-modal__title {
+  display: flex;
+  align-items: center;
+  min-height: clamp(34px, 5.5vw, 44px);
+  line-height: 1.2;
+}
+
+.project-about-modal__close {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  line-height: 0;
+  -webkit-tap-highlight-color: transparent;
+  transition:
+    filter 0.2s ease,
+    transform 0.2s ease;
+}
+
+.project-about-modal__close:hover {
+  filter: brightness(1.1) saturate(1.08);
+  transform: scale(1.06);
+}
+
+.project-about-modal__close:active {
+  transform: scale(0.98);
+}
+
+.project-about-modal__close:focus,
+.project-about-modal__close:focus-visible {
+  outline: none;
+}
+
+/* error1 como área clicável, preenchido com o degradê do tema (máscara + fundo). */
+.project-about-modal__close-icon {
+  display: block;
+  width: clamp(34px, 5.5vw, 44px);
+  height: clamp(34px, 5.5vw, 44px);
+  background: var(--header-90-gradient);
+  -webkit-mask-image: var(--project-about-close-icon);
+  mask-image: var(--project-about-close-icon);
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  mask-position: center;
+  -webkit-mask-size: contain;
+  mask-size: contain;
+}
+
+.app-modal--content.project-about-modal .app-modal__body {
+  flex: 1 1 auto;
+  min-height: 0;
+  margin-top: clamp(8px, 1.2vw, 12px);
+  align-items: stretch;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.app-modal--content.project-about-modal .app-modal__footer {
+  display: none;
+  min-height: 0;
+  margin: 0;
+  padding: 0;
+}
+
+.project-about-modal__scroll-host {
+  flex: 1 1 auto;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.project-about-modal__scroll {
+  flex: 1 1 auto;
+  min-height: 0;
+  height: 100%;
+  overflow-y: auto;
+  overflow-x: hidden;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  box-sizing: border-box;
+}
+
+.project-about-modal__scroll::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+}
+
+.project-about-modal__scroll-inner {
+  display: flex;
+  flex-direction: column;
+  min-height: min-content;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .project-about-modal__rail-slot {
+    display: none;
+  }
+
+  .project-about-modal__frame {
+    width: min(680px, 96vw);
+  }
+
+  .project-about-modal__scroll {
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-tema-grad-2) transparent;
+  }
+
+  .project-about-modal__scroll::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  .project-about-modal__scroll::-webkit-scrollbar-thumb {
+    border-radius: 999px;
+    background: var(--header-180-gradient);
+  }
+
+  .project-about-modal__scroll::-webkit-scrollbar-track {
+    background: transparent;
+  }
+}
+
+.project-about-modal__header {
+  position: relative;
+  flex: 0 0 auto;
+  width: 100%;
+  overflow: hidden;
+  background: color-mix(in srgb, var(--app-main-bg) 88%, #000);
+}
+
+.project-about-modal__header-actions {
+  position: absolute;
+  left: clamp(12px, 2.4vw, 20px);
+  bottom: clamp(12px, 2.4vw, 20px);
+  z-index: 3;
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+  gap: clamp(8px, 1.2vw, 10px);
+  max-width: calc(100% - clamp(24px, 4.8vw, 40px));
+  pointer-events: auto;
+}
+
+.project-about-modal__header-actions .custom-bullet-button {
+  min-width: 0;
+  width: max-content;
+  max-width: 100%;
+  flex: 0 0 auto;
+  height: clamp(34px, 4.8vw, 40px);
+  padding: 0 clamp(10px, 1.8vw, 14px);
+  font-size: clamp(0.8rem, 1.15vw, 0.88rem);
+}
+
+.project-about-modal__header-actions .custom-bullet-button-content {
+  gap: clamp(6px, 1vw, 8px);
+}
+
+.project-about-modal__header-actions .custom-bullet-button-icon {
+  width: clamp(16px, 2.6vw, 20px);
+  height: clamp(16px, 2.6vw, 20px);
+}
+
+.project-about-modal__header-image {
+  display: block;
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+  object-position: center top;
+  pointer-events: none;
+  user-select: none;
+}
+
+.project-about-modal__header-border {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 2;
+  height: 3px;
+  background: var(--header-90-gradient);
+  box-shadow: 0 0 10px color-mix(in srgb, var(--color-tema-grad-3) 35%, transparent);
+}
+
+.project-about-modal__inner {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(14px, 2.2vw, 20px);
+  padding: clamp(16px, 2.4vw, 22px) var(--project-about-pad-x)
+    clamp(24px, 3.2vw, 32px);
+}
+
+.project-about-modal__tech-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: clamp(8px, 1.2vw, 10px);
+}
+
+.project-about-modal__tech-label {
+  flex: 0 0 auto;
+  font-size: clamp(0.82rem, 1.25vw, 0.92rem);
+  font-weight: 800;
+  line-height: 1.35;
+  color: var(--app-main-text);
+  opacity: 0.92;
+}
+
+.project-about-modal__tech-tags {
+  display: flex;
+  flex: 1 1 auto;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px 8px;
+  min-width: 0;
+}
+
+.project-about-modal__tech-tag {
+  padding: 5px 12px;
+  border-radius: 999px;
+  font-size: clamp(0.72rem, 1.1vw, 0.8rem);
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: 0.02em;
+  color: #fff;
+  background: color-mix(
+    in srgb,
+    var(--project-about-accent, var(--color-tema-grad-1)) 78%,
+    var(--color-tema-grad-3)
+  );
+  border: 1px solid color-mix(in srgb, #fff 28%, transparent);
+  box-shadow:
+    0 2px 8px color-mix(in srgb, var(--color-tema-grad-4) 28%, transparent),
+    inset 0 1px 0 color-mix(in srgb, #fff 18%, transparent);
+}
+
+.project-about-modal__tech-tag--skill {
+  background: var(--project-about-tech-tag-bg, var(--skill-line-frontend));
+}
+
+.project-about-modal__description {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(10px, 1.6vw, 14px);
+}
+
+.project-about-modal__paragraph {
+  margin: 0;
+  text-align: justify;
+  font-size: clamp(0.9rem, 1.45vw, 1rem);
+  font-weight: 500;
+  line-height: 1.55;
+  color: var(--app-main-text);
+  opacity: 0.92;
+}
+
+.project-about-modal__screens {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(12px, 2vw, 18px);
+}
+
+.project-about-modal__section-heading {
+  min-width: 0;
+}
+
+.project-about-modal__section-title {
+  margin: 0;
+  font-size: clamp(1.2rem, 2.2vw, 1.45rem);
+  font-weight: 800;
+  line-height: 1.15;
+}
+
+.project-about-modal__section-title-text {
+  background-image: var(--header-90-mobile-drawer-gradient);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+}
+
+.project-about-modal__section-rule {
+  height: 3px;
+  margin-top: clamp(6px, 1vw, 10px);
+  border-radius: 999px;
+  background: var(--header-90-gradient);
+}
+
+.project-about-modal__screens-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  align-items: start;
+  gap: clamp(10px, 1.6vw, 14px);
+}
+
+.project-about-modal__screen-card {
+  margin: 0;
+  border-radius: 0.65rem;
+  overflow: hidden;
+  border: 2px solid color-mix(in srgb, var(--color-tema-grad-1) 42%, transparent);
+  box-shadow: 0 8px 18px color-mix(in srgb, var(--color-tema-grad-4) 20%, transparent);
+  background: color-mix(in srgb, var(--app-main-bg) 92%, var(--color-tema-grad-5) 10%);
+}
+
+.project-about-modal__screen-image {
+  display: block;
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+  object-position: center;
+}
+

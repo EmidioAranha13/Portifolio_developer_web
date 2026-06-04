@@ -3,6 +3,7 @@ import CardBox from "../../componentes/CardBox/CardBox";
 import SearchField from "../../componentes/SearchField/SearchField";
 import StyledSelector from "../../componentes/StyledSelector/StyledSelector";
 import type { InfoTexts } from "../../utils/infoTextsCollection";
+import { countProjectsBySkillTitle } from "../../utils/projectTechTagStyles";
 import type { SkillBadgeKey, SkillCardItem, SkillCardLine } from "../../utils/Types";
 import filterIcon from "../../assets/filter.png";
 import searchIcon from "../../assets/search.png";
@@ -128,16 +129,28 @@ const SkillPage: React.FC<SkillPageProps> = ({ title, infoTexts }) => {
   const [selectedLine, setSelectedLine] = useState<string>("all");
   const [query, setQuery] = useState("");
 
-  const cards: SkillCardItem[] = (infoTexts?.skill_page?.skills ?? []).map((skill, index) => ({
-    id: `skill-${index}`,
-    title: skill.title,
-    description: skill.description,
-    years: skill.years,
-    projects: skill.projects,
-    lines: [...new Set(skill.types)],
-    badgeKeys: [...new Set(skill.badges ?? [])],
-    imageSrcs: resolveSkillImageSrcs(skill),
-  }));
+  const skills = infoTexts?.skill_page?.skills ?? [];
+  const portfolioProjects = infoTexts?.projects_page?.projects ?? [];
+
+  const projectCountBySkill = useMemo(
+    () => countProjectsBySkillTitle(skills, portfolioProjects),
+    [skills, portfolioProjects],
+  );
+
+  const cards: SkillCardItem[] = useMemo(
+    () =>
+      skills.map((skill, index) => ({
+        id: `skill-${index}`,
+        title: skill.title,
+        description: skill.description,
+        years: skill.years,
+        projects: String(projectCountBySkill[skill.title] ?? 0),
+        lines: [...new Set(skill.types)],
+        badgeKeys: [...new Set(skill.badges ?? [])],
+        imageSrcs: resolveSkillImageSrcs(skill),
+      })),
+    [skills, projectCountBySkill],
+  );
 
   const filteredCards = useMemo(
     () =>

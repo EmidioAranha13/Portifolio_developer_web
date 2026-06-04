@@ -60,7 +60,8 @@
   animation: profile-hero-border-angle-orbit 2s linear infinite;
 }
 
-.App.theme-day .profile-hero-triple-arrows-down::before {
+.App.theme-day .profile-hero-triple-arrows-down::before,
+:root.theme-day .profile-hero-triple-arrows-down::before {
   background: conic-gradient(
     from var(--profile-hero-border-angle),
     var(--color-day-grad-1),

@@ -1,4 +1,6 @@
 .app-modal-backdrop {
+  --app-modal-enter-ms: 360ms;
+  --app-modal-enter-ease: cubic-bezier(0.22, 1, 0.36, 1);
   position: fixed;
   inset: 0;
   z-index: var(--app-modal-z, 250);
@@ -8,11 +10,13 @@
   padding: clamp(12px, 2vw, 24px);
   background: color-mix(in srgb, #000 72%, transparent);
   pointer-events: auto;
+  animation: app-modal-backdrop-in var(--app-modal-enter-ms) var(--app-modal-enter-ease) both;
 }
 
 .app-modal {
   position: relative;
   width: min(440px, 96vw);
+  animation: app-modal-panel-in var(--app-modal-enter-ms) var(--app-modal-enter-ease) 60ms both;
   padding: clamp(22px, 3vw, 28px) clamp(20px, 3vw, 26px) clamp(18px, 2.5vw, 22px);
   border-radius: 1.25rem;
   border: 5px solid var(--color-night-grad-1);
@@ -56,7 +60,8 @@
   width: 100%;
 }
 
-.App.theme-day .app-modal {
+.App.theme-day .app-modal,
+:root.theme-day .app-modal {
   border-color: var(--color-day-grad-1);
   --glass-backdrop-bg: color-mix(in srgb, rgb(114, 114, 114) 52%, transparent);
   --glass-fallback-bg: linear-gradient(
@@ -76,6 +81,49 @@
 
 .app-modal--processing {
   border-color: color-mix(in srgb, var(--color-night-grad-3) 55%, var(--color-night-grad-1));
+}
+
+.app-modal--content {
+  display: flex;
+  flex-direction: column;
+  width: min(520px, 94vw);
+  max-height: min(90dvh, 680px);
+  border-color: var(--color-tema-grad-1);
+}
+
+.app-modal--content .app-modal__title-slot {
+  flex: 0 0 auto;
+}
+
+.app-modal__title-slot.app-modal__title-slot--split {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  gap: clamp(12px, 2vw, 20px);
+  width: 100%;
+  min-height: calc(1.35rem * 1.25);
+}
+
+.app-modal__title-slot--split .app-modal__title {
+  flex: 1 1 auto;
+  min-width: 0;
+  width: auto;
+}
+
+.app-modal--content .app-modal__title {
+  opacity: 1;
+}
+
+.app-modal--content .app-modal__body {
+  flex: 1 1 auto;
+  min-height: 0;
+}
+
+.app-modal--content .app-modal__footer {
+  flex: 0 0 auto;
+  opacity: 1;
+  pointer-events: auto;
 }
 
 .app-modal__title-slot {
@@ -492,7 +540,34 @@
   outline: none;
 }
 
+@keyframes app-modal-backdrop-in {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes app-modal-panel-in {
+  from {
+    opacity: 0;
+    transform: translateY(20px) scale(0.96);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
+  .app-modal-backdrop,
+  .app-modal {
+    animation: none !important;
+  }
+
   .app-modal--feedback.app-modal--sized,
   .app-modal--feedback.app-modal--title-fit,
   .app-modal__spinner-wrap--exiting,

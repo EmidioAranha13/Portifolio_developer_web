@@ -69,8 +69,18 @@
   max-height: 100%;
 }
 
+.app-arrows-scroll-rail--local {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 48px;
+  height: auto;
+  z-index: 3;
+}
+
 @media (max-width: 860px) {
-  .app-arrows-scroll-rail {
+  .app-arrows-scroll-rail:not(.app-arrows-scroll-rail--local) {
     display: none;
   }
 }

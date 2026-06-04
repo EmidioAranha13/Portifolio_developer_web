@@ -1,6 +1,7 @@
 import type { CSSProperties } from "react";
 import type {
   CustomBulletButtonButtonProps,
+  CustomBulletButtonIcon,
   CustomBulletButtonProps,
 } from "../../utils/Types";
 import "./CustomBulletButton.css";
@@ -17,10 +18,13 @@ import "./CustomBulletButton.css";
  */
 const CustomBulletButton: React.FC<CustomBulletButtonProps> = (props) => {
   const { label, variant, icon, className } = props;
-  const iconUrl =
-    icon === "download"
-      ? new URL("../../assets/download.png", import.meta.url).href
-      : new URL("../../assets/paperPlane.png", import.meta.url).href;
+  const iconUrls: Record<CustomBulletButtonIcon, string> = {
+    download: new URL("../../assets/download.png", import.meta.url).href,
+    paperPlane: new URL("../../assets/paperPlane.png", import.meta.url).href,
+    githubRound: new URL("../../assets/githubRoud.png", import.meta.url).href,
+    live: new URL("../../assets/live.png", import.meta.url).href,
+  };
+  const iconUrl = iconUrls[icon];
 
   const iconStyle = { "--button-icon-url": `url("${iconUrl}")` } as CSSProperties;
 

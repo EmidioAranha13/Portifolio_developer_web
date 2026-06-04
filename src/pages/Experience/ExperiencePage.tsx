@@ -8,15 +8,15 @@ import photoRotator1 from "../../assets/photo-rotator-1.jpg";
 import photoRotator2 from "../../assets/photo-rotator-2.jpg";
 import photoRotator3 from "../../assets/photo-rotator-3.jpg";
 import photoRotator4 from "../../assets/photo-rotator-4.jpg";
-import deltaProject1 from "../../assets/projects/Delta/project_1.png";
-import deltaProject3 from "../../assets/projects/Delta/project_3.png";
-import deltaProject4 from "../../assets/projects/Delta/project_4.png";
-import deltaProject7 from "../../assets/projects/Delta/project_7.png";
-import deltaProject8 from "../../assets/projects/Delta/project_8.png";
-import deltaProject9 from "../../assets/projects/Delta/project_9.png";
-import deltaProject10 from "../../assets/projects/Delta/project_10.png";
-import deltaProject11 from "../../assets/projects/Delta/project_11.png";
-import deltaProject12 from "../../assets/projects/Delta/project_12.png";
+import deltaProject1 from "../../assets/experience/Delta/project_1.png";
+import deltaProject3 from "../../assets/experience/Delta/project_3.png";
+import deltaProject4 from "../../assets/experience/Delta/project_4.png";
+import deltaProject7 from "../../assets/experience/Delta/project_7.png";
+import deltaProject8 from "../../assets/experience/Delta/project_8.png";
+import deltaProject9 from "../../assets/experience/Delta/project_9.png";
+import deltaProject10 from "../../assets/experience/Delta/project_10.png";
+import deltaProject11 from "../../assets/experience/Delta/project_11.png";
+import deltaProject12 from "../../assets/experience/Delta/project_12.png";
 import "./ExperiencePage.css";
 
 type ExperiencePageProps = {

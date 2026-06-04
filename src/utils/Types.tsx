@@ -165,9 +165,16 @@ export type ArrowBoxProps = {
  *
  * **Usado em:** `ArrowBoxScrollRail.tsx`; instanciado em `App.tsx` (`scrollRootRef`, `contentSyncKey`).
  */
+export type ArrowBoxScrollRailPlacement = "viewport" | "local";
+
 export type ArrowBoxScrollRailProps = {
   scrollRootRef: RefObject<HTMLElement | null>;
   contentSyncKey?: string | number;
+  /**
+   * `viewport`: rail fixo à direita da janela (App).
+   * `local`: rail absoluto no pai `position: relative` (ex.: modal).
+   */
+  placement?: ArrowBoxScrollRailPlacement;
 };
 
 /**
@@ -310,7 +317,7 @@ export type CustomBulletButtonVariant = "primary" | "outline";
  *
  * **Usado em:** tipo `CustomBulletButtonCommonProps` e `CustomBulletButton.tsx`.
  */
-export type CustomBulletButtonIcon = "download" | "paperPlane";
+export type CustomBulletButtonIcon = "download" | "paperPlane" | "githubRound" | "live";
 
 /**
  * Campos comuns a ambos os ramos do botão (âncora ou botão nativo).
@@ -434,7 +441,7 @@ export type CertificateItem = {
   img: CertificateId;
 };
 
-/** Chave da imagem de capa em `assets/projects/Delta/project_n.png`. */
+/** Chave da imagem de capa em `assets/experience/Delta/project_n.png`. */
 export type ProjectImageKey =
   | "project_1"
   | "project_2"
@@ -449,31 +456,40 @@ export type ProjectImageKey =
   | "project_11"
   | "project_12";
 
+/** Tela do projeto no modal (`src` resolvido em `projectAssets`; sem `src` → capa padrão). */
+export type ProjectScreenItem = {
+  img?: ProjectImageKey | "";
+  src?: string;
+};
+
 /**
- * Item do carrossel em `projects_page.carousel_cards`.
- * `id` é o índice em `projects_page.project_details`.
+ * Projeto da página Projetos: carrossel + modal (única fonte em `projects_page.projects`).
  */
-export type ProjectCarouselCard = {
+export type Project = {
   id: number;
   title: string;
+  /** Resumo exibido no painel lateral do carrossel. */
   description: string;
   /** Cor de fundo quando `img` estiver vazio ou ausente. */
   color: string;
-  /** Vazio ou ausente → usa `color`. */
+  /** Legado opcional; capa do card/modal vem de `assets/projects/{id}/capa.*`. */
   img?: ProjectImageKey | "";
-};
-
-/**
- * Conteúdo detalhado do projeto (modal / painel futuro), indexado por `ProjectCarouselCard.id`.
- */
-export type ProjectDetail = {
-  title: string;
+  /** Texto longo no modal (parágrafos). */
   paragraphs: string[];
+  technologies: string[];
+  screens: ProjectScreenItem[];
+  /** Vazio → botão GitHub oculto no modal. */
+  project_github_link: string;
+  /** Vazio → botão Testar oculto no modal. */
+  project_test_link: string;
 };
 
-/** Card do carrossel com URL da imagem já resolvida (se houver `img`). */
-export type ProjectCarouselCardItem = ProjectCarouselCard & {
-  imageSrc?: string;
+/** Projeto com URLs de imagem já resolvidas a partir de `assets/projects/{id}/`. */
+export type ProjectWithImage = Project & {
+  /** Carrossel — `capa.*` */
+  imageSrc: string;
+  /** Modal — `cabeçalho.*` / `cabecalho.*` */
+  headerImageSrc: string;
 };
 
 /**
@@ -487,6 +503,7 @@ export type ProjectsPage = {
   contributions_less: string;
   contributions_more: string;
   contributions_error: string;
+  contributions_calendar_loading_label: string;
   github_profile_label: string;
   stat_total_label: string;
   stat_completed_label: string;
@@ -495,8 +512,14 @@ export type ProjectsPage = {
   carousel_prev_label: string;
   carousel_next_label: string;
   carousel_aria_label: string;
-  carousel_cards: ProjectCarouselCard[];
-  project_details: ProjectDetail[];
+  carousel_learn_more_label: string;
+  carousel_summary_label: string;
+  project_modal_close_label: string;
+  project_modal_screens_label: string;
+  project_modal_github_label: string;
+  project_modal_live_label: string;
+  project_modal_technologies_label: string;
+  projects: Project[];
   stats: {
     total: number;
     completed: number;
@@ -532,7 +555,8 @@ export type SkillPageSkill = {
   title: string;
   description: string;
   years: string;
-  projects: string;
+  /** Legado em `infoTexts`; ignorado — “Em projetos” vem de `projects_page.projects`. */
+  projects?: string;
   /** URL externa opcional quando não houver `badges`. */
   img: string;
   /** Badges locais (`skills-badges`); ordem preservada no layout composto. */

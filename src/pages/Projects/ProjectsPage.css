@@ -155,11 +155,63 @@
 }
 
 .projects-page__calendar-wrap {
+  position: relative;
   width: 100%;
   min-width: 0;
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
   padding-bottom: 4px;
+}
+
+.projects-page__calendar-wrap--loading {
+  min-height: clamp(148px, 32vw, 196px);
+}
+
+.projects-page__calendar-loading {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: inherit;
+  pointer-events: none;
+}
+
+.projects-page__calendar-loading-scrim {
+  position: absolute;
+  inset: 0;
+  border-radius: 0.65rem;
+  background: color-mix(in srgb, #000 58%, transparent);
+}
+
+.App.theme-day .projects-page__calendar-loading-scrim {
+  background: color-mix(in srgb, var(--app-main-bg) 72%, #000 28%);
+}
+
+.projects-page__calendar-loading-spinner {
+  position: relative;
+  z-index: 1;
+  flex: 0 0 auto;
+  width: clamp(48px, 10vw, 64px);
+  height: clamp(48px, 10vw, 64px);
+  border-radius: 50%;
+  background: var(--header-90-gradient);
+  -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 7px), #000 calc(100% - 6px));
+  mask: radial-gradient(farthest-side, transparent calc(100% - 7px), #000 calc(100% - 6px));
+  animation: projects-page-calendar-spinner-rotate 0.85s linear infinite;
+}
+
+@keyframes projects-page-calendar-spinner-rotate {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .projects-page__calendar-loading-spinner {
+    animation: none;
+  }
 }
 
 .projects-page__calendar-wrap .react-activity-calendar {
