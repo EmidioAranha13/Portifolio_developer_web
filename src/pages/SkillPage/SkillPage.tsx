@@ -46,6 +46,8 @@ import storybookBadge from "../../assets/skills-badges/storybook.png";
 import pandasBadge from "../../assets/skills-badges/pandas.png";
 import jestBadge from "../../assets/skills-badges/jest.png";
 import agileBadge from "../../assets/skills-badges/agile.png";
+import viteBadge from "../../assets/skills-badges/vite.png";
+import yarnBadge from "../../assets/skills-badges/yarn.png";
 import defaultBadge from "../../assets/skills-badges/default.png";
 import "./SkillPage.css";
 
@@ -94,6 +96,8 @@ const SKILL_BADGE_SRC: Record<SkillBadgeKey, string> = {
   pandas: pandasBadge,
   jest: jestBadge,
   agile: agileBadge,
+  vite: viteBadge,
+  yarn: yarnBadge,
   default: defaultBadge,
 };
 
@@ -192,6 +196,7 @@ const SkillPage: React.FC<SkillPageProps> = ({ title, infoTexts }) => {
               { value: "design", label: "Design" },
               { value: "management", label: "Management" },
               { value: "database", label: "Database" },
+              { value: "tools", label: "Tools" },
             ]}
             optionClassNameByValue={{
               frontend: "skill-page__selector-option--frontend",
@@ -201,6 +206,7 @@ const SkillPage: React.FC<SkillPageProps> = ({ title, infoTexts }) => {
               design: "skill-page__selector-option--design",
               management: "skill-page__selector-option--management",
               database: "skill-page__selector-option--database",
+              tools: "skill-page__selector-option--tools",
             }}
           />
 

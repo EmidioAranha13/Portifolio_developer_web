@@ -388,7 +388,8 @@ export type SkillCardLine =
   | "devops"
   | "design"
   | "management"
-  | "database";
+  | "database"
+  | "tools";
 
 /**
  * Chaves dos arquivos em `assets/skills-badges` (mapeadas em `SkillPage.tsx`).
@@ -434,6 +435,8 @@ export type SkillBadgeKey =
   | "pandas"
   | "jest"
   | "agile"
+  | "vite"
+  | "yarn"
   | "default";
 
 /**

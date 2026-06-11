@@ -104,6 +104,10 @@
   background: color-mix(in srgb, var(--skill-line-database) 35%, transparent);
 }
 
+.skill-page__selector-option--tools {
+  background: color-mix(in srgb, var(--skill-line-tools) 35%, transparent);
+}
+
 .skill-page__search {
   display: inline-flex;
 }
@@ -206,6 +210,10 @@
 
 .skill-page__line-tag--database {
   background: var(--skill-line-database);
+}
+
+.skill-page__line-tag--tools {
+  background: var(--skill-line-tools);
 }
 
 .skill-page__image-wrapper {

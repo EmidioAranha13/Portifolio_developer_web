@@ -9,6 +9,7 @@ const SKILL_LINE_VAR: Record<SkillCardLine, string> = {
   design: "--skill-line-design",
   management: "--skill-line-management",
   database: "--skill-line-database",
+  tools: "--skill-line-tools",
 };
 
 const normalizeTechLabel = (value: string): string =>

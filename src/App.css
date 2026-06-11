@@ -92,13 +92,14 @@
   --magenta1: rgba(255, 0, 150, 0.25);
 
   /* Skill line tags */
-  --skill-line-frontend: #48a9ff;
+  --skill-line-frontend: #1c92fa;
   --skill-line-backend: #d4a200;
   --skill-line-mobile: #1f4ea8;
   --skill-line-devops: #b012b0;
-  --skill-line-design: #d946ef;
-  --skill-line-management: #0f766e;
+  --skill-line-design: #f52369;
+  --skill-line-management: #0f7631;
   --skill-line-database: #0ea5a8;
+  --skill-line-tools: #e23e0c;
 }
 
 @media (max-width: 1024px) {
