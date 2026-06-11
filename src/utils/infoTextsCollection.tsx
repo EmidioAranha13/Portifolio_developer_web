@@ -5,7 +5,7 @@ import type {
   EducationYearEntry,
   Project,
   ProjectImageKey,
-  ProjectScreenItem,
+  ProjectScreenPlatform,
   SkillPageSkill,
 } from "./Types";
 
@@ -34,12 +34,6 @@ const PROJECT_CARD_COLORS = [
 
 const DEFAULT_PROJECT_TECHNOLOGIES = ["React", "TypeScript", "Vite", "Node.js"] as const;
 
-const DEFAULT_PROJECT_SCREENS: ProjectScreenItem[] = [
-  { img: "" },
-  { img: "" },
-  { img: "" },
-];
-
 const buildProjects = (
   entries: ReadonlyArray<{
     title: string;
@@ -48,7 +42,7 @@ const buildProjects = (
     color?: string;
     img?: ProjectImageKey | "";
     technologies?: readonly string[];
-    screens?: readonly ProjectScreenItem[];
+    screens?: readonly ProjectScreenPlatform[];
     project_github_link?: string;
     project_test_link?: string;
   }>,
@@ -63,7 +57,7 @@ const buildProjects = (
       technologies: entry.technologies
         ? [...entry.technologies]
         : [...DEFAULT_PROJECT_TECHNOLOGIES],
-      screens: (entry.screens ?? DEFAULT_PROJECT_SCREENS).map((screen) => ({ ...screen })),
+      screens: entry.screens ? [...entry.screens] : [],
       project_github_link: entry.project_github_link ?? "",
       project_test_link: entry.project_test_link ?? "",
     };
@@ -105,6 +99,7 @@ export const infoTextsCollection = {
     contact: "Contatos",
     downloadCV: "Baixar Currículo",
     contactMe: "Contate-me",
+    cv_filename: "Emídio Aranha - Currículo Desenvolvedor Web FullStack.pdf",
     techStack: "React + React Native | Android | Angular | PHP | IA",
     footerRights: "Emídio Aranha - 2026. Todos os direitos reservados.",
     profile_page: {
@@ -230,7 +225,7 @@ export const infoTextsCollection = {
         },
         {
           id: "freelance",
-          label: "Freelancer",
+          label: "Projetos Pessoais e Freelancers",
           role: "Desenvolvedor Freelancer",
           time_working: "Fevereiro 2024 - Abril 2025",
           photos: [],
@@ -805,7 +800,11 @@ export const infoTextsCollection = {
       carousel_learn_more_label: "Saiba mais",
       carousel_summary_label: "Resumo do Projeto",
       project_modal_close_label: "Fechar",
-      project_modal_screens_label: "Telas",
+      project_modal_screens_web_label: "Telas Web",
+      project_modal_screens_mobile_label: "Telas Mobile",
+      project_modal_screens_empty_label: "Não foram encontradas imagens para a sessão.",
+      project_modal_screen_prev_label: "Tela anterior",
+      project_modal_screen_next_label: "Próxima tela",
       project_modal_github_label: "GitHub",
       project_modal_live_label: "Testar",
       project_modal_technologies_label: "Tecnologias: ",
@@ -818,7 +817,7 @@ export const infoTextsCollection = {
         color: "#01689d",
         img: "",
         technologies: ["React", "TypeScript", "Vite", "Node.js"],
-        screens: [],
+        screens: ["web", "mobile"],
         project_github_link: "https://github.com/EmidioAranha13/proj1",
         project_test_link: "https://github.com/EmidioAranha13/proj1",
       }, {
@@ -894,7 +893,7 @@ export const infoTextsCollection = {
         project_test_link: "https://github.com/EmidioAranha13/proj1",
       }, 
       {
-        id: 8,
+        id: 7,
         title: "Listagem de Projetos GitHub",
         description: "Descrição do projeto 8",
         paragraphs: ["Parágrafo 1", "Parágrafo 2", "Parágrafo 3"],
@@ -904,6 +903,18 @@ export const infoTextsCollection = {
         screens: [],
         project_github_link: "https://github.com/EmidioAranha13/proj1",
         project_test_link: "https://github.com/EmidioAranha13/proj1",
+      },
+      {
+        id: 8,
+        title: "Em Breve",
+        description: "Mais projetos em breve...",
+        paragraphs: ["Mais projetos em breve..."],
+        color: "#5f38cc",
+        img: "",
+        technologies: ["Em Breve"],
+        screens: [],
+        project_github_link: "",
+        project_test_link: "",
       }
     ],
       stats: {
@@ -970,6 +981,7 @@ export const infoTextsCollection = {
     contact: "Contact",
     downloadCV: "Download Curriculum",
     contactMe: "Contact me",
+    cv_filename: "Emídio Aranha - Currículo Desenvolvedor Web FullStack.pdf",
     techStack: "React + React Native | Android | Angular | PHP | AI",
     footerRights: "Emídio Aranha - 2026. All rights reserved.",
     profile_page: {
@@ -1095,7 +1107,7 @@ export const infoTextsCollection = {
         },
         {
           id: "freelance",
-          label: "Freelancer",
+          label: "Personal Projects & Freelance",
           role: "Freelance Developer",
           time_working: "February 2024 - April 2025",
           photos: [],
@@ -1665,7 +1677,11 @@ export const infoTextsCollection = {
       carousel_learn_more_label: "Learn more",
       carousel_summary_label: "Project Summary",
       project_modal_close_label: "Close",
-      project_modal_screens_label: "Screens",
+      project_modal_screens_web_label: "Web Screens",
+      project_modal_screens_mobile_label: "Mobile Screens",
+      project_modal_screens_empty_label: "No images were found for this section.",
+      project_modal_screen_prev_label: "Previous screen",
+      project_modal_screen_next_label: "Next screen",
       project_modal_github_label: "GitHub",
       project_modal_live_label: "Try it",
       project_modal_technologies_label: "Technologies: ",
@@ -1734,6 +1750,7 @@ export const infoTextsCollection = {
     contact: "コンタクト",
     downloadCV: "CVをダウンロード",
     contactMe: "気軽に連絡してください",
+    cv_filename: "Emídio Aranha - Currículo Desenvolvedor Web FullStack.pdf",
     techStack: "React／React Native｜Android｜Angular｜PHP｜AI",
     footerRights: "エミジオ・アラーニャ - 2026. All rights reserved.",
     profile_page: {
@@ -1859,7 +1876,7 @@ export const infoTextsCollection = {
         },
         {
           id: "freelance",
-          label: "フリーランス",
+          label: "個人プロジェクトとフリーランス",
           role: "フリーランス開発者",
           time_working: "2024年2月 - 2025年4月",
           photos: [],
@@ -2267,7 +2284,11 @@ export const infoTextsCollection = {
       carousel_learn_more_label: "詳しく見る",
       carousel_summary_label: "プロジェクト概要",
       project_modal_close_label: "閉じる",
-      project_modal_screens_label: "画面",
+      project_modal_screens_web_label: "Web画面",
+      project_modal_screens_mobile_label: "モバイル画面",
+      project_modal_screens_empty_label: "このセクションの画像が見つかりませんでした。",
+      project_modal_screen_prev_label: "前の画面",
+      project_modal_screen_next_label: "次の画面",
       project_modal_github_label: "GitHub",
       project_modal_live_label: "試す",
       project_modal_technologies_label: "技術: ",

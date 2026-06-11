@@ -1,166 +1,126 @@
-import React, { useEffect, useRef, useState } from "react";
-import type { FloatingBallsProps } from "../../utils/Types";
+import React, { useEffect, useMemo, useRef, useState } from "react";
+import type { BallConfig, FloatingBallsProps } from "../../utils/Types";
 import "./FloatingBalls.css";
 
+const BALL_COUNT_DESKTOP = 40;
+const BALL_COUNT_MOBILE = 30;
+/** Alinhado ao layout “compacto” do portfólio (860px). */
+const MOBILE_BALLS_MEDIA = "(max-width: 860px)";
+const COLORS = ["var(--green1)", "var(--orange1)", "var(--blue1)", "var(--yellow1)", "var(--magenta1)"];
+
+/**
+ * Fundo com bolas no estilo do {@link LoadingOrbitSpinner}: anel em degradê + núcleo liquid glass.
+ * Mesma lógica de posicionamento e repulsão do {@link LiquidGlassBalls}.
+ */
 const FloatingBalls: React.FC<FloatingBallsProps> = ({ children }) => {
-  const containerRef = useRef<HTMLDivElement | null>(null);
-  const [stage, setStage] = useState<"orbit" | "collision" | "background">("orbit");
+  const shellRefs = useRef<Array<HTMLDivElement | null>>([]);
+  const [ballCount, setBallCount] = useState(() =>
+    typeof window !== "undefined" && window.matchMedia(MOBILE_BALLS_MEDIA).matches
+      ? BALL_COUNT_MOBILE
+      : BALL_COUNT_DESKTOP,
+  );
 
   useEffect(() => {
-    if (stage === "orbit") {
-      const timer = setTimeout(() => setStage("collision"), 2000);
-      return () => clearTimeout(timer);
-    }
+    const mq = window.matchMedia(MOBILE_BALLS_MEDIA);
+    const sync = () => setBallCount(mq.matches ? BALL_COUNT_MOBILE : BALL_COUNT_DESKTOP);
+    sync();
+    mq.addEventListener("change", sync);
+    return () => mq.removeEventListener("change", sync);
+  }, []);
 
-    if (stage === "collision") {
-      // pequeno delay antes de gerar o fundo
-      const toCenter = setTimeout(() => {
-        document.querySelectorAll(".orbit-ball").forEach((ball) => {
-          ball.classList.add("to-center");
-        });
-      }, 450);
-      const timer = setTimeout(() => setStage("background"), 1400);
-      return () => {
-        clearTimeout(timer);
-        clearTimeout(toCenter);
-      };
-    }
+  const balls = useMemo<BallConfig[]>(() => {
+    return Array.from({ length: BALL_COUNT_DESKTOP }, (_, index) => ({
+      id: index,
+      size: Math.round(Math.random() * 110 + 30),
+      top: Math.round(Math.random() * 100),
+      left: Math.round(Math.random() * 100),
+      delay: Number((Math.random() * 8).toFixed(2)),
+      duration: Number((Math.random() * 6 + 6).toFixed(2)),
+      color: COLORS[Math.floor(Math.random() * COLORS.length)],
+    }));
+  }, []);
 
-    if (stage === "background") {
-      const container = containerRef.current;
-      if (!container) return;
+  const visibleBalls = balls.slice(0, ballCount);
 
-      const numBalls = 100;
-      const balls: HTMLDivElement[] = [];
+  useEffect(() => {
+    const repelRadius = 140;
+    const maxOffset = 56;
+    let raf = 0;
+    let lastX = 0;
+    let lastY = 0;
 
-      const colors = [
-        "var(--green1)",
-        "var(--orange1)",
-        "var(--blue1)",
-        "var(--yellow1)",
-        "var(--magenta1)",
-      ];
+    const applyRepel = () => {
+      raf = 0;
+      const mouseX = lastX;
+      const mouseY = lastY;
 
-      for (let i = 0; i < numBalls; i++) {
-        const wrapper = document.createElement("div");
-        wrapper.classList.add("ball-wrapper");
+      shellRefs.current.forEach((shell) => {
+        if (!shell) return;
 
-        const ball = document.createElement("div");
-        ball.classList.add("ball");
+        const rect = shell.getBoundingClientRect();
+        const ballX = rect.left + rect.width / 2;
+        const ballY = rect.top + rect.height / 2;
+        const dx = ballX - mouseX;
+        const dy = ballY - mouseY;
+        const distance = Math.sqrt(dx * dx + dy * dy);
 
-        wrapper.appendChild(ball);
-        container.appendChild(wrapper);
-        balls.push(wrapper); // 👈 agora armazenamos o wrapper
+        if (distance > 0 && distance < repelRadius) {
+          const force = (repelRadius - distance) / repelRadius;
+          const moveX = (dx / distance) * force * maxOffset;
+          const moveY = (dy / distance) * force * maxOffset;
+          shell.style.transform = `translate3d(${moveX}px, ${moveY}px, 0)`;
+        } else {
+          shell.style.transform = "translate3d(0, 0, 0)";
+        }
+      });
+    };
 
-        const color = colors[Math.floor(Math.random() * colors.length)];
-        ball.style.background = color;
+    const handleMouseMove = (event: MouseEvent) => {
+      lastX = event.clientX;
+      lastY = event.clientY;
+      if (!raf) raf = requestAnimationFrame(applyRepel);
+    };
 
-        const side = i < numBalls / 2 ? "left" : "right";
-        const xStart = 48;
-        const xEnd = side === "left" ? Math.random() * 20 : 80 + Math.random() * 20;
-        const yEnd = Math.random() * 100;
-
-        wrapper.style.position = "absolute";
-        wrapper.style.left = `${xStart}vw`;
-        wrapper.style.top = "50vh";
-
-        const size = Math.random() * 100 + 20;
-        ball.style.width = `${size}px`;
-        ball.style.height = `${size}px`;
-
-        wrapper.animate(
-          [
-            { left: `${xStart}vw`, top: "50vh", opacity: 1 },
-            { left: `${xEnd}vw`, top: `${yEnd}vh`, opacity: 1 },
-          ],
-          {
-            duration: Math.random() * 2000 + 2000,
-            easing: "ease-out",
-            fill: "forwards",
-          }
-        ).finished.then(() => {
-          const toX = Math.random() * 200 - 100;
-          const toY = Math.random() * 200 - 100;
-
-          ball.animate(
-            [
-              { transform: "translate(0, 0)" },
-              { transform: `translate(${toX}px, ${toY}px)` },
-            ],
-            {
-              duration: Math.random() * 8000 + 4000,
-              direction: "alternate",
-              fill: "both",
-              iterations: Infinity,
-              easing: "ease-in-out",
-            }
-          );
-        });
-      }
-
-
-      // 🔥 INTERAÇÃO COM O MOUSE
-      const handleMouseMove = (e: MouseEvent) => {
-        const mouseX = e.clientX;
-        const mouseY = e.clientY;
-        const repelRadius = 140;
-
-        balls.forEach((wrapper) => {
-          const rect = wrapper.getBoundingClientRect();
-          const ballX = rect.left + rect.width / 2;
-          const ballY = rect.top + rect.height / 2;
-
-          const dx = ballX - mouseX;
-          const dy = ballY - mouseY;
-
-          const distance = Math.sqrt(dx * dx + dy * dy);
-
-          if (distance < repelRadius) {
-            const force = (repelRadius - distance) / repelRadius;
-            const moveX = (dx / distance) * force * 120;
-            const moveY = (dy / distance) * force * 120;
-
-            wrapper.style.transform = `translate(${moveX}px, ${moveY}px)`;
-          } else {
-            wrapper.style.transform = "";
-          }
-        });
-      };
-
-
-      window.addEventListener("mousemove", handleMouseMove);
-
-      return () => {
-        window.removeEventListener("mousemove", handleMouseMove);
-        container.innerHTML = "";
-      };
-    }
-
-  }, [stage]);
+    window.addEventListener("mousemove", handleMouseMove, { passive: true });
+    return () => {
+      window.removeEventListener("mousemove", handleMouseMove);
+      if (raf) cancelAnimationFrame(raf);
+    };
+  }, []);
 
   return (
     <div className="floating-balls-wrapper">
-      {stage !== "background" && (
-        <>
-          <div className="orbit-container">
-            <div className="ball orbit-ball blue"></div>
-            <div className="ball orbit-ball yellow"></div>
-            <div className="ball orbit-ball magenta"></div>
+      <div className="floating-balls-layer">
+        {visibleBalls.map((ball) => (
+          <div
+            key={ball.id}
+            className="floating-ball"
+            style={
+              {
+                "--ball-size": `${ball.size}px`,
+                "--ball-top": `${ball.top}%`,
+                "--ball-left": `${ball.left}%`,
+                "--ball-delay": `${ball.delay}s`,
+                "--ball-duration": `${ball.duration}s`,
+                "--ball-color": ball.color,
+              } as React.CSSProperties
+            }
+          >
+            <div className="floating-ball-float">
+              <div
+                className="floating-ball-shell"
+                ref={(element) => {
+                  shellRefs.current[ball.id] = element;
+                }}
+              >
+                <span className="floating-ball-glass" aria-hidden="true" />
+              </div>
+            </div>
           </div>
-        </>
-      )}
-      {
-        stage === "background" && (
-          <div className="collision-flash"></div> 
-        ) 
-      }
-      
-      <div className="floating-balls" ref={containerRef}></div>
-      <div
-        className={`floating-content ${stage === "background" ? "visible" : ""}`}
-      >
-        {children}
+        ))}
       </div>
+
+      {children ? <div className="floating-content">{children}</div> : null}
     </div>
   );
 };

@@ -1,10 +1,13 @@
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { useDispatch } from "react-redux";
 import CustomBulletButton from "../../componentes/CustomBulletButton/CustomBulletButton";
 import ArrowBox from "../../componentes/ArrowBox/ArrowBox";
 import ProfilePhotoRotator from "../../componentes/ProfilePhotoRotator/ProfilePhotoRotator";
 import ProfileSectionRail from "../../componentes/ProfileSectionRail/ProfileSectionRail";
 import CardBox from "../../componentes/CardBox/CardBox";
 import type { InfoTexts, InfoTextsLanguage } from "../../utils/infoTextsCollection";
+import { getCvDownloadUrl } from "../../utils/cvAssets";
+import { setActiveSection } from "../../store/uiSlice";
 import profileImage from "../../assets/img-profile.jpg";
 import arrow1 from "../../assets/arrow-1.png";
 import "./ProfilePage.css";
@@ -21,12 +24,18 @@ type ProfilePageProps = {
  * @returns Bloco principal da seção Sobre mim.
  */
 const ProfilePage: React.FC<ProfilePageProps> = ({ infoTexts, languageKey }) => {
+  const dispatch = useDispatch();
+  const cvDownloadUrl = getCvDownloadUrl(languageKey, infoTexts.cv_filename);
   const hasResume = infoTexts.profile_page.professionalResume.length > 0;
   const hasSkills = infoTexts.profile_page.globalSkills.length > 0;
   const hasResumeBlock = hasResume || hasSkills;
   const skillsLine = infoTexts.profile_page.globalSkills.join("・");
   const aboutRef = useRef<HTMLDivElement>(null);
   const [aboutRevealed, setAboutRevealed] = useState(false);
+
+  const handleContactClick = useCallback(() => {
+    dispatch(setActiveSection("contact"));
+  }, [dispatch]);
 
   useEffect(() => {
     if (typeof window === "undefined") return;
@@ -74,15 +83,30 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ infoTexts, languageKey }) => 
               <h2 className="hero-role">{infoTexts.role}</h2>
               <h2 className="hero-role">{infoTexts.techStack}</h2>
               <div className="hero-actions">
-                <CustomBulletButton
-                  label={infoTexts.downloadCV}
-                  variant="primary"
-                  icon="download"
-                />
+                {cvDownloadUrl ? (
+                  <CustomBulletButton
+                    label={infoTexts.downloadCV}
+                    variant="primary"
+                    icon="download"
+                    href={cvDownloadUrl}
+                    download={infoTexts.cv_filename}
+                  />
+                ) : (
+                  <CustomBulletButton
+                    label={infoTexts.downloadCV}
+                    variant="primary"
+                    icon="download"
+                    type="button"
+                    disabled
+                    aria-disabled="true"
+                  />
+                )}
                 <CustomBulletButton
                   label={infoTexts.contactMe}
                   variant="outline"
                   icon="paperPlane"
+                  type="button"
+                  onClick={handleContactClick}
                 />
               </div>
             </div>

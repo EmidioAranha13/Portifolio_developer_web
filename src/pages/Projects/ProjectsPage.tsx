@@ -260,7 +260,11 @@ const ProjectsPage: React.FC<ProjectsPageProps> = ({ title, themeMode, infoTexts
           onClose={() => setAboutProjectId(null)}
           project={aboutProject}
           closeLabel={page.project_modal_close_label}
-          screensLabel={page.project_modal_screens_label}
+          screensWebLabel={page.project_modal_screens_web_label}
+          screensMobileLabel={page.project_modal_screens_mobile_label}
+          screensEmptyLabel={page.project_modal_screens_empty_label}
+          screenPrevLabel={page.project_modal_screen_prev_label}
+          screenNextLabel={page.project_modal_screen_next_label}
           githubLabel={page.project_modal_github_label}
           liveLabel={page.project_modal_live_label}
           technologiesLabel={page.project_modal_technologies_label}

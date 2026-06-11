@@ -1,8 +1,13 @@
-import type { Project, ProjectScreenItem, ProjectWithImage } from "./Types";
+import type {
+  Project,
+  ProjectScreenAssets,
+  ProjectScreenItem,
+  ProjectScreenPlatform,
+  ProjectWithImage,
+} from "./Types";
 import projectDefault from "../assets/experience/default.jpg";
 
 const COVER_EXT_ORDER = [".jpg", ".jpeg", ".png", ".webp"] as const;
-
 const coverModules = import.meta.glob<string>("../assets/projects/*/capa.*", {
   eager: true,
   import: "default",
@@ -19,8 +24,13 @@ const headerModules = {
   }),
 };
 
-const screenshotModules = import.meta.glob<string>(
-  "../assets/projects/*/screenshot_*.*",
+const webScreenshotModules = import.meta.glob<string>(
+  "../assets/projects/*/web/*.{png,jpg,jpeg,webp}",
+  { eager: true, import: "default" },
+);
+
+const mobileScreenshotModules = import.meta.glob<string>(
+  "../assets/projects/*/mobile/*.{png,jpg,jpeg,webp}",
   { eager: true, import: "default" },
 );
 
@@ -32,8 +42,6 @@ const isHeaderAssetPath = (path: string): boolean => {
   return lower.includes("/cabeçalho.") || lower.includes("/cabecalho.");
 };
 
-const DEFAULT_PROJECT_SCREEN_PLACEHOLDERS: ProjectScreenItem[] = [{}, {}, {}];
-
 const parseProjectId = (path: string): number | null => {
   const match = path.match(/\/projects\/(\d+)\//);
   if (!match) return null;
@@ -41,11 +49,11 @@ const parseProjectId = (path: string): number | null => {
   return Number.isNaN(id) ? null : id;
 };
 
-const parseScreenshotIndex = (path: string): number | null => {
+const parseScreenshotIndex = (path: string): number => {
   const match = path.match(/screenshot_(\d+)\./i);
-  if (!match) return null;
+  if (!match) return Number.MAX_SAFE_INTEGER;
   const index = Number.parseInt(match[1], 10);
-  return Number.isNaN(index) ? null : index;
+  return Number.isNaN(index) ? Number.MAX_SAFE_INTEGER : index;
 };
 
 const coverExtRank = (path: string): number => {
@@ -86,32 +94,51 @@ const buildHeaderByProjectId = (): ReadonlyMap<number, string> => {
   return new Map([...byId.entries()].map(([id, { url }]) => [id, url]));
 };
 
-const buildScreenshotsByProjectId = (): ReadonlyMap<number, readonly string[]> => {
-  const byId = new Map<number, { index: number; url: string }[]>();
+const sortScreenshotEntries = (
+  items: { path: string; index: number; url: string }[],
+): readonly string[] =>
+  items
+    .sort((a, b) => {
+      if (a.index !== b.index) return a.index - b.index;
+      return a.path.localeCompare(b.path);
+    })
+    .map((item) => item.url);
 
-  for (const [path, url] of Object.entries(screenshotModules)) {
+const buildScreenshotsByProjectId = (
+  modules: Record<string, string>,
+  platform: ProjectScreenPlatform,
+): ReadonlyMap<number, readonly string[]> => {
+  const byId = new Map<number, { path: string; index: number; url: string }[]>();
+
+  for (const [path, url] of Object.entries(modules)) {
     const id = parseProjectId(path);
-    const index = parseScreenshotIndex(path);
-    if (id === null || index === null) continue;
+    if (id === null || !path.includes(`/${platform}/`)) continue;
 
     const list = byId.get(id) ?? [];
-    list.push({ index, url });
+    list.push({ path, index: parseScreenshotIndex(path), url });
     byId.set(id, list);
   }
 
   return new Map(
-    [...byId.entries()].map(([id, items]) => [
-      id,
-      items
-        .sort((a, b) => a.index - b.index)
-        .map((item) => item.url),
-    ]),
+    [...byId.entries()].map(([id, items]) => [id, sortScreenshotEntries(items)]),
   );
 };
 
 const PROJECT_COVERS = buildCoverByProjectId();
 const PROJECT_HEADERS = buildHeaderByProjectId();
-const PROJECT_SCREENSHOTS = buildScreenshotsByProjectId();
+const PROJECT_WEB_SCREENSHOTS = buildScreenshotsByProjectId(webScreenshotModules, "web");
+const PROJECT_MOBILE_SCREENSHOTS = buildScreenshotsByProjectId(
+  mobileScreenshotModules,
+  "mobile",
+);
+
+const mapUrlsToScreens = (urls: readonly string[]): ProjectScreenItem[] =>
+  urls.map((src) => ({ src }));
+
+const resolveScreenAssets = (projectId: number): ProjectScreenAssets => ({
+  web: mapUrlsToScreens(PROJECT_WEB_SCREENSHOTS.get(projectId) ?? []),
+  mobile: mapUrlsToScreens(PROJECT_MOBILE_SCREENSHOTS.get(projectId) ?? []),
+});
 
 /** Capa do card do carrossel (`projects/{id}/capa.*`). */
 export const getProjectCoverUrl = (projectId: number): string =>
@@ -121,25 +148,14 @@ export const getProjectCoverUrl = (projectId: number): string =>
 export const getProjectHeaderUrl = (projectId: number): string =>
   PROJECT_HEADERS.get(projectId) ?? PROJECT_DEFAULT_IMAGE;
 
-/** Telas do modal (`projects/{id}/screenshot_n.*`), ordenadas por `n`. */
-export const getProjectScreenshotUrls = (projectId: number): readonly string[] =>
-  PROJECT_SCREENSHOTS.get(projectId) ?? [];
+/** Screenshots do modal (`projects/{id}/{platform}/`), ordenados por `screenshot_n`. */
+export const getProjectScreenAssets = (projectId: number): ProjectScreenAssets =>
+  resolveScreenAssets(projectId);
 
-const resolveProjectScreens = (project: Project): ProjectScreenItem[] => {
-  const fromAssets = getProjectScreenshotUrls(project.id);
-  if (fromAssets.length > 0) {
-    return fromAssets.map((src) => ({ src }));
-  }
-  if (project.screens.length > 0) {
-    return project.screens;
-  }
-  return DEFAULT_PROJECT_SCREEN_PLACEHOLDERS.map((screen) => ({ ...screen }));
-};
-
-/** Aplica capa e telas a partir de `assets/projects/{id}/` (ou defaults). */
+/** Aplica capa, cabeçalho e telas a partir de `assets/projects/{id}/`. */
 export const enrichProjectWithAssets = (project: Project): ProjectWithImage => ({
   ...project,
   imageSrc: getProjectCoverUrl(project.id),
   headerImageSrc: getProjectHeaderUrl(project.id),
-  screens: resolveProjectScreens(project),
+  screenAssets: getProjectScreenAssets(project.id),
 });

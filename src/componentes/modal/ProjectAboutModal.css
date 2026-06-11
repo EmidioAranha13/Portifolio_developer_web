@@ -32,6 +32,7 @@
 .app-modal--content.project-about-modal {
   --project-about-pad-x: clamp(18px, 3vw, 26px);
   --project-about-pad-y: clamp(16px, 2.4vw, 22px);
+  --project-about-screen-stage-height: min(52vh, 420px);
   flex: 1 1 auto;
   min-width: 0;
   width: min(680px, 96vw);
@@ -54,7 +55,7 @@
     color-mix(in srgb, rgb(204, 204, 204) 52%, var(--app-main-bg)) 100%
   );
   box-shadow:
-    0 8px 20px color-mix(in srgb, var(--color-tema-grad-4) 14%, transparent),
+    0 8px 20px color-mix(in srgb, var(--color-night-grad-4) 14%, transparent),
     inset 0 1px 0 color-mix(in srgb, var(--app-main-text) 10%, transparent);
 }
 
@@ -178,7 +179,7 @@
 
   .project-about-modal__scroll {
     scrollbar-width: thin;
-    scrollbar-color: var(--color-tema-grad-2) transparent;
+    scrollbar-color: var(--color-night-grad-2) transparent;
   }
 
   .project-about-modal__scroll::-webkit-scrollbar {
@@ -253,7 +254,7 @@
   z-index: 2;
   height: 3px;
   background: var(--header-90-gradient);
-  box-shadow: 0 0 10px color-mix(in srgb, var(--color-tema-grad-3) 35%, transparent);
+  box-shadow: 0 0 10px color-mix(in srgb, var(--color-night-grad-3) 35%, transparent);
 }
 
 .project-about-modal__inner {
@@ -299,12 +300,12 @@
   color: #fff;
   background: color-mix(
     in srgb,
-    var(--project-about-accent, var(--color-tema-grad-1)) 78%,
-    var(--color-tema-grad-3)
+    var(--project-about-accent, var(--color-night-grad-1)) 78%,
+    var(--color-night-grad-3)
   );
   border: 1px solid color-mix(in srgb, #fff 28%, transparent);
   box-shadow:
-    0 2px 8px color-mix(in srgb, var(--color-tema-grad-4) 28%, transparent),
+    0 2px 8px color-mix(in srgb, var(--color-night-grad-4) 28%, transparent),
     inset 0 1px 0 color-mix(in srgb, #fff 18%, transparent);
 }
 
@@ -338,49 +339,202 @@
   min-width: 0;
 }
 
-.project-about-modal__section-title {
+.project-about-modal__screens-panel {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: var(--project-about-screen-stage-height);
+}
+
+.project-about-modal__screens-empty {
   margin: 0;
-  font-size: clamp(1.2rem, 2.2vw, 1.45rem);
-  font-weight: 800;
-  line-height: 1.15;
+  padding-inline: clamp(12px, 2vw, 20px);
+  text-align: center;
+  font-size: clamp(0.92rem, 1.5vw, 1rem);
+  font-weight: 600;
+  line-height: 1.5;
+  color: var(--app-main-text);
+  opacity: 0.78;
 }
 
-.project-about-modal__section-title-text {
-  background-image: var(--header-90-mobile-drawer-gradient);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-  -webkit-text-fill-color: transparent;
+.project-about-modal__screens-carousel {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(8px, 1.6vw, 16px);
+  width: 100%;
+  min-width: 0;
 }
 
-.project-about-modal__section-rule {
-  height: 3px;
-  margin-top: clamp(6px, 1vw, 10px);
-  border-radius: 999px;
-  background: var(--header-90-gradient);
+.project-about-modal__screen-nav {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: clamp(40px, 5vw, 48px);
+  height: clamp(40px, 5vw, 48px);
+  padding: 0;
+  border-radius: 50%;
+  border: 2px solid transparent;
+  background:
+    linear-gradient(var(--app-main-bg), var(--app-main-bg)) padding-box,
+    var(--header-90-gradient) border-box;
+  box-shadow:
+    0 8px 18px rgba(0, 0, 0, 0.16),
+    inset 0 1px 0 color-mix(in srgb, var(--color-white) 14%, transparent);
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition:
+    transform 180ms ease,
+    box-shadow 200ms ease,
+    filter 200ms ease;
 }
 
-.project-about-modal__screens-grid {
-  display: grid;
-  grid-template-columns: 1fr;
-  align-items: start;
-  gap: clamp(10px, 1.6vw, 14px);
+.project-about-modal__screen-nav:hover {
+  transform: translateY(-1px);
+  box-shadow:
+    0 12px 22px rgba(0, 0, 0, 0.2),
+    inset 0 1px 0 color-mix(in srgb, var(--color-white) 18%, transparent);
 }
 
-.project-about-modal__screen-card {
+.project-about-modal__screen-nav:active {
+  transform: translateY(0);
+}
+
+.project-about-modal__screen-nav:focus,
+.project-about-modal__screen-nav:focus-visible {
+  outline: none;
+}
+
+.project-about-modal__screen-nav-icon {
+  display: block;
+  width: clamp(16px, 2.2vw, 20px);
+  height: clamp(16px, 2.2vw, 20px);
+  object-fit: contain;
+  pointer-events: none;
+}
+
+.project-about-modal__screen-nav-icon--prev {
+  transform: rotate(90deg);
+}
+
+.project-about-modal__screen-nav-icon--next {
+  transform: rotate(-90deg);
+}
+
+:root.theme-day .project-about-modal__screen-nav-icon {
+  filter: brightness(0) saturate(100%);
+  opacity: 0.85;
+}
+
+.project-about-modal__screen-viewport {
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow: hidden;
+}
+
+.project-about-modal__screen-track {
+  display: flex;
+  width: calc(100% * var(--screen-count, 1));
+  will-change: transform;
+}
+
+.project-about-modal__screen-track--animated {
+  transition: transform 420ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.project-about-modal__screen-slide {
+  flex: 0 0 calc(100% / var(--screen-count, 1));
+  min-width: 0;
   margin: 0;
   border-radius: 0.65rem;
   overflow: hidden;
-  border: 2px solid color-mix(in srgb, var(--color-tema-grad-1) 42%, transparent);
-  box-shadow: 0 8px 18px color-mix(in srgb, var(--color-tema-grad-4) 20%, transparent);
-  background: color-mix(in srgb, var(--app-main-bg) 92%, var(--color-tema-grad-5) 10%);
+  border: 2px solid color-mix(in srgb, var(--color-night-grad-1) 42%, transparent);
+  box-shadow: 0 8px 18px color-mix(in srgb, var(--color-night-grad-4) 20%, transparent);
+  background: color-mix(in srgb, var(--app-main-bg) 92%, var(--color-night-grad-5) 10%);
 }
 
 .project-about-modal__screen-image {
   display: block;
   width: 100%;
+  max-height: var(--project-about-screen-stage-height);
   height: auto;
   object-fit: contain;
   object-position: center;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .project-about-modal__screen-nav,
+  .project-about-modal__screen-track--animated {
+    transition: none;
+  }
+}
+
+@media (max-width: 640px) {
+  .app-modal-backdrop:has(.project-about-modal__frame) {
+    align-items: center;
+    justify-content: center;
+    padding: clamp(12px, 3.5vw, 20px);
+  }
+
+  .project-about-modal__frame {
+    align-self: center;
+    align-items: stretch;
+    width: min(96vw, 680px);
+    height: auto;
+    max-height: calc(100dvh - clamp(24px, 7vw, 40px));
+    min-height: 0;
+  }
+
+  .project-about-modal__rail-slot {
+    display: none;
+  }
+
+  .app-modal--content.project-about-modal {
+    --project-about-screen-stage-height: min(38vh, 300px);
+    width: 100%;
+    height: auto;
+    max-height: calc(100dvh - clamp(24px, 7vw, 40px));
+    border-radius: 1.25rem;
+    overflow: hidden;
+  }
+
+  .app-modal--content.project-about-modal .app-modal__body {
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow: hidden;
+  }
+
+  .project-about-modal__scroll-host {
+    display: flex;
+    flex-direction: column;
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow: hidden;
+  }
+
+  .project-about-modal__scroll {
+    flex: 1 1 auto;
+    min-height: 0;
+    height: auto;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-night-grad-2) transparent;
+  }
+
+  .project-about-modal__scroll::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  .project-about-modal__scroll::-webkit-scrollbar-thumb {
+    border-radius: 999px;
+    background: var(--header-180-gradient);
+  }
+
+  .project-about-modal__scroll::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
 }
 

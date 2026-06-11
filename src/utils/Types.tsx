@@ -224,10 +224,13 @@ export type BallConfig = {
   color: string;
 };
 
+/** Modo do fundo animado da aplicação. */
+export type BackgroundBallsMode = "liquid-glass" | "floating-orbit";
+
 /**
- * Props do overlay de bolhas em órbita (experiência de loading alternativa).
+ * Props do fundo com bolas estilo {@link LoadingOrbitSpinner} (anel degradê + vidro).
  *
- * **Usado em:** `FloatingBalls.tsx` (componente disponível no projeto; props tipadas aqui).
+ * **Usado em:** `FloatingBalls.tsx`; alternativa ao `LiquidGlassBalls` em `App.tsx`.
  */
 export type FloatingBallsProps = {
   children?: ReactNode;
@@ -257,12 +260,25 @@ export type ThemeToggleProps = {
 };
 
 /**
+ * Props do toggle de fundo animado (LiquidGlass ↔ BubbleBalls).
+ *
+ * **Usado em:** `BackgroundBallsToggle.tsx`; controlado em `App.tsx`.
+ */
+export type BackgroundBallsToggleProps = {
+  defaultMode?: BackgroundBallsMode;
+  mode?: BackgroundBallsMode;
+  onChange?: (mode: BackgroundBallsMode) => void;
+};
+
+/**
  * Props do rodapé institucional com texto único.
  *
  * **Usado em:** `StyledFooter.tsx`; `App.tsx` passa `text` (ex.: `footerRights` dos textos).
  */
 export type StyledFooterProps = {
   text: string;
+  /** Controles opcionais acima do texto (ex.: seletor de fundo). */
+  controls?: ReactNode;
 };
 
 /**
@@ -462,6 +478,9 @@ export type ProjectScreenItem = {
   src?: string;
 };
 
+/** Plataforma das telas no modal (`assets/projects/{id}/{platform}/`). */
+export type ProjectScreenPlatform = "web" | "mobile";
+
 /**
  * Projeto da página Projetos: carrossel + modal (única fonte em `projects_page.projects`).
  */
@@ -477,12 +496,16 @@ export type Project = {
   /** Texto longo no modal (parágrafos). */
   paragraphs: string[];
   technologies: string[];
-  screens: ProjectScreenItem[];
+  /** Abas exibidas no modal; imagens vêm de `assets/projects/{id}/{platform}/`. */
+  screens: readonly ProjectScreenPlatform[];
   /** Vazio → botão GitHub oculto no modal. */
   project_github_link: string;
   /** Vazio → botão Testar oculto no modal. */
   project_test_link: string;
 };
+
+/** Telas resolvidas por plataforma a partir de `assets/projects/{id}/{platform}/`. */
+export type ProjectScreenAssets = Record<ProjectScreenPlatform, ProjectScreenItem[]>;
 
 /** Projeto com URLs de imagem já resolvidas a partir de `assets/projects/{id}/`. */
 export type ProjectWithImage = Project & {
@@ -490,6 +513,7 @@ export type ProjectWithImage = Project & {
   imageSrc: string;
   /** Modal — `cabeçalho.*` / `cabecalho.*` */
   headerImageSrc: string;
+  screenAssets: ProjectScreenAssets;
 };
 
 /**
@@ -515,7 +539,11 @@ export type ProjectsPage = {
   carousel_learn_more_label: string;
   carousel_summary_label: string;
   project_modal_close_label: string;
-  project_modal_screens_label: string;
+  project_modal_screens_web_label: string;
+  project_modal_screens_mobile_label: string;
+  project_modal_screens_empty_label: string;
+  project_modal_screen_prev_label: string;
+  project_modal_screen_next_label: string;
   project_modal_github_label: string;
   project_modal_live_label: string;
   project_modal_technologies_label: string;

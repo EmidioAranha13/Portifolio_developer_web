@@ -169,7 +169,7 @@ const LiquidGlassBalls: React.FC<LiquidGlassBallsProps> = ({ children, preset = 
         ))}
       </div>
 
-      <div className="liquid-content">{children}</div>
+      {children ? <div className="liquid-content">{children}</div> : null}
     </div>
   );
 };

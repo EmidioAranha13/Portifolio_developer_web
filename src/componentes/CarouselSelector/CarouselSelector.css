@@ -347,7 +347,7 @@
   letter-spacing: 0.02em;
   white-space: nowrap;
   color: #fff;
-  background: var(--color-tema-grad-1);
+  background: var(--color-night-grad-1);
   border: 1px solid color-mix(in srgb, #fff 32%, transparent);
   box-shadow:
     0 2px 8px rgba(0, 0, 0, 0.22),
@@ -369,7 +369,7 @@
   opacity: 0.92;
   animation: carousel-selector-summary-in 340ms ease;
   scrollbar-width: thin;
-  scrollbar-color: color-mix(in srgb, var(--color-tema-grad-1) 55%, transparent) transparent;
+  scrollbar-color: color-mix(in srgb, var(--color-night-grad-1) 55%, transparent) transparent;
 }
 
 .carousel-selector__summary-text::-webkit-scrollbar {
@@ -378,7 +378,7 @@
 
 .carousel-selector__summary-text::-webkit-scrollbar-thumb {
   border-radius: 999px;
-  background: color-mix(in srgb, var(--color-tema-grad-1) 50%, transparent);
+  background: color-mix(in srgb, var(--color-night-grad-1) 50%, transparent);
 }
 
 @keyframes carousel-selector-summary-in {

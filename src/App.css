@@ -26,11 +26,6 @@
   --color-night-grad-3: #3fa874;
   --color-night-grad-4: #6bbe68;
   --color-night-grad-5: #9cd65d;
-  --color-tema-grad-1: var(--color-night-grad-1);
-  --color-tema-grad-2: var(--color-night-grad-2);
-  --color-tema-grad-3: var(--color-night-grad-3);
-  --color-tema-grad-4: var(--color-night-grad-4);
-  --color-tema-grad-5: var(--color-night-grad-5);
 
   /* Theme tokens */
   --app-main-bg: var(--color-night-surface);
@@ -114,11 +109,11 @@
 
 .App.theme-day,
 :root.theme-day {
-  --color-tema-grad-1: var(--color-day-grad-1);
-  --color-tema-grad-2: var(--color-day-grad-2);
-  --color-tema-grad-3: var(--color-day-grad-3);
-  --color-tema-grad-4: var(--color-day-grad-4);
-  --color-tema-grad-5: var(--color-day-grad-5);
+  --color-night-grad-1: var(--color-day-grad-1);
+  --color-night-grad-2: var(--color-day-grad-2);
+  --color-night-grad-3: var(--color-day-grad-3);
+  --color-night-grad-4: var(--color-day-grad-4);
+  --color-night-grad-5: var(--color-day-grad-5);
   --app-main-bg: var(--color-day-surface);
   --app-main-text: var(--color-black);
   --header-text-color: var(--color-black);
@@ -214,6 +209,39 @@ body,
   display: flex;
   flex-direction: column;
   /* Espaço do header fixo fica no .liquid-balls-wrapper (evita faixa sólida entre header e gradiente). */
+}
+
+.app-shell-layout {
+  position: relative;
+  flex: 1 1 auto;
+  width: 100%;
+  min-width: 0;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  background: var(--page-bg-gradient);
+}
+
+.app-shell-layout__background {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.app-shell-layout__background > .liquid-balls-wrapper,
+.app-shell-layout__background > .floating-balls-wrapper {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+}
+
+.app-shell-layout > .container {
+  position: relative;
+  z-index: 1;
 }
 
 .container {

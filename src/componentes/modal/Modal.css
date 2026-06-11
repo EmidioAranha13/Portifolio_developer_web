@@ -88,7 +88,7 @@
   flex-direction: column;
   width: min(520px, 94vw);
   max-height: min(90dvh, 680px);
-  border-color: var(--color-tema-grad-1);
+  border-color: var(--color-night-grad-1);
 }
 
 .app-modal--content .app-modal__title-slot {
