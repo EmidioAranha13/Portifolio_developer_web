@@ -133,8 +133,43 @@ const SkillPage: React.FC<SkillPageProps> = ({ title, infoTexts }) => {
   const [selectedLine, setSelectedLine] = useState<string>("all");
   const [query, setQuery] = useState("");
 
-  const skills = infoTexts?.skill_page?.skills ?? [];
+  const skillPage = infoTexts?.skill_page;
+  const skills = skillPage?.skills ?? [];
   const portfolioProjects = infoTexts?.projects_page?.projects ?? [];
+  const experienceLabel = skillPage?.experience_label ?? "Experiência:";
+  const projectsLabel = skillPage?.projects_label ?? "Em projetos:";
+  const filterOptions = skillPage?.filter_options ?? {
+    all: "Todas",
+    frontend: "Frontend",
+    backend: "Backend",
+    mobile: "Mobile",
+    devops: "DevOps",
+    design: "Design",
+    management: "Management",
+    database: "Database",
+    tools: "Tools",
+  };
+
+  const filterSelectorOptions = useMemo(
+    () =>
+      (
+        [
+          "all",
+          "frontend",
+          "backend",
+          "mobile",
+          "devops",
+          "design",
+          "management",
+          "database",
+          "tools",
+        ] as const
+      ).map((value) => ({
+        value,
+        label: filterOptions[value],
+      })),
+    [filterOptions],
+  );
 
   const projectCountBySkill = useMemo(
     () => countProjectsBySkillTitle(skills, portfolioProjects),
@@ -182,22 +217,12 @@ const SkillPage: React.FC<SkillPageProps> = ({ title, infoTexts }) => {
           <StyledSelector
             value={selectedLine}
             onChange={setSelectedLine}
-            ariaLabel="Filtrar por linha de frente"
+            ariaLabel={skillPage?.filter_aria_label ?? "Filtrar por linha de frente"}
             variant="theme-gradient"
             startIconSrc={filterIcon}
-            startIconAlt="Filtro"
+            startIconAlt={skillPage?.filter_icon_alt ?? "Filtro"}
             className="skill-page__selector"
-            options={[
-              { value: "all", label: "Todas" },
-              { value: "frontend", label: "Frontend" },
-              { value: "backend", label: "Backend" },
-              { value: "mobile", label: "Mobile" },
-              { value: "devops", label: "DevOps" },
-              { value: "design", label: "Design" },
-              { value: "management", label: "Management" },
-              { value: "database", label: "Database" },
-              { value: "tools", label: "Tools" },
-            ]}
+            options={filterSelectorOptions}
             optionClassNameByValue={{
               frontend: "skill-page__selector-option--frontend",
               backend: "skill-page__selector-option--backend",
@@ -214,19 +239,29 @@ const SkillPage: React.FC<SkillPageProps> = ({ title, infoTexts }) => {
             <SearchField
               value={query}
               onChange={setQuery}
-              placeholder="Pesquisar habilidade..."
-              ariaLabel="Pesquisar habilidade"
+              placeholder={skillPage?.search_placeholder ?? "Pesquisar habilidade..."}
+              ariaLabel={skillPage?.search_aria_label ?? "Pesquisar habilidade"}
               iconSrc={searchIcon}
             />
           </div>
         </div>
       </div>
 
-      <section className="skill-page__grid" aria-label="Cards de habilidades">
-        <p className="skill-page__count">Itens Listados: {filteredCards.length}</p>
+      <section
+        className="skill-page__grid"
+        aria-label={skillPage?.grid_aria_label ?? "Cards de habilidades"}
+      >
+        <p className="skill-page__count">
+          {(skillPage?.listed_items_label ?? "Itens Listados: {{count}}").replace(
+            "{{count}}",
+            String(filteredCards.length),
+          )}
+        </p>
         {filteredCards.length === 0 ? (
           <CardBox className="skill-page__empty-card">
-            <p className="skill-page__empty-text">Nenhum item encontrado</p>
+            <p className="skill-page__empty-text">
+              {skillPage?.empty_message ?? "Nenhum item encontrado"}
+            </p>
           </CardBox>
         ) : (
           filteredCards.map((card) => (
@@ -238,7 +273,7 @@ const SkillPage: React.FC<SkillPageProps> = ({ title, infoTexts }) => {
                       key={`${card.id}-${line}-${tagIndex}`}
                       className={`skill-page__line-tag skill-page__line-tag--${line}`}
                     >
-                      {line[0].toUpperCase() + line.slice(1)}
+                      {filterOptions[line]}
                     </span>
                   ))}
                 </div>
@@ -271,10 +306,10 @@ const SkillPage: React.FC<SkillPageProps> = ({ title, infoTexts }) => {
                 <p className="skill-page__card-text">{card.description}</p>
                 <div className="skill-page__card-footer">
                   <p className="skill-page__years">
-                    <strong>Experiência:</strong> {card.years}
+                    <strong>{experienceLabel}</strong> {card.years}
                   </p>
                   <p className="skill-page__projects">
-                    <strong>Em projetos:</strong> {card.projects}
+                    <strong>{projectsLabel}</strong> {card.projects}
                   </p>
                 </div>
               </div>

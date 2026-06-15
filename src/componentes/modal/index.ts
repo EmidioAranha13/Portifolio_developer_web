@@ -3,6 +3,5 @@ export { default as ContactMeResponseModal } from "./ContactMeResponseModal";
 export type { ContactMeResponseModalProps } from "./ContactMeResponseModal";
 export { default as ProjectAboutModal } from "./ProjectAboutModal";
 export type { ProjectAboutModalProps } from "./ProjectAboutModal";
-
-/** @deprecated Prefira `ContactMeResponseModal`. */
-export { default as Modal } from "./ContactMeResponseModal";
+export { default as CertificateAboutModal } from "./CertificateAboutModal";
+export type { CertificateAboutModalProps } from "./CertificateAboutModal";

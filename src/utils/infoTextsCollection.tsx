@@ -5,17 +5,10 @@ import type {
   EducationYearEntry,
   Project,
   ProjectImageKey,
-  ProjectScreenPlatform,
   SkillPageSkill,
 } from "./Types";
 
 export type { EducationActivity, EducationLeafLabels, EducationYearEntry };
-
-const PROJECT_COUNT = 12;
-
-/** Placeholder do resumo do carrossel (~5 linhas no painel de projetos). */
-const PROJECT_SUMMARY_LOREM =
-  "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Proin eget tortor risus. Curabitur non nulla sit amet nisl tempus convallis quis ac lectus. Donec sollicitudin molestie malesuada. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae.";
 
 const PROJECT_CARD_COLORS = [
   "#01689d",
@@ -34,57 +27,256 @@ const PROJECT_CARD_COLORS = [
 
 const DEFAULT_PROJECT_TECHNOLOGIES = ["React", "TypeScript", "Vite", "Node.js"] as const;
 
-const buildProjects = (
+/** Metadados compartilhados entre idiomas (tags, links, telas). */
+const PORTFOLIO_PROJECT_CORES = [
+  {
+    color: "#01689d",
+    img: "" as ProjectImageKey | "",
+    technologies: ["React", "TypeScript", "Vite", "html", "css"],
+    screens: ["web", "mobile"] as const,
+    project_github_link: "https://github.com/EmidioAranha13/Portifolio_developer_web",
+    project_test_link: "",
+  },
+  {
+    color: "#17937c",
+    img: "" as ProjectImageKey | "",
+    technologies: ["React", "TypeScript", "Vite", "Node.js"],
+    screens: [] as const,
+    project_github_link: "https://github.com/EmidioAranha13/proj1",
+    project_test_link: "https://github.com/EmidioAranha13/proj1",
+  },
+  {
+    color: "#3fa874",
+    img: "" as ProjectImageKey | "",
+    technologies: ["React", "TypeScript", "Vite", "Node.js"],
+    screens: [] as const,
+    project_github_link: "https://github.com/EmidioAranha13/proj1",
+    project_test_link: "https://github.com/EmidioAranha13/proj1",
+  },
+  {
+    color: "#6bbe68",
+    img: "" as ProjectImageKey | "",
+    technologies: ["React", "TypeScript", "Vite", "Node.js"],
+    screens: [] as const,
+    project_github_link: "https://github.com/EmidioAranha13/proj1",
+    project_test_link: "https://github.com/EmidioAranha13/proj1",
+  },
+  {
+    color: "#9cd65d",
+    img: "" as ProjectImageKey | "",
+    technologies: ["React", "TypeScript", "Vite", "Node.js"],
+    screens: [] as const,
+    project_github_link: "https://github.com/EmidioAranha13/proj1",
+    project_test_link: "https://github.com/EmidioAranha13/proj1",
+  },
+  {
+    color: "#f84187",
+    img: "" as ProjectImageKey | "",
+    technologies: ["React", "TypeScript", "Vite", "Node.js"],
+    screens: [] as const,
+    project_github_link: "https://github.com/EmidioAranha13/proj1",
+    project_test_link: "https://github.com/EmidioAranha13/proj1",
+  },
+  {
+    color: "#f841ca",
+    img: "" as ProjectImageKey | "",
+    technologies: ["React", "TypeScript", "Vite", "Node.js"],
+    screens: [] as const,
+    project_github_link: "https://github.com/EmidioAranha13/proj1",
+    project_test_link: "https://github.com/EmidioAranha13/proj1",
+  },
+  {
+    color: "#b73bcf",
+    img: "" as ProjectImageKey | "",
+    technologies: ["React", "TypeScript", "Vite", "Node.js"],
+    screens: [] as const,
+    project_github_link: "https://github.com/EmidioAranha13/proj1",
+    project_test_link: "https://github.com/EmidioAranha13/proj1",
+  },
+  {
+    color: "#5f38cc",
+    img: "" as ProjectImageKey | "",
+    technologies: ["Em Breve"],
+    screens: [] as const,
+    project_github_link: "",
+    project_test_link: "",
+  },
+] as const;
+
+const buildLocalizedProjects = (
   entries: ReadonlyArray<{
     title: string;
     description: string;
-    paragraphs: string[];
-    color?: string;
-    img?: ProjectImageKey | "";
-    technologies?: readonly string[];
-    screens?: readonly ProjectScreenPlatform[];
-    project_github_link?: string;
-    project_test_link?: string;
+    paragraphs: readonly string[];
   }>,
 ): Project[] =>
   entries.map((entry, index) => {
+    const core = PORTFOLIO_PROJECT_CORES[index];
     const project: Project = {
       id: index,
       title: entry.title,
       description: entry.description,
-      color: entry.color ?? PROJECT_CARD_COLORS[index],
-      paragraphs: entry.paragraphs,
-      technologies: entry.technologies
-        ? [...entry.technologies]
-        : [...DEFAULT_PROJECT_TECHNOLOGIES],
-      screens: entry.screens ? [...entry.screens] : [],
-      project_github_link: entry.project_github_link ?? "",
-      project_test_link: entry.project_test_link ?? "",
+      color: core?.color ?? PROJECT_CARD_COLORS[index],
+      paragraphs: [...entry.paragraphs],
+      technologies: core ? [...core.technologies] : [...DEFAULT_PROJECT_TECHNOLOGIES],
+      screens: core ? [...core.screens] : [],
+      project_github_link: core?.project_github_link ?? "",
+      project_test_link: core?.project_test_link ?? "",
     };
-    if (entry.img) project.img = entry.img;
+    if (core?.img) project.img = core.img;
     return project;
   });
 
-const PROJECT_ENTRIES_EN = Array.from({ length: PROJECT_COUNT }, (_, index) => {
-  const n = index + 1;
-  return {
-    title: `Project ${n}`,
-    description: PROJECT_SUMMARY_LOREM,
-    paragraphs: [`Detailed content for project ${n} (coming soon).`],
-  };
-});
+const PROJECT_TEXTS_BR = [
+  {
+    title: "Portifólio Web/Mobile",
+    description:
+      "Portifólio web/mobile pessoal profissional totalmente desenvolvido em React. O principal intuito é mostrar meus projetos e habilidades de desenvolvimento de software.",
+    paragraphs: ["Parágrafo 1", "Parágrafo 2", "Parágrafo 3"],
+  },
+  {
+    title: "Air Quality App",
+    description: "Descrição do projeto 2",
+    paragraphs: ["Parágrafo 1", "Parágrafo 2", "Parágrafo 3"],
+  },
+  {
+    title: "Sistema de Visão: Detector",
+    description: "Descrição do projeto 3",
+    paragraphs: ["Parágrafo 1", "Parágrafo 2", "Parágrafo 3"],
+  },
+  {
+    title: "Dashboard de Monitoramento",
+    description: "Descrição do projeto 4",
+    paragraphs: ["Parágrafo 1", "Parágrafo 2", "Parágrafo 3"],
+  },
+  {
+    title: "Icomp Números",
+    description: "Descrição do projeto 5",
+    paragraphs: ["Parágrafo 1", "Parágrafo 2", "Parágrafo 3"],
+  },
+  {
+    title: "Sistema de Gerenciamento de PetShop",
+    description: "Descrição do projeto 6",
+    paragraphs: ["Parágrafo 1", "Parágrafo 2", "Parágrafo 3"],
+  },
+  {
+    title: "Condomunity",
+    description: "Descrição do projeto 7",
+    paragraphs: ["Parágrafo 1", "Parágrafo 2", "Parágrafo 3"],
+  },
+  {
+    title: "Listagem de Projetos GitHub",
+    description: "Descrição do projeto 8",
+    paragraphs: ["Parágrafo 1", "Parágrafo 2", "Parágrafo 3"],
+  },
+  {
+    title: "Em Breve",
+    description: "Mais projetos em breve...",
+    paragraphs: ["Mais projetos em breve..."],
+  },
+] as const;
 
-const PROJECT_ENTRIES_JA = Array.from({ length: PROJECT_COUNT }, (_, index) => {
-  const n = index + 1;
-  return {
-    title: `プロジェクト ${n}`,
-    description: PROJECT_SUMMARY_LOREM,
-    paragraphs: [`プロジェクト ${n} の詳細（準備中）。`],
-  };
-});
+const PROJECT_TEXTS_EN = [
+  {
+    title: "Web/Mobile Portfolio",
+    description:
+      "Professional personal web/mobile portfolio built with React, focused on showcasing projects and software development skills.",
+    paragraphs: ["Paragraph 1", "Paragraph 2", "Paragraph 3"],
+  },
+  {
+    title: "Air Quality App",
+    description: "Project 2 description",
+    paragraphs: ["Paragraph 1", "Paragraph 2", "Paragraph 3"],
+  },
+  {
+    title: "Vision System: Detector",
+    description: "Project 3 description",
+    paragraphs: ["Paragraph 1", "Paragraph 2", "Paragraph 3"],
+  },
+  {
+    title: "Monitoring Dashboard",
+    description: "Project 4 description",
+    paragraphs: ["Paragraph 1", "Paragraph 2", "Paragraph 3"],
+  },
+  {
+    title: "Icomp Numbers",
+    description: "Project 5 description",
+    paragraphs: ["Paragraph 1", "Paragraph 2", "Paragraph 3"],
+  },
+  {
+    title: "PetShop Management System",
+    description: "Project 6 description",
+    paragraphs: ["Paragraph 1", "Paragraph 2", "Paragraph 3"],
+  },
+  {
+    title: "Condomunity",
+    description: "Project 7 description",
+    paragraphs: ["Paragraph 1", "Paragraph 2", "Paragraph 3"],
+  },
+  {
+    title: "GitHub Project Listing",
+    description: "Project 8 description",
+    paragraphs: ["Paragraph 1", "Paragraph 2", "Paragraph 3"],
+  },
+  {
+    title: "Coming Soon",
+    description: "More projects coming soon...",
+    paragraphs: ["More projects coming soon..."],
+  },
+] as const;
 
-const PROJECTS_EN = buildProjects(PROJECT_ENTRIES_EN);
-const PROJECTS_JA = buildProjects(PROJECT_ENTRIES_JA);
+const PROJECT_TEXTS_JA = [
+  {
+    title: "Web/モバイルポートフォリオ",
+    description:
+      "Reactで構築した個人向けのプロフェッショナルなWeb/モバイルポートフォリオです。プロジェクトと開発スキルを紹介することを目的としています。",
+    paragraphs: ["段落 1", "段落 2", "段落 3"],
+  },
+  {
+    title: "Air Quality App",
+    description: "プロジェクト 2 の説明",
+    paragraphs: ["段落 1", "段落 2", "段落 3"],
+  },
+  {
+    title: "ビジョンシステム: 検出器",
+    description: "プロジェクト 3 の説明",
+    paragraphs: ["段落 1", "段落 2", "段落 3"],
+  },
+  {
+    title: "モニタリングダッシュボード",
+    description: "プロジェクト 4 の説明",
+    paragraphs: ["段落 1", "段落 2", "段落 3"],
+  },
+  {
+    title: "Icomp Números",
+    description: "プロジェクト 5 の説明",
+    paragraphs: ["段落 1", "段落 2", "段落 3"],
+  },
+  {
+    title: "ペットショップ管理システム",
+    description: "プロジェクト 6 の説明",
+    paragraphs: ["段落 1", "段落 2", "段落 3"],
+  },
+  {
+    title: "Condomunity",
+    description: "プロジェクト 7 の説明",
+    paragraphs: ["段落 1", "段落 2", "段落 3"],
+  },
+  {
+    title: "GitHubプロジェクト一覧",
+    description: "プロジェクト 8 の説明",
+    paragraphs: ["段落 1", "段落 2", "段落 3"],
+  },
+  {
+    title: "近日公開",
+    description: "さらにプロジェクトを追加予定です...",
+    paragraphs: ["さらにプロジェクトを追加予定です..."],
+  },
+] as const;
+
+const PROJECTS_BR = buildLocalizedProjects(PROJECT_TEXTS_BR);
+const PROJECTS_EN = buildLocalizedProjects(PROJECT_TEXTS_EN);
+const PROJECTS_JA = buildLocalizedProjects(PROJECT_TEXTS_JA);
 
 export const infoTextsCollection = {
   br: {
@@ -375,6 +567,26 @@ export const infoTextsCollection = {
       ],
     },
     skill_page: {
+      experience_label: "Experiência:",
+      projects_label: "Em projetos:",
+      filter_aria_label: "Filtrar por linha de frente",
+      filter_icon_alt: "Filtro",
+      search_placeholder: "Pesquisar habilidade...",
+      search_aria_label: "Pesquisar habilidade",
+      listed_items_label: "Itens Listados: {{count}}",
+      empty_message: "Nenhum item encontrado",
+      grid_aria_label: "Cards de habilidades",
+      filter_options: {
+        all: "Todas",
+        frontend: "Frontend",
+        backend: "Backend",
+        mobile: "Mobile",
+        devops: "DevOps",
+        design: "Design",
+        management: "Management",
+        database: "Database",
+        tools: "Tools",
+      },
       skills: [
         {
           title: "React",
@@ -392,7 +604,7 @@ export const infoTextsCollection = {
           projects: "3",
           img: "",
           badges: ["react_native"],
-          types: ["frontend"],
+          types: ["frontend", "mobile"],
         },
         {
           title: "JavaScript + TypeScript",
@@ -599,7 +811,7 @@ export const infoTextsCollection = {
           projects: "6",
           img: "",
           badges: ["android_studio"],
-          types: ["mobile"],
+          types: ["mobile", "tools"],
         },
         {
           title: "Kotlin",
@@ -608,7 +820,7 @@ export const infoTextsCollection = {
           projects: "6",
           img: "",
           badges: ["kotlin"],
-          types: ["mobile"],
+          types: ["mobile", "backend"],
         },
         {
           title: "Jetpack Compose",
@@ -626,7 +838,7 @@ export const infoTextsCollection = {
           projects: "6",
           img: "",
           badges: ["java"],
-          types: ["backend"],
+          types: ["backend", "mobile"],
         },
         {
           title: "C / C++ / C#",
@@ -662,7 +874,7 @@ export const infoTextsCollection = {
           projects: "6",
           img: "",
           badges: ["git_github"],
-          types: ["tools"],
+          types: ["tools", "devops"],
         },
         {
           title: "BPMN",
@@ -671,7 +883,7 @@ export const infoTextsCollection = {
           projects: "6 ",
           img: "",
           badges: ["bpmn"],
-          types: ["backend"],
+          types: ["management"],
         },
         {
           title: "UML",
@@ -680,7 +892,7 @@ export const infoTextsCollection = {
           projects: "6",
           img: "",
           badges: ["uml"],
-          types: ["backend"],
+          types: ["management"],
         },
         {
           title: "Storybook",
@@ -797,6 +1009,11 @@ export const infoTextsCollection = {
           img: "c7",
         },
       ] satisfies CertificateItem[],
+      modal: {
+        close_label: "Fechar modal",
+        zoom_in_label: "Aumentar zoom",
+        zoom_out_label: "Diminuir zoom",
+      },
     },
     projects_page: {
       contributions_title: "Contribuições no GitHub",
@@ -826,115 +1043,7 @@ export const infoTextsCollection = {
       project_modal_github_label: "GitHub",
       project_modal_live_label: "Testar",
       project_modal_technologies_label: "Tecnologias: ",
-      // projects: PROJECTS_BR,
-      projects: [{
-        id: 0,
-        title: "Portifólio Web/Mobile",
-        description: "Portifólio web/mobile pessoal profissional totalmente desenvolvido em React. O principal intuito é mostrar meus projetos e habilidades de desenvolvimento de software.",
-        paragraphs: ["Parágrafo 1", "Parágrafo 2", "Parágrafo 3"],
-        color: "#01689d",
-        img: "",
-        technologies: ["React", "TypeScript", "Vite", "html", "css"],
-        screens: ["web", "mobile"],
-        project_github_link: "https://github.com/EmidioAranha13/Portifolio_developer_web",
-        project_test_link: "",
-      }, {
-        id: 1,
-        title: "Air Quality App",
-        description: "Descrição do projeto 2",
-        paragraphs: ["Parágrafo 1", "Parágrafo 2", "Parágrafo 3"],
-        color: "#17937c",
-        img: "",
-        technologies: ["React", "TypeScript", "Vite", "Node.js"],
-        screens: [],
-        project_github_link: "https://github.com/EmidioAranha13/proj1",
-        project_test_link: "https://github.com/EmidioAranha13/proj1",
-      }, 
-      {
-        id: 2,
-        title: "Sistema de Visão: Detector",
-        description: "Descrição do projeto 3",
-        paragraphs: ["Parágrafo 1", "Parágrafo 2", "Parágrafo 3"],
-        color: "#3fa874",
-        img: "",
-        technologies: ["React", "TypeScript", "Vite", "Node.js"],
-        screens: [],
-        project_github_link: "https://github.com/EmidioAranha13/proj1",
-        project_test_link: "https://github.com/EmidioAranha13/proj1",
-      }, 
-      {
-        id: 3,
-        title: "Dashboard de Monitoramento",
-        description: "Descrição do projeto 4",
-        paragraphs: ["Parágrafo 1", "Parágrafo 2", "Parágrafo 3"],
-        color: "#6bbe68",
-        img: "",
-        technologies: ["React", "TypeScript", "Vite", "Node.js"],
-        screens: [],
-        project_github_link: "https://github.com/EmidioAranha13/proj1",
-        project_test_link: "https://github.com/EmidioAranha13/proj1", 
-      },
-      {
-        id: 4,
-        title: "Icomp Números",
-        description: "Descrição do projeto 5",
-        paragraphs: ["Parágrafo 1", "Parágrafo 2", "Parágrafo 3"],
-        color: "#9cd65d",
-        img: "",
-        technologies: ["React", "TypeScript", "Vite", "Node.js"],
-        screens: [],
-        project_github_link: "https://github.com/EmidioAranha13/proj1",
-        project_test_link: "https://github.com/EmidioAranha13/proj1",
-      },
-      {
-        id: 5,
-        title: "Sistema de Gerenciamento de PetShop",
-        description: "Descrição do projeto 6",
-        paragraphs: ["Parágrafo 1", "Parágrafo 2", "Parágrafo 3"],
-        color: "#f84187",
-        img: "",
-        technologies: ["React", "TypeScript", "Vite", "Node.js"],
-        screens: [],
-        project_github_link: "https://github.com/EmidioAranha13/proj1",
-        project_test_link: "https://github.com/EmidioAranha13/proj1",
-      },
-      {
-        id: 6,
-        title: "Condomunity",
-        description: "Descrição do projeto 7",
-        paragraphs: ["Parágrafo 1", "Parágrafo 2", "Parágrafo 3"],
-        color: "#f841ca",
-        img: "",
-        technologies: ["React", "TypeScript", "Vite", "Node.js"],
-        screens: [],
-        project_github_link: "https://github.com/EmidioAranha13/proj1",
-        project_test_link: "https://github.com/EmidioAranha13/proj1",
-      }, 
-      {
-        id: 7,
-        title: "Listagem de Projetos GitHub",
-        description: "Descrição do projeto 8",
-        paragraphs: ["Parágrafo 1", "Parágrafo 2", "Parágrafo 3"],
-        color: "#b73bcf",
-        img: "",
-        technologies: ["React", "TypeScript", "Vite", "Node.js"],
-        screens: [],
-        project_github_link: "https://github.com/EmidioAranha13/proj1",
-        project_test_link: "https://github.com/EmidioAranha13/proj1",
-      },
-      {
-        id: 8,
-        title: "Em Breve",
-        description: "Mais projetos em breve...",
-        paragraphs: ["Mais projetos em breve..."],
-        color: "#5f38cc",
-        img: "",
-        technologies: ["Em Breve"],
-        screens: [],
-        project_github_link: "",
-        project_test_link: "",
-      }
-    ],
+      projects: PROJECTS_BR,
       stats: {
         total: 12,
         completed: 6,
@@ -1270,6 +1379,26 @@ export const infoTextsCollection = {
       ],
     },
     skill_page: {
+      experience_label: "Experience:",
+      projects_label: "In projects:",
+      filter_aria_label: "Filter by stack line",
+      filter_icon_alt: "Filter",
+      search_placeholder: "Search skill...",
+      search_aria_label: "Search skill",
+      listed_items_label: "Listed items: {{count}}",
+      empty_message: "No items found",
+      grid_aria_label: "Skill cards",
+      filter_options: {
+        all: "All",
+        frontend: "Frontend",
+        backend: "Backend",
+        mobile: "Mobile",
+        devops: "DevOps",
+        design: "Design",
+        management: "Management",
+        database: "Database",
+        tools: "Tools",
+      },
       skills: [
         {
           title: "React",
@@ -1287,7 +1416,7 @@ export const infoTextsCollection = {
           projects: "3",
           img: "",
           badges: ["react_native"],
-          types: ["frontend"],
+          types: ["frontend", "mobile"],
         },
         {
           title: "JavaScript + TypeScript",
@@ -1494,7 +1623,7 @@ export const infoTextsCollection = {
           projects: "6",
           img: "",
           badges: ["android_studio"],
-          types: ["mobile"],
+          types: ["mobile", "tools"],
         },
         {
           title: "Kotlin",
@@ -1503,7 +1632,7 @@ export const infoTextsCollection = {
           projects: "6",
           img: "",
           badges: ["kotlin"],
-          types: ["mobile"],
+          types: ["mobile", "backend"],
         },
         {
           title: "Jetpack Compose",
@@ -1521,7 +1650,7 @@ export const infoTextsCollection = {
           projects: "6",
           img: "",
           badges: ["java"],
-          types: ["backend"],
+          types: ["backend", "mobile"],
         },
         {
           title: "C / C++ / C#",
@@ -1557,7 +1686,7 @@ export const infoTextsCollection = {
           projects: "6",
           img: "",
           badges: ["git_github"],
-          types: ["tools"],
+          types: ["tools", "devops"],
         },
         {
           title: "BPMN",
@@ -1566,7 +1695,7 @@ export const infoTextsCollection = {
           projects: "6",
           img: "",
           badges: ["bpmn"],
-          types: ["backend"],
+          types: ["management"],
         },
         {
           title: "UML",
@@ -1575,7 +1704,7 @@ export const infoTextsCollection = {
           projects: "6",
           img: "",
           badges: ["uml"],
-          types: ["backend"],
+          types: ["management"],
         },
         {
           title: "Storybook",
@@ -1692,6 +1821,11 @@ export const infoTextsCollection = {
           img: "c7",
         },
       ] satisfies CertificateItem[],
+      modal: {
+        close_label: "Close modal",
+        zoom_in_label: "Zoom in",
+        zoom_out_label: "Zoom out",
+      },
     },
     projects_page: {
       contributions_title: "GitHub contributions",
@@ -2057,10 +2191,30 @@ export const infoTextsCollection = {
       ],
     },
     skill_page: {
+      experience_label: "経験:",
+      projects_label: "プロジェクト:",
+      filter_aria_label: "スタックで絞り込む",
+      filter_icon_alt: "フィルター",
+      search_placeholder: "スキルを検索...",
+      search_aria_label: "スキルを検索",
+      listed_items_label: "表示件数: {{count}}",
+      empty_message: "該当する項目がありません",
+      grid_aria_label: "スキルカード",
+      filter_options: {
+        all: "すべて",
+        frontend: "フロントエンド",
+        backend: "バックエンド",
+        mobile: "モバイル",
+        devops: "DevOps",
+        design: "デザイン",
+        management: "マネジメント",
+        database: "データベース",
+        tools: "ツール",
+      },
       skills: [
         {
           title: "React",
-          description: "コンポーネントベースのライブラリで、Hooksやクラスを使用しながら動的で再利用可能なUIを構築できます。",
+          description: "コンポーネントベースで動的なユーザーインターフェースを構築するためのライブラリです。状態管理やライフサイクルの制御にクラスとHooksの両方を使用できます。",
           years: "5年",
           projects: "11",
           img: "",
@@ -2069,16 +2223,16 @@ export const infoTextsCollection = {
         },
         {
           title: "React Native + Expo",
-          description: "JavaScriptとTypeScriptを使用してクロスプラットフォームのモバイルアプリを開発するためのフレームワークです。",
+          description: "JavaScript/TypeScriptとReactのコンポーネントベースの考え方を利用して、ネイティブモバイルアプリを開発するためのフレームワークです。",
           years: "5年",
           projects: "3",
           img: "",
           badges: ["react_native"],
-          types: ["frontend"],
+          types: ["frontend", "mobile"],
         },
         {
           title: "JavaScript + TypeScript",
-          description: "フロントエンドのインタラクティブなUIやバックエンドのビジネスロジック構築に使用される主要な言語です。",
+          description: "フロントエンドのインタラクティブなUI構築や、バックエンドのビジネスロジック開発に使用されるプログラミング言語です。",
           years: "5年",
           projects: "12",
           img: "",
@@ -2087,7 +2241,7 @@ export const infoTextsCollection = {
         },
         {
           title: "Redux",
-          description: "アプリケーション全体の状態を一元管理するためのライブラリで、ThunkやSaga、RTK Queryの経験があります。",
+          description: "アプリケーションのデータを一元管理し、予測可能な形で状態を管理するためのライブラリです。Thunk、Saga、RTK Queryを利用した経験があります。",
           years: "5年",
           projects: "6",
           img: "",
@@ -2096,7 +2250,7 @@ export const infoTextsCollection = {
         },
         {
           title: "HTML",
-          description: "Webページの構造やコンテンツを定義するための標準マークアップ言語です。",
+          description: "Webページのコンテンツや要素の構造を定義するためのマークアップ言語です。",
           years: "5年",
           projects: "6",
           img: "",
@@ -2105,7 +2259,7 @@ export const infoTextsCollection = {
         },
         {
           title: "CSS",
-          description: "レイアウト、デザイン、レスポンシブ対応などWebインターフェースの見た目を管理するスタイル言語です。",
+          description: "Webインターフェースの見た目、レイアウト、レスポンシブデザインを担当するスタイルシート言語です。",
           years: "5年",
           projects: "6",
           img: "",
@@ -2114,7 +2268,7 @@ export const infoTextsCollection = {
         },
         {
           title: "Material UI",
-          description: "Google Material Designに基づいたReact用UIコンポーネントライブラリです。",
+          description: "Material Designを実装したReactコンポーネントライブラリで、モダンで統一感のあるUIを素早く構築できます。",
           years: "5年",
           projects: "3",
           img: "",
@@ -2123,7 +2277,7 @@ export const infoTextsCollection = {
         },
         {
           title: "Bootstrap",
-          description: "レスポンシブなWebインターフェースを効率的に構築するためのCSSフレームワークです。",
+          description: "レスポンシブで一貫性のあるWebインターフェースを効率的に作成できるCSSフレームワークです。",
           years: "5年",
           projects: "6",
           img: "",
@@ -2132,7 +2286,7 @@ export const infoTextsCollection = {
         },
         {
           title: "Handlebars",
-          description: "バックエンドで動的にHTMLを生成するためのテンプレートエンジンです。",
+          description: "構造化されたデータを利用して、バックエンドで動的にHTMLを生成するためのテンプレートエンジンです。",
           years: "1年",
           projects: "1",
           img: "",
@@ -2141,7 +2295,7 @@ export const infoTextsCollection = {
         },
         {
           title: "Style Dictionary",
-          description: "複数のプラットフォーム間でデザイントークンを管理・共有するためのツールです。",
+          description: "異なるプラットフォーム間でデザイントークンを管理・標準化するためのツールです。",
           years: "2年",
           projects: "3",
           img: "",
@@ -2150,7 +2304,7 @@ export const infoTextsCollection = {
         },
         {
           title: "Unstyled Components",
-          description: "スタイルを分離し、CSSや他のライブラリで自由にデザインを制御できるコンポーネント設計手法です。",
+          description: "スタイルを分離したコンポーネント設計の手法で、CSSや他のライブラリを使って自由にデザインできます。",
           years: "5年",
           projects: "6",
           img: "",
@@ -2158,8 +2312,26 @@ export const infoTextsCollection = {
           types: ["frontend"],
         },
         {
+          title: "Storybook",
+          description: "UIコンポーネントを独立して開発・テスト・ドキュメント化するためのツールです。",
+          years: "5年",
+          projects: "6",
+          img: "",
+          badges: ["storybook"],
+          types: ["frontend"],
+        },
+        {
+          title: "Vite",
+          description: "高速なHMRと最適化されたビルド機能を提供する、モダンなWebアプリ向けの開発サーバーおよびビルドツールです。",
+          years: "3年",
+          projects: "0",
+          img: "",
+          badges: ["vite"],
+          types: ["frontend"],
+        },
+        {
           title: "Node.js",
-          description: "スケーラブルなバックエンドアプリケーションを構築するためのJavaScript実行環境です。",
+          description: "サーバーサイドでJavaScriptを実行し、スケーラブルなバックエンドアプリケーションを開発するための実行環境です。",
           years: "5年",
           projects: "6",
           img: "",
@@ -2168,7 +2340,7 @@ export const infoTextsCollection = {
         },
         {
           title: "Express",
-          description: "Node.js向けの軽量なWebフレームワークで、APIやWebサーバー開発に利用されます。",
+          description: "Node.js向けの軽量なフレームワークで、APIやWebアプリケーションの開発に使用されます。",
           years: "5年",
           projects: "6",
           img: "",
@@ -2177,7 +2349,7 @@ export const infoTextsCollection = {
         },
         {
           title: "Sequelize",
-          description: "Node.jsでリレーショナルデータベース操作を簡単にするORMライブラリです。",
+          description: "Node.js向けのORMで、リレーショナルデータベースとの連携やデータ操作を簡単に行うことができます。",
           years: "5年",
           projects: "6",
           img: "",
@@ -2186,7 +2358,7 @@ export const infoTextsCollection = {
         },
         {
           title: "API REST",
-          description: "HTTP通信を利用してシステム間で標準化されたデータ交換を行うAPI設計アーキテクチャです。",
+          description: "HTTPリクエストを利用してシステム間で標準化された通信を行うためのAPIアーキテクチャです。",
           years: "5年",
           projects: "6",
           img: "",
@@ -2195,7 +2367,7 @@ export const infoTextsCollection = {
         },
         {
           title: "GraphQL",
-          description: "必要なデータのみを効率的に取得できるAPI用クエリ言語です。",
+          description: "必要なデータのみを効率的に取得できるAPI向けのクエリ言語です。",
           years: "1年",
           projects: "1",
           img: "",
@@ -2204,7 +2376,7 @@ export const infoTextsCollection = {
         },
         {
           title: "Spring Boot",
-          description: "Javaベースのバックエンドアプリケーションを迅速に構築するためのフレームワークです。",
+          description: "堅牢で拡張性の高いバックエンドアプリケーションを迅速に開発するためのJavaフレームワークです。",
           years: "1年",
           projects: "1",
           img: "",
@@ -2212,8 +2384,107 @@ export const infoTextsCollection = {
           types: ["backend"],
         },
         {
+          title: "Java",
+          description: "オブジェクト指向プログラミング言語で、企業システムやAndroid開発で広く利用されています。",
+          years: "5年",
+          projects: "6",
+          img: "",
+          badges: ["java"],
+          types: ["backend", "mobile"],
+        },
+        {
+          title: "C / C++ / C#",
+          description: "低レベルシステム、高性能アプリケーション、企業向けソフトウェア開発に使用されるプログラミング言語群です。",
+          years: "5年",
+          projects: "6",
+          img: "",
+          badges: ["c_family"],
+          types: ["backend"],
+        },
+        {
+          title: "Rust",
+          description: "メモリ安全性と高いパフォーマンスを重視したプログラミング言語で、重要なシステム開発に適しています。",
+          years: "5年",
+          projects: "6",
+          img: "",
+          badges: ["rust"],
+          types: ["backend"],
+        },
+        {
+          title: "Python",
+          description: "自動化、データ分析、バックエンド開発、AI分野などで利用される汎用性の高いプログラミング言語です。",
+          years: "5年",
+          projects: "6",
+          img: "",
+          badges: ["python"],
+          types: ["backend"],
+        },
+        {
+          title: "SQL",
+          description: "リレーショナルデータベースの検索、操作、管理を行うための標準言語です。",
+          years: "5年",
+          projects: "6",
+          img: "",
+          badges: ["sql"],
+          types: ["database"],
+        },
+        {
+          title: "MySQL",
+          description: "Webアプリケーションで広く利用されているリレーショナルデータベース管理システムです。",
+          years: "5年",
+          projects: "6",
+          img: "",
+          badges: ["mysql"],
+          types: ["database"],
+        },
+        {
+          title: "MSSQL",
+          description: "Microsoftが提供するリレーショナルデータベース管理システムで、企業向けシステムでよく利用されています。",
+          years: "5年",
+          projects: "6",
+          img: "",
+          badges: ["mssql"],
+          types: ["database"],
+        },
+        {
+          title: "PostgreSQL",
+          description: "高い信頼性と複雑なクエリへの対応力を持つ高度なリレーショナルデータベースです。",
+          years: "5年",
+          projects: "6",
+          img: "",
+          badges: ["postgresql"],
+          types: ["database"],
+        },
+        {
+          title: "Android Studio",
+          description: "Androidアプリケーションを開発するための公式統合開発環境（IDE）です。",
+          years: "5年",
+          projects: "6",
+          img: "",
+          badges: ["android_studio"],
+          types: ["mobile", "tools"],
+        },
+        {
+          title: "Kotlin",
+          description: "Javaとの相互運用が可能で、簡潔さと安全性を重視したモダンなプログラミング言語です。",
+          years: "5年",
+          projects: "6",
+          img: "",
+          badges: ["kotlin"],
+          types: ["mobile", "backend"],
+        },
+        {
+          title: "Jetpack Compose",
+          description: "宣言型UIを用いてAndroidインターフェースを構築するためのモダンなツールキットです。",
+          years: "5年",
+          projects: "6",
+          img: "",
+          badges: ["jetpack_compose"],
+          types: ["mobile"],
+        },
+        {
           title: "Docker",
-          description: "アプリケーションをコンテナ化し、異なる環境でも一貫して実行できるプラットフォームです。",
+          description: "アプリケーションをコンテナ化し、一貫した環境で実行できるようにするプラットフォームです。",
           years: "5年",
           projects: "6",
           img: "",
@@ -2222,7 +2493,7 @@ export const infoTextsCollection = {
         },
         {
           title: "AWS",
-          description: "クラウドインフラ、ストレージ、デプロイなどを提供するクラウドサービスプラットフォームです。",
+          description: "アプリケーションのデプロイ、保存、スケーリングを行うためのクラウドサービスプラットフォームです。",
           years: "5年",
           projects: "6",
           img: "",
@@ -2231,7 +2502,7 @@ export const infoTextsCollection = {
         },
         {
           title: "Figma",
-          description: "UIデザイン、プロトタイプ、デザインシステム作成に利用される共同デザインツールです。",
+          description: "UIデザイン、プロトタイプ作成、デザインシステム管理のための共同作業ツールです。",
           years: "5年",
           projects: "6",
           img: "",
@@ -2239,24 +2510,68 @@ export const infoTextsCollection = {
           types: ["design"],
         },
         {
-          title: "Vite",
-          description: "モダンなWebアプリケーション向けの高速ビルドツールおよび開発サーバーです。HMRと最適化された本番バンドルを提供します。",
-          years: "3年",
-          projects: "0",
+          title: "Git (GitHub/GitLab)",
+          description: "ソースコード管理とチーム開発を支援する分散型バージョン管理システムです。",
+          years: "5年",
+          projects: "6",
           img: "",
-          badges: ["vite"],
-          types: ["frontend"],
+          badges: ["git_github"],
+          types: ["tools", "devops"],
+        },
+        {
+          title: "BPMN",
+          description: "業務プロセスを可視化し、文書化するための標準的なモデリング記法です。",
+          years: "5年",
+          projects: "6",
+          img: "",
+          badges: ["bpmn"],
+          types: ["management"],
+        },
+        {
+          title: "UML",
+          description: "システムの構造や振る舞いを表現するためのモデリング言語です。",
+          years: "5年",
+          projects: "6",
+          img: "",
+          badges: ["uml"],
+          types: ["management"],
+        },
+        {
+          title: "Data Analysis with Python",
+          description: "Pythonを使用したデータ分析、データ処理、およびデータ可視化の経験があります。",
+          years: "5年",
+          projects: "6",
+          img: "",
+          badges: ["pandas"],
+          types: ["backend"],
+        },
+        {
+          title: "Jest (Testing)",
+          description: "JavaScript向けのテストフレームワークで、コードの品質と信頼性を確保するために使用します。",
+          years: "5年",
+          projects: "6",
+          img: "",
+          badges: ["jest"],
+          types: ["frontend", "backend"],
         },
         {
           title: "Yarn",
-          description: "JavaScriptの依存関係を管理する高速なパッケージマネージャーで、npmの代替として利用されます。",
+          description: "高速で信頼性の高いJavaScriptパッケージマネージャーです。決定的なlockfileによる依存関係管理を提供します。",
           years: "5年",
           projects: "0",
           img: "",
           badges: ["yarn"],
           types: ["tools"],
         },
-      ] satisfies SkillPageSkill[],
+        {
+          title: "Agile Methodologies (Scrum, Kanban, BDD)",
+          description: "継続的な価値提供とチーム協力を重視したアジャイル開発手法です。Scrum、Kanban、BDDの経験があります。",
+          years: "5年",
+          projects: "6",
+          img: "",
+          badges: ["agile"],
+          types: ["management"],
+        }] satisfies SkillPageSkill[],
     },
     certificate_page: {
       certificates: [
@@ -2317,6 +2632,11 @@ export const infoTextsCollection = {
           img: "c7",
         },
       ] satisfies CertificateItem[],
+      modal: {
+        close_label: "モーダルを閉じる",
+        zoom_in_label: "ズームイン",
+        zoom_out_label: "ズームアウト",
+      },
     },
     projects_page: {
       contributions_title: "GitHub コントリビューション",

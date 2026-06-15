@@ -1,5 +1,5 @@
 import type { CSSProperties } from "react";
-import type { SkillCardLine, SkillPageSkill } from "./Types";
+import type { SkillBadgeKey, SkillCardLine, SkillPageSkill } from "./Types";
 
 const SKILL_LINE_VAR: Record<SkillCardLine, string> = {
   frontend: "--skill-line-frontend",
@@ -15,8 +15,71 @@ const SKILL_LINE_VAR: Record<SkillCardLine, string> = {
 const normalizeTechLabel = (value: string): string =>
   value.trim().toLowerCase().replace(/\s+/g, " ");
 
+/** Rótulos de `projects[].technologies` → badge da skill (independente do idioma do título). */
+const TECH_LABEL_TO_BADGE: Record<string, SkillBadgeKey> = {
+  react: "react",
+  "react native": "react_native",
+  expo: "react_native",
+  javascript: "javascript",
+  typescript: "typescript",
+  html: "html",
+  css: "css",
+  redux: "redux",
+  "material ui": "material_ui",
+  bootstrap: "bootstrap",
+  handlebars: "handlebars",
+  "style dictionary": "style_dictionary",
+  "styled components": "styled_components",
+  "unstyled components": "styled_components",
+  "node.js": "node",
+  node: "node",
+  express: "express",
+  sequelize: "sequelize",
+  "api rest": "rest_api",
+  rest: "rest_api",
+  graphql: "graphql",
+  "spring boot": "spring_boot",
+  docker: "docker",
+  aws: "aws",
+  figma: "figma",
+  sql: "sql",
+  mysql: "mysql",
+  mssql: "mssql",
+  postgresql: "postgresql",
+  "android studio": "android_studio",
+  kotlin: "kotlin",
+  "jetpack compose": "jetpack_compose",
+  java: "java",
+  "c / c++ / c#": "c_family",
+  rust: "rust",
+  python: "python",
+  git: "git_github",
+  github: "git_github",
+  gitlab: "git_github",
+  bpmn: "bpmn",
+  uml: "uml",
+  storybook: "storybook",
+  pandas: "pandas",
+  jest: "jest",
+  vite: "vite",
+  yarn: "yarn",
+  agile: "agile",
+  scrum: "agile",
+  kanban: "agile",
+};
+
 const splitSkillTitleParts = (title: string): string[] =>
   title.split(/\s*[+&,|]\s*/i).map((part) => normalizeTechLabel(part));
+
+const resolveSkillByBadge = (
+  badge: SkillBadgeKey,
+  skills: readonly SkillPageSkill[],
+): SkillPageSkill | null => {
+  for (const skill of skills) {
+    if (skill.badges?.includes(badge)) return skill;
+  }
+  return null;
+};
 
 /**
  * Encontra a skill de `skill_page` correspondente a uma tag de tecnologia do projeto.
@@ -40,6 +103,11 @@ export const resolveSkillForTech = (
     if (parts.some((part) => part === normalized)) {
       return skill;
     }
+  }
+
+  const badge = TECH_LABEL_TO_BADGE[normalized];
+  if (badge) {
+    return resolveSkillByBadge(badge, skills);
   }
 
   return null;

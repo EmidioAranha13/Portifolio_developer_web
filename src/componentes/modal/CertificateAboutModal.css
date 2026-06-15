@@ -1,0 +1,286 @@
+.app-modal--content.certificate-about-modal {
+  width: min(1100px, 96vw);
+  height: min(88vh, 780px);
+  max-height: min(88vh, 780px);
+  padding: 0;
+  border: none;
+  border-radius: 1.2rem;
+  overflow: hidden;
+  box-shadow: 0 20px 48px rgba(0, 0, 0, 0.65);
+}
+
+.app-modal--content.certificate-about-modal .app-modal__body {
+  flex: 1 1 auto;
+  padding: 0;
+  height: 100%;
+  min-height: 0;
+  margin-top: 0;
+  align-items: stretch;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.app-modal--content.certificate-about-modal .app-modal__footer {
+  display: none;
+  min-height: 0;
+  margin: 0;
+  padding: 0;
+}
+
+.certificate-about-modal__layout {
+  display: grid;
+  grid-template-columns: 1fr clamp(220px, 28%, 320px);
+  flex: 1 1 auto;
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+}
+
+.certificate-about-modal__sr-title {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.certificate-about-modal__pdf-col {
+  position: relative;
+  height: 100%;
+  min-height: 0;
+  background: #fff;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.certificate-about-modal__zoom-controls {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  z-index: 3;
+  display: inline-flex;
+  gap: 0;
+  overflow: hidden;
+  border-radius: 8px;
+  pointer-events: auto;
+  margin-right: 12px;
+  --glass-backdrop-bg: color-mix(in srgb, rgb(28, 28, 34) 58%, transparent);
+  --glass-fallback-bg: linear-gradient(
+    155deg,
+    color-mix(in srgb, rgb(42, 42, 50) 88%, transparent) 0%,
+    color-mix(in srgb, rgb(24, 24, 30) 82%, transparent) 100%
+  );
+  background: var(--glass-fallback-bg);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow:
+    0 8px 22px rgba(0, 0, 0, 0.28),
+    inset 0 1px 0 rgba(255, 255, 255, 0.14);
+}
+
+@supports ((-webkit-backdrop-filter: blur(1px)) or (backdrop-filter: blur(1px))) {
+  .certificate-about-modal__zoom-controls {
+    background: var(--glass-backdrop-bg);
+    backdrop-filter: blur(10px) saturate(1.15);
+    -webkit-backdrop-filter: blur(10px) saturate(1.15);
+  }
+}
+
+.certificate-about-modal__zoom-btn {
+  width: 40px;
+  height: 34px;
+  border: none;
+  border-radius: 0;
+  cursor: pointer;
+  font-size: 1.25rem;
+  font-weight: 700;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgba(255, 255, 255, 0.94);
+  background: transparent;
+  -webkit-tap-highlight-color: transparent;
+  transition:
+    background 140ms ease,
+    opacity 140ms ease;
+}
+
+.certificate-about-modal__zoom-btn:focus,
+.certificate-about-modal__zoom-btn:focus-visible {
+  outline: none;
+  box-shadow: none;
+}
+
+.certificate-about-modal__zoom-btn--out {
+  border-radius: 8px 0 0 8px;
+  border-right: 1px solid rgba(255, 255, 255, 0.14);
+}
+
+.certificate-about-modal__zoom-btn--in {
+  border-radius: 0 8px 8px 0;
+}
+
+.certificate-about-modal__zoom-btn:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.certificate-about-modal__zoom-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.certificate-about-modal__viewport {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow: auto;
+  padding: 0;
+  display: grid;
+  place-items: center;
+}
+
+.certificate-about-modal__image {
+  display: block;
+  max-width: none;
+  max-height: none;
+  flex-shrink: 0;
+  object-fit: contain;
+  object-position: center;
+  transition:
+    width 180ms ease-out,
+    height 180ms ease-out;
+}
+
+.certificate-about-modal__info-col {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  height: 100%;
+  background: #131317;
+  border-left: 1px solid rgba(255, 255, 255, 0.08);
+  overflow: hidden;
+}
+
+.certificate-about-modal__close {
+  align-self: flex-end;
+  margin: 12px 12px 0 0;
+  flex-shrink: 0;
+  width: 32px;
+  height: 32px;
+  border-radius: 999px;
+  border: none;
+  cursor: pointer;
+  font-size: 1.35rem;
+  font-weight: 700;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgba(255, 255, 255, 0.85);
+  background: rgba(255, 255, 255, 0.12);
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.18),
+    0 4px 12px rgba(0, 0, 0, 0.5);
+  transition: background 140ms ease;
+}
+
+.certificate-about-modal__close:hover {
+  background: rgba(255, 255, 255, 0.22);
+}
+
+.certificate-about-modal__close:focus,
+.certificate-about-modal__close:focus-visible {
+  outline: none;
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.18),
+    0 4px 12px rgba(0, 0, 0, 0.5);
+}
+
+.certificate-about-modal__info-body {
+  flex: 1 1 0;
+  min-height: 0;
+  max-height: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: clamp(8px, 1.2vw, 14px);
+  padding: 0;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+.certificate-about-modal__institution,
+.certificate-about-modal__cert-title,
+.certificate-about-modal__divider,
+.certificate-about-modal__resume {
+  padding-inline: clamp(16px, 2.4vw, 24px);
+}
+
+.certificate-about-modal__institution {
+  margin: 0;
+  flex-shrink: 0;
+  padding-top: clamp(12px, 2vw, 20px);
+  font-size: clamp(0.78rem, 1vw, 0.85rem);
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.45);
+}
+
+.certificate-about-modal__cert-title {
+  margin: 0;
+  flex-shrink: 0;
+  font-size: clamp(1.05rem, 1.5vw, 1.3rem);
+  font-weight: 800;
+  line-height: 1.25;
+  color: rgba(255, 255, 255, 0.92);
+}
+
+.certificate-about-modal__divider {
+  height: 1px;
+  background: rgba(255, 255, 255, 0.1);
+  flex-shrink: 0;
+}
+
+.certificate-about-modal__resume {
+  margin: 0;
+  flex: 1 1 0;
+  min-height: 0;
+  max-height: 65%;
+  box-sizing: border-box;
+  padding-bottom: clamp(20px, 3vw, 28px);
+  font-size: clamp(0.84rem, 1.05vw, 0.92rem);
+  line-height: 1.55;
+  color: rgba(255, 255, 255, 0.68);
+  text-align: justify;
+  text-indent: 1.5em;
+  text-wrap: pretty;
+  hyphens: auto;
+  overflow-x: hidden;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+}
+
+@media (max-width: 700px) {
+  .app-modal--content.certificate-about-modal {
+    height: min(92vh, 700px);
+    max-height: min(92vh, 700px);
+  }
+
+  .certificate-about-modal__layout {
+    grid-template-columns: 1fr;
+    grid-template-rows: 55% auto;
+  }
+
+  .certificate-about-modal__info-col {
+    min-height: 0;
+    border-left: none;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+  }
+}

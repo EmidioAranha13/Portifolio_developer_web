@@ -566,15 +566,49 @@ export type ProjectsPage = {
  */
 export type CertificatePage = {
   certificates: CertificateItem[];
+  modal: {
+    close_label: string;
+    zoom_in_label: string;
+    zoom_out_label: string;
+  };
 };
 
 /**
  * Card de certificado com URL da imagem já resolvida.
  *
- * **Usado em:** `CertificationsPage.tsx`.
+ * **Usado em:** `CertificationsPage.tsx`, `CertificateAboutModal.tsx`.
  */
 export type CertificateCardItem = CertificateItem & {
   imgSrc: string;
+};
+
+/**
+ * Conteúdo da página de habilidades por idioma.
+ *
+ * **Usado em:** `infoTextsCollection.tsx`, `SkillPage.tsx`.
+ */
+export type SkillPage = {
+  experience_label: string;
+  projects_label: string;
+  filter_aria_label: string;
+  filter_icon_alt: string;
+  search_placeholder: string;
+  search_aria_label: string;
+  listed_items_label: string;
+  empty_message: string;
+  grid_aria_label: string;
+  filter_options: {
+    all: string;
+    frontend: string;
+    backend: string;
+    mobile: string;
+    devops: string;
+    design: string;
+    management: string;
+    database: string;
+    tools: string;
+  };
+  skills: SkillPageSkill[];
 };
 
 /**
