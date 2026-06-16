@@ -85,26 +85,39 @@ const hasProjectLink = (url: string): boolean => url.trim().length > 0;
 
 
 const buildLoopScreens = (screens: readonly ProjectScreenItem[]): ProjectScreenItem[] => {
-
   if (screens.length <= 1) return [...screens];
-
   return [screens[screens.length - 1], ...screens, screens[0]];
-
 };
-
-
 
 const toRealScreenIndex = (trackIndex: number, screenCount: number): number => {
-
   if (screenCount <= 1) return 0;
-
   if (trackIndex === 0) return screenCount - 1;
-
   if (trackIndex === screenCount + 1) return 0;
-
   return trackIndex - 1;
-
 };
+
+type MobileDeviceFrameProps = {
+  caseSrc: string;
+  screen: ProjectScreenItem;
+};
+
+const MobileDeviceFrame: React.FC<MobileDeviceFrameProps> = ({ caseSrc, screen }) => (
+  <div className="project-about-modal__mobile-device">
+    <img
+      className="project-about-modal__mobile-device-screen"
+      src={resolveScreenSrc(screen)}
+      alt=""
+      decoding="async"
+    />
+    <img
+      className="project-about-modal__mobile-device-case"
+      src={caseSrc}
+      alt=""
+      aria-hidden
+      decoding="async"
+    />
+  </div>
+);
 
 
 
@@ -117,6 +130,8 @@ type ProjectScreenCarouselProps = {
   screenPrevLabel: string;
 
   screenNextLabel: string;
+
+  caseSrc?: string;
 
 };
 
@@ -131,6 +146,8 @@ const ProjectScreenCarousel: React.FC<ProjectScreenCarouselProps> = ({
   screenPrevLabel,
 
   screenNextLabel,
+
+  caseSrc,
 
 }) => {
 
@@ -364,23 +381,35 @@ const ProjectScreenCarousel: React.FC<ProjectScreenCarouselProps> = ({
 
               key={`screen-loop-${index}`}
 
-              className="project-about-modal__screen-slide"
+              className={`project-about-modal__screen-slide${
+
+                caseSrc ? " project-about-modal__screen-slide--mobile" : ""
+
+              }`}
 
               aria-hidden={index !== trackIndex}
 
             >
 
-              <img
+              {caseSrc ? (
 
-                className="project-about-modal__screen-image"
+                <MobileDeviceFrame caseSrc={caseSrc} screen={screen} />
 
-                src={resolveScreenSrc(screen)}
+              ) : (
 
-                alt=""
+                <img
 
-                decoding="async"
+                  className="project-about-modal__screen-image"
 
-              />
+                  src={resolveScreenSrc(screen)}
+
+                  alt=""
+
+                  decoding="async"
+
+                />
+
+              )}
 
             </figure>
 
@@ -793,6 +822,11 @@ const ProjectAboutModal: React.FC<ProjectAboutModalProps> = ({
                           carouselLabel={activeScreenTab.label}
                           screenPrevLabel={screenPrevLabel}
                           screenNextLabel={screenNextLabel}
+                          caseSrc={
+                            activeScreenTab.platform === "mobile"
+                              ? project.mobileCaseSrc
+                              : undefined
+                          }
                         />
                       ) : (
                         <p className="project-about-modal__screens-empty">{screensEmptyLabel}</p>

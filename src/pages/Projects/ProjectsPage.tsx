@@ -14,6 +14,7 @@ const GITHUB_USERNAME = "EmidioAranha13";
 
 const CALENDAR_LOADING_ANIMATION = "react-activity-calendar--loading-animation";
 const CALENDAR_READY_STABLE_FRAMES = 3;
+const PROJECT_CARD_MOBILE_MAX_WIDTH_PX = 640;
 
 const calendarHasLoadingSkeleton = (calendar: Element): boolean => {
   const rects = calendar.querySelectorAll("rect");
@@ -66,8 +67,21 @@ const ProjectsPage: React.FC<ProjectsPageProps> = ({ title, themeMode, infoTexts
   const page = infoTexts.projects_page;
   const [aboutProjectId, setAboutProjectId] = useState<number | null>(null);
   const [calendarReady, setCalendarReady] = useState(false);
+  const [isProjectCardMobile, setIsProjectCardMobile] = useState(
+    () =>
+      typeof window !== "undefined" &&
+      window.matchMedia(`(max-width: ${PROJECT_CARD_MOBILE_MAX_WIDTH_PX}px)`).matches,
+  );
   const calendarWrapRef = useRef<HTMLDivElement>(null);
   const colorScheme = themeMode === "day" ? "light" : "dark";
+
+  useEffect(() => {
+    const media = window.matchMedia(`(max-width: ${PROJECT_CARD_MOBILE_MAX_WIDTH_PX}px)`);
+    const sync = () => setIsProjectCardMobile(media.matches);
+    sync();
+    media.addEventListener("change", sync);
+    return () => media.removeEventListener("change", sync);
+  }, []);
 
   useEffect(() => {
     const root = calendarWrapRef.current;
@@ -116,7 +130,7 @@ const ProjectsPage: React.FC<ProjectsPageProps> = ({ title, themeMode, infoTexts
     };
   }, [colorScheme, page.contributions_error]);
   const projectItems: ProjectWithImage[] = page.projects.map((project) =>
-    enrichProjectWithAssets(project as Project),
+    enrichProjectWithAssets(project as Project, isProjectCardMobile ? "mobile" : "web"),
   );
   const aboutProject =
     aboutProjectId != null

@@ -517,6 +517,8 @@ export type ProjectWithImage = Project & {
   /** Modal — `cabeçalho.*` / `cabecalho.*` */
   headerImageSrc: string;
   screenAssets: ProjectScreenAssets;
+  /** Moldura mobile — `mobile/case.*` (telas do modal) */
+  mobileCaseSrc?: string;
 };
 
 /**

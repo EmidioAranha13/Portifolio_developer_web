@@ -32,7 +32,8 @@
 .app-modal--content.project-about-modal {
   --project-about-pad-x: clamp(18px, 3vw, 26px);
   --project-about-pad-y: clamp(16px, 2.4vw, 22px);
-  --project-about-screen-stage-height: min(52vh, 420px);
+  --project-about-screen-stage-height: min(66vh, 560px);
+  --project-about-mobile-device-height: min(84vh, 720px);
   flex: 1 1 auto;
   min-width: 0;
   width: min(680px, 96vw);
@@ -348,6 +349,10 @@
   min-height: var(--project-about-screen-stage-height);
 }
 
+.project-about-modal__screens-panel:has(.project-about-modal__mobile-device) {
+  min-height: var(--project-about-mobile-device-height);
+}
+
 .project-about-modal__screens-empty {
   margin: 0;
   padding-inline: clamp(12px, 2vw, 20px);
@@ -465,6 +470,49 @@
   object-position: center;
 }
 
+.project-about-modal__screen-slide--mobile {
+  overflow: visible;
+  border: none;
+  box-shadow: none;
+  background: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.project-about-modal__mobile-device {
+  position: relative;
+  display: inline-block;
+  line-height: 0;
+  max-width: 100%;
+}
+
+.project-about-modal__mobile-device-case,
+.project-about-modal__mobile-device-screen {
+  display: block;
+  height: var(--project-about-mobile-device-height);
+  width: auto;
+  max-width: 100%;
+}
+
+.project-about-modal__mobile-device-case {
+  position: relative;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.project-about-modal__mobile-device-screen {
+  position: absolute;
+  top: 2.5%;
+  left: 7%;
+  z-index: 1;
+  width: 84%;
+  height: 95%;
+  object-fit: cover;
+  object-position: top center;
+  border-radius: clamp(10px, 3.6%, 18px);
+}
+
 @media (prefers-reduced-motion: reduce) {
   .project-about-modal__screen-nav,
   .project-about-modal__screen-track--animated {
@@ -493,7 +541,8 @@
   }
 
   .app-modal--content.project-about-modal {
-    --project-about-screen-stage-height: min(38vh, 300px);
+    --project-about-screen-stage-height: min(52vh, 440px);
+    --project-about-mobile-device-height: min(52vh, 400px);
     width: 100%;
     height: auto;
     max-height: calc(100dvh - clamp(24px, 7vw, 40px));
@@ -535,6 +584,10 @@
 
   .project-about-modal__scroll::-webkit-scrollbar-track {
     background: transparent;
+  }
+
+  .project-about-modal__screen-slide--mobile {
+    overflow: hidden;
   }
 
 }

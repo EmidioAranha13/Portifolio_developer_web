@@ -12,6 +12,10 @@ const coverModules = import.meta.glob<string>("../assets/projects/*/capa.*", {
   eager: true,
   import: "default",
 });
+const coverMobileModules = import.meta.glob<string>("../assets/projects/*/capa_mobile.*", {
+  eager: true,
+  import: "default",
+});
 
 const headerModules = {
   ...import.meta.glob<string>("../assets/projects/*/cabeçalho.*", {
@@ -31,6 +35,11 @@ const webScreenshotModules = import.meta.glob<string>(
 
 const mobileScreenshotModules = import.meta.glob<string>(
   "../assets/projects/*/mobile/*.{png,jpg,jpeg,webp}",
+  { eager: true, import: "default" },
+);
+
+const mobileCaseModules = import.meta.glob<string>(
+  "../assets/projects/*/mobile/case.*",
   { eager: true, import: "default" },
 );
 
@@ -56,18 +65,24 @@ const parseScreenshotIndex = (path: string): number => {
   return Number.isNaN(index) ? Number.MAX_SAFE_INTEGER : index;
 };
 
+const isMobileCaseAssetPath = (path: string): boolean =>
+  /\/mobile\/case\.(png|jpe?g|webp)$/i.test(path);
+
 const coverExtRank = (path: string): number => {
   const lower = path.toLowerCase();
   const rank = COVER_EXT_ORDER.findIndex((ext) => lower.endsWith(ext));
   return rank === -1 ? COVER_EXT_ORDER.length : rank;
 };
 
-const buildCoverByProjectId = (): ReadonlyMap<number, string> => {
+const buildCoverByProjectId = (
+  modules: Record<string, string>,
+  coverToken: string,
+): ReadonlyMap<number, string> => {
   const byId = new Map<number, { path: string; url: string }>();
 
-  for (const [path, url] of Object.entries(coverModules)) {
+  for (const [path, url] of Object.entries(modules)) {
     const id = parseProjectId(path);
-    if (id === null || !path.includes("/capa.")) continue;
+    if (id === null || !path.includes(coverToken)) continue;
 
     const current = byId.get(id);
     if (!current || coverExtRank(path) < coverExtRank(current.path)) {
@@ -113,6 +128,7 @@ const buildScreenshotsByProjectId = (
   for (const [path, url] of Object.entries(modules)) {
     const id = parseProjectId(path);
     if (id === null || !path.includes(`/${platform}/`)) continue;
+    if (platform === "mobile" && isMobileCaseAssetPath(path)) continue;
 
     const list = byId.get(id) ?? [];
     list.push({ path, index: parseScreenshotIndex(path), url });
@@ -124,13 +140,16 @@ const buildScreenshotsByProjectId = (
   );
 };
 
-const PROJECT_COVERS = buildCoverByProjectId();
+const PROJECT_COVERS = buildCoverByProjectId(coverModules, "/capa.");
+const PROJECT_MOBILE_COVERS = buildCoverByProjectId(coverMobileModules, "/capa_mobile.");
 const PROJECT_HEADERS = buildHeaderByProjectId();
 const PROJECT_WEB_SCREENSHOTS = buildScreenshotsByProjectId(webScreenshotModules, "web");
 const PROJECT_MOBILE_SCREENSHOTS = buildScreenshotsByProjectId(
   mobileScreenshotModules,
   "mobile",
 );
+
+const PROJECT_MOBILE_CASES = buildCoverByProjectId(mobileCaseModules, "/case.");
 
 const mapUrlsToScreens = (urls: readonly string[]): ProjectScreenItem[] =>
   urls.map((src) => ({ src }));
@@ -140,9 +159,16 @@ const resolveScreenAssets = (projectId: number): ProjectScreenAssets => ({
   mobile: mapUrlsToScreens(PROJECT_MOBILE_SCREENSHOTS.get(projectId) ?? []),
 });
 
-/** Capa do card do carrossel (`projects/{id}/capa.*`). */
-export const getProjectCoverUrl = (projectId: number): string =>
-  PROJECT_COVERS.get(projectId) ?? PROJECT_DEFAULT_IMAGE;
+/** Capa do card do carrossel (`capa.*` no web e `capa_mobile.*` no mobile). */
+export const getProjectCoverUrl = (
+  projectId: number,
+  platform: ProjectScreenPlatform = "web",
+): string => {
+  if (platform === "mobile") {
+    return PROJECT_MOBILE_COVERS.get(projectId) ?? PROJECT_COVERS.get(projectId) ?? PROJECT_DEFAULT_IMAGE;
+  }
+  return PROJECT_COVERS.get(projectId) ?? PROJECT_DEFAULT_IMAGE;
+};
 
 /** Cabeçalho do modal (`projects/{id}/cabeçalho.*` ou `cabecalho.*`). */
 export const getProjectHeaderUrl = (projectId: number): string =>
@@ -152,10 +178,18 @@ export const getProjectHeaderUrl = (projectId: number): string =>
 export const getProjectScreenAssets = (projectId: number): ProjectScreenAssets =>
   resolveScreenAssets(projectId);
 
+/** Moldura mobile (`projects/{id}/mobile/case.*`) para telas do modal. */
+export const getProjectMobileCaseUrl = (projectId: number): string | undefined =>
+  PROJECT_MOBILE_CASES.get(projectId);
+
 /** Aplica capa, cabeçalho e telas a partir de `assets/projects/{id}/`. */
-export const enrichProjectWithAssets = (project: Project): ProjectWithImage => ({
+export const enrichProjectWithAssets = (
+  project: Project,
+  coverPlatform: ProjectScreenPlatform = "web",
+): ProjectWithImage => ({
   ...project,
-  imageSrc: getProjectCoverUrl(project.id),
+  imageSrc: getProjectCoverUrl(project.id, coverPlatform),
   headerImageSrc: getProjectHeaderUrl(project.id),
   screenAssets: getProjectScreenAssets(project.id),
+  mobileCaseSrc: getProjectMobileCaseUrl(project.id),
 });
