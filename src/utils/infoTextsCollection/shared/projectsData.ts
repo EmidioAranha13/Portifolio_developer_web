@@ -62,9 +62,9 @@ const PORTFOLIO_PROJECT_CORES = [
   {
     color: "#f84187",
     img: "" as ProjectImageKey | "",
-    technologies: ["React", "TypeScript", "Vite", "Node.js"],
-    screens: [] as const,
-    project_github_link: "https://github.com/EmidioAranha13/proj1",
+    technologies: ["React", "TypeScript", "Javascript", "yarn", "bootstrap", "css"],
+    screens: ["web", "mobile"] as const,
+    project_github_link: "https://github.com/EmidioAranha13/Iniciando-com-react",
     project_test_link: "https://github.com/EmidioAranha13/proj1",
   },
   {
@@ -87,7 +87,7 @@ const PORTFOLIO_PROJECT_CORES = [
     color: "#5f38cc",
     img: "" as ProjectImageKey | "",
     technologies: ["Em Breve"],
-    screens: [] as const,
+    screens: ["web", "mobile"] as const,
     project_github_link: "",
     project_test_link: "",
   },
@@ -149,9 +149,12 @@ const PROJECT_TEXTS_BR = [
     paragraphs: ["Parágrafo 1", "Parágrafo 2", "Parágrafo 3"],
   },
   {
-    title: "Sistema de Gerenciamento de PetShop",
-    description: "Descrição do projeto 6",
-    paragraphs: ["Parágrafo 1", "Parágrafo 2", "Parágrafo 3"],
+    title: "GitPro Collector: Listador de repositórios",
+    description: "Um sistema simples em React para listar repositórios de um usuário do GitHub, com possibilidade de buscar por repositório específico.",
+    paragraphs: [
+      "O GitPro Collector é um sistema básico de listagem que funciona da seguinte forma: Selecione o indicador de busca de seu interesse, seja por nome ou token (token de acesso do github fornecido pelo usuário através de settings/developer settings/personal access token/token classic), adicione o nome ou token e clique em buscar.", 
+      "Será feita uma busca pelos repositórios públicos do usuário, se selecinado busca por nome, ou repositórios públicos e privados se buscado através de token. O resultado é exibido através de um seletor de repositórios onde o usuário pode escolher qual repositório visualizar e seus dados adicionais. ",
+    ],
   },
   {
     title: "Condomunity",
@@ -159,7 +162,7 @@ const PROJECT_TEXTS_BR = [
     paragraphs: ["Parágrafo 1", "Parágrafo 2", "Parágrafo 3"],
   },
   {
-    title: "Listagem de Projetos GitHub",
+    title: "Sistema de Gerenciamento de PetShop",
     description: "Descrição do projeto 8",
     paragraphs: ["Parágrafo 1", "Parágrafo 2", "Parágrafo 3"],
   },
@@ -202,9 +205,14 @@ const PROJECT_TEXTS_EN = [
     paragraphs: ["Paragraph 1", "Paragraph 2", "Paragraph 3"],
   },
   {
-    title: "PetShop Management System",
-    description: "Project 6 description",
-    paragraphs: ["Paragraph 1", "Paragraph 2", "Paragraph 3"],
+    title: "GitPro Collector: Repository Browser",
+    description:
+      "A simple React application for listing GitHub repositories, with support for searching and viewing specific repositories.",
+    paragraphs: [
+      "GitPro Collector is a basic repository listing system that works as follows: Select your preferred search method, either by username or by token (a GitHub access token provided by the user through Settings → Developer Settings → Personal Access Tokens → Classic Token), enter the username or token, and click search.",
+  
+      "The application retrieves the user's public repositories when searching by username, or both public and private repositories when using a token. The results are displayed through a repository selector, allowing the user to choose a repository and view its additional information."
+    ]
   },
   {
     title: "Condomunity",
@@ -212,7 +220,7 @@ const PROJECT_TEXTS_EN = [
     paragraphs: ["Paragraph 1", "Paragraph 2", "Paragraph 3"],
   },
   {
-    title: "GitHub Project Listing",
+    title: "PetShop Management System",
     description: "Project 8 description",
     paragraphs: ["Paragraph 1", "Paragraph 2", "Paragraph 3"],
   },
@@ -255,9 +263,14 @@ const PROJECT_TEXTS_JA = [
     paragraphs: ["段落 1", "段落 2", "段落 3"],
   },
   {
-    title: "ペットショップ管理システム",
-    description: "プロジェクト 6 の説明",
-    paragraphs: ["段落 1", "段落 2", "段落 3"],
+    title: "GitPro Collector：リポジトリ一覧ツール",
+    description:
+      "GitHubユーザーのリポジトリを一覧表示し、特定のリポジトリを検索できるシンプルなReactアプリケーションです。",
+    paragraphs: [
+      "GitPro Collectorは、基本的なリポジトリ一覧システムです。検索方法として、ユーザー名またはトークンを選択できます。トークンを利用する場合は、GitHubの「Settings → Developer Settings → Personal Access Tokens → Token (Classic)」で発行したアクセストークンを使用します。ユーザー名またはトークンを入力し、検索を実行します。",
+  
+      "ユーザー名で検索した場合は公開リポジトリのみを取得し、トークンを使用した場合は公開・非公開の両方のリポジトリを取得できます。検索結果はリポジトリセレクターに表示され、ユーザーは表示したいリポジトリを選択し、追加情報を確認できます。"
+    ]
   },
   {
     title: "Condomunity",
@@ -265,7 +278,7 @@ const PROJECT_TEXTS_JA = [
     paragraphs: ["段落 1", "段落 2", "段落 3"],
   },
   {
-    title: "GitHubプロジェクト一覧",
+    title: "ペットショップ管理システム",
     description: "プロジェクト 8 の説明",
     paragraphs: ["段落 1", "段落 2", "段落 3"],
   },
