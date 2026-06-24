@@ -20,6 +20,8 @@ import {
 
 import ArrowBoxScrollRail from "../ArrowBox/ArrowBoxScrollRail";
 
+import CardBox from "../CardBox/CardBox";
+
 import CustomBulletButton from "../CustomBulletButton/CustomBulletButton";
 
 import TabSlider from "../TabSlider/TabSlider";
@@ -28,7 +30,13 @@ import arrowDown from "../../assets/arrow-down.png";
 
 import closeIcon from "../../assets/error1.png";
 
-import type { ProjectScreenItem, ProjectWithImage, SkillPageSkill } from "../../utils/Types";
+import type {
+  ProjectDocItem,
+  ProjectScreenItem,
+  ProjectScreenshotPlatform,
+  ProjectWithImage,
+  SkillPageSkill,
+} from "../../utils/Types";
 
 import { getTechTagStyle } from "../../utils/projectTechTagStyles";
 
@@ -55,6 +63,10 @@ export type ProjectAboutModalProps = {
   screensMobileLabel: string;
 
   screensEmptyLabel: string;
+
+  docsLabel: string;
+
+  openDocLabel: string;
 
   screenPrevLabel: string;
 
@@ -116,6 +128,57 @@ const MobileDeviceFrame: React.FC<MobileDeviceFrameProps> = ({ caseSrc, screen }
       aria-hidden
       decoding="async"
     />
+  </div>
+);
+
+
+
+type ProjectModalTab =
+  | {
+      type: "screens";
+      platform: ProjectScreenshotPlatform;
+      label: string;
+      screens: readonly ProjectScreenItem[];
+    }
+  | {
+      type: "docs";
+      label: string;
+      docs: readonly ProjectDocItem[];
+    };
+
+type ProjectDocsGridProps = {
+  docs: readonly ProjectDocItem[];
+  openDocLabel: string;
+};
+
+const ProjectDocsGrid: React.FC<ProjectDocsGridProps> = ({ docs, openDocLabel }) => (
+  <div className="project-about-modal__docs-grid" role="list">
+    {docs.map((doc) => (
+      <a
+        key={doc.src}
+        className="project-about-modal__doc-card-link"
+        href={doc.src}
+        target="_blank"
+        rel="noopener noreferrer"
+        role="listitem"
+        aria-label={`${openDocLabel}: ${doc.title}`}
+      >
+        <CardBox className="project-about-modal__doc-card">
+          <p className="project-about-modal__doc-card-title">{doc.title}</p>
+          <div className="project-about-modal__doc-preview-wrapper" aria-hidden="true">
+            {doc.previewSrc ? (
+              <img src={doc.previewSrc} alt="" className="project-about-modal__doc-preview" />
+            ) : (
+              <div
+                className={`project-about-modal__doc-preview-fallback project-about-modal__doc-preview-fallback--${doc.kind}`}
+              >
+                <span>{doc.kind === "pdf" ? "PDF" : "Slides"}</span>
+              </div>
+            )}
+          </div>
+        </CardBox>
+      </a>
+    ))}
   </div>
 );
 
@@ -483,6 +546,10 @@ const ProjectAboutModal: React.FC<ProjectAboutModalProps> = ({
 
   screensEmptyLabel,
 
+  docsLabel,
+
+  openDocLabel,
+
   screenPrevLabel,
 
   screenNextLabel,
@@ -501,29 +568,50 @@ const ProjectAboutModal: React.FC<ProjectAboutModalProps> = ({
 
   const scrollRef = useRef<HTMLDivElement>(null);
 
-  const [activeScreenTabIndex, setActiveScreenTabIndex] = useState(0);
+  const [activeModalTabIndex, setActiveModalTabIndex] = useState(0);
 
 
 
-  const screenTabs = useMemo(
-    () =>
-      project.screens.map((platform) => ({
+  const modalTabs = useMemo((): ProjectModalTab[] => {
+    const tabs: ProjectModalTab[] = [];
+
+    for (const platform of project.screens) {
+      if (platform === "docs") {
+        tabs.push({
+          type: "docs",
+          label: docsLabel,
+          docs: project.docAssets,
+        });
+        continue;
+      }
+
+      tabs.push({
+        type: "screens",
         platform,
         label: platform === "web" ? screensWebLabel : screensMobileLabel,
         screens: project.screenAssets[platform],
-      })),
-    [project.screenAssets, project.screens, screensMobileLabel, screensWebLabel],
-  );
+      });
+    }
+
+    return tabs;
+  }, [
+    docsLabel,
+    project.docAssets,
+    project.screenAssets,
+    project.screens,
+    screensMobileLabel,
+    screensWebLabel,
+  ]);
 
 
 
-  const activeScreenTab = screenTabs[activeScreenTabIndex] ?? screenTabs[0];
+  const activeModalTab = modalTabs[activeModalTabIndex] ?? modalTabs[0];
 
 
 
   useEffect(() => {
 
-    setActiveScreenTabIndex(0);
+    setActiveModalTabIndex(0);
 
   }, [project.id]);
 
@@ -531,13 +619,13 @@ const ProjectAboutModal: React.FC<ProjectAboutModalProps> = ({
 
   useEffect(() => {
 
-    if (activeScreenTabIndex >= screenTabs.length) {
+    if (activeModalTabIndex >= modalTabs.length) {
 
-      setActiveScreenTabIndex(0);
+      setActiveModalTabIndex(0);
 
     }
 
-  }, [activeScreenTabIndex, screenTabs.length]);
+  }, [activeModalTabIndex, modalTabs.length]);
 
 
 
@@ -789,7 +877,7 @@ const ProjectAboutModal: React.FC<ProjectAboutModalProps> = ({
 
 
 
-              {screenTabs.length > 0 ? (
+              {modalTabs.length > 0 ? (
 
                 <section
 
@@ -803,30 +891,39 @@ const ProjectAboutModal: React.FC<ProjectAboutModalProps> = ({
 
                     <TabSlider
 
-                      tabs={screenTabs.map((tab) => tab.label)}
+                      tabs={modalTabs.map((tab) => tab.label)}
 
-                      activeIndex={activeScreenTabIndex}
+                      activeIndex={activeModalTabIndex}
 
-                      onChange={setActiveScreenTabIndex}
+                      onChange={setActiveModalTabIndex}
 
                     />
 
                   </div>
 
                   <div className="project-about-modal__screens-panel">
-                    {activeScreenTab ? (
-                      activeScreenTab.screens.length > 0 ? (
+                    {activeModalTab?.type === "screens" ? (
+                      activeModalTab.screens.length > 0 ? (
                         <ProjectScreenCarousel
-                          key={`${project.id}-${activeScreenTab.platform}`}
-                          screens={activeScreenTab.screens}
-                          carouselLabel={activeScreenTab.label}
+                          key={`${project.id}-${activeModalTab.platform}`}
+                          screens={activeModalTab.screens}
+                          carouselLabel={activeModalTab.label}
                           screenPrevLabel={screenPrevLabel}
                           screenNextLabel={screenNextLabel}
                           caseSrc={
-                            activeScreenTab.platform === "mobile"
+                            activeModalTab.platform === "mobile"
                               ? project.mobileCaseSrc
                               : undefined
                           }
+                        />
+                      ) : (
+                        <p className="project-about-modal__screens-empty">{screensEmptyLabel}</p>
+                      )
+                    ) : activeModalTab?.type === "docs" ? (
+                      activeModalTab.docs.length > 0 ? (
+                        <ProjectDocsGrid
+                          docs={activeModalTab.docs}
+                          openDocLabel={openDocLabel}
                         />
                       ) : (
                         <p className="project-about-modal__screens-empty">{screensEmptyLabel}</p>

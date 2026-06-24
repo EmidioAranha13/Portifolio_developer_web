@@ -481,8 +481,11 @@ export type ProjectScreenItem = {
   src?: string;
 };
 
-/** Plataforma das telas no modal (`assets/projects/{id}/{platform}/`). */
-export type ProjectScreenPlatform = "web" | "mobile";
+/** Seções do modal — `web`/`mobile` usam pasta homônima; `docs` usa `docs/`. */
+export type ProjectScreenPlatform = "web" | "mobile" | "docs";
+
+/** Plataformas com screenshots em `assets/projects/{id}/{platform}/`. */
+export type ProjectScreenshotPlatform = Exclude<ProjectScreenPlatform, "docs">;
 
 /**
  * Projeto da página Projetos: carrossel + modal (única fonte em `projects_page.projects`).
@@ -499,7 +502,7 @@ export type Project = {
   /** Texto longo no modal (parágrafos). */
   paragraphs: string[];
   technologies: string[];
-  /** Abas exibidas no modal; imagens vêm de `assets/projects/{id}/{platform}/`. */
+  /** Abas do modal (`web`/`mobile`/`docs`); ocultar uma seção = remover da lista. */
   screens: readonly ProjectScreenPlatform[];
   /** Vazio → botão GitHub oculto no modal. */
   project_github_link: string;
@@ -507,8 +510,20 @@ export type Project = {
   project_test_link: string;
 };
 
-/** Telas resolvidas por plataforma a partir de `assets/projects/{id}/{platform}/`. */
-export type ProjectScreenAssets = Record<ProjectScreenPlatform, ProjectScreenItem[]>;
+/** Screenshots resolvidos por plataforma (`web` e `mobile` apenas). */
+export type ProjectScreenAssets = Record<ProjectScreenshotPlatform, ProjectScreenItem[]>;
+
+/** Tipo de documento em `assets/projects/{id}/docs/`. */
+export type ProjectDocKind = "pdf" | "slides";
+
+/** Documento do modal (`projects/{id}/docs/`). */
+export type ProjectDocItem = {
+  title: string;
+  src: string;
+  kind: ProjectDocKind;
+  /** Preview opcional — `{nome}.png` com o mesmo nome-base do arquivo. */
+  previewSrc?: string;
+};
 
 /** Projeto com URLs de imagem já resolvidas a partir de `assets/projects/{id}/`. */
 export type ProjectWithImage = Project & {
@@ -519,6 +534,8 @@ export type ProjectWithImage = Project & {
   screenAssets: ProjectScreenAssets;
   /** Moldura mobile — `mobile/case.*` (telas do modal) */
   mobileCaseSrc?: string;
+  /** Documentação — `docs/*` (aba exibida somente quando houver itens). */
+  docAssets: readonly ProjectDocItem[];
 };
 
 /**
@@ -547,6 +564,8 @@ export type ProjectsPage = {
   project_modal_screens_web_label: string;
   project_modal_screens_mobile_label: string;
   project_modal_screens_empty_label: string;
+  project_modal_docs_label: string;
+  project_modal_open_doc_label: string;
   project_modal_screen_prev_label: string;
   project_modal_screen_next_label: string;
   project_modal_github_label: string;
