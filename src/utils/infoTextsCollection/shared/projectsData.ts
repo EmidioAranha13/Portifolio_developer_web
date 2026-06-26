@@ -38,18 +38,18 @@ const PORTFOLIO_PROJECT_CORES = [
   {
     color: "#3fa874",
     img: "" as ProjectImageKey | "",
-    technologies: ["React", "TypeScript", "Vite", "Node.js"],
+    technologies: ["React", "Material UI","Unstyled Components", "Vite", "Javascript", "TypeScript", "Node.js", "Api Rest", "Python", "css", "Redux", "Docker", "github", "UML", "Metodologias Agéis", "Scrum", "Kanban"],
     screens: [] as const,
-    project_github_link: "https://github.com/EmidioAranha13/proj1",
-    project_test_link: "https://github.com/EmidioAranha13/proj1",
+    project_github_link: "",
+    project_test_link: "",
   },
   {
     color: "#6bbe68",
     img: "" as ProjectImageKey | "",
-    technologies: ["React", "TypeScript", "Vite", "Node.js"],
+    technologies: ["React", "React Native", "Material UI", "bootstrap", "Unstyled Components", "css", "Redux", "Yarn", "Api Rest", "Javascript", "TypeScript", "Node.js", "WebSocket", "Express", "Sequelize", "MSSQL", "Docker", "github"],
     screens: [] as const,
-    project_github_link: "https://github.com/EmidioAranha13/proj1",
-    project_test_link: "https://github.com/EmidioAranha13/proj1",
+    project_github_link: "",
+    project_test_link: "",
   },
   {
     color: "#9cd65d",
@@ -130,7 +130,7 @@ const PROJECT_TEXTS_BR = [
   },
   {
     title: "Air Quality App",
-    description: "Aplicação móvel desenvolvida para Android com integração a um sistema embarcado baseado em ESP32, responsável pela coleta e monitoramento de dados relacionados à qualidade do ar e à temperatura ambiente. O projeto foi desenvolvido durante o programa de extensão DevTitans da UFAM, com foco na integração entre aplicações móveis e sistemas embarcados.",
+    description: "Aplicação mobile desenvolvida para Android com integração a um sistema embarcado baseado em ESP32, responsável pela coleta e monitoramento de dados relacionados à qualidade do ar e à temperatura ambiente. O projeto foi desenvolvido durante o programa de extensão DevTitans da UFAM, com foco na integração entre aplicações móveis e sistemas embarcados.",
     paragraphs: [
       "O Air Quality App é uma aplicação Android desenvolvida em Kotlin e Jetpack Compose, capaz de se comunicar com um sistema embarcado baseado em ESP32. Por meio de sensores integrados, o sistema monitora a concentração de partículas finas e grossas presentes no ambiente, identifica variações de temperatura associadas à qualidade do ar e detecta possíveis gases tóxicos dispersos no ambiente.",
       "A aplicação possui uma interface limpa e interativa, exibindo índices relacionados à qualidade do ar, temperatura, concentração de partículas, presença de gases tóxicos e informações dos sensores. Além disso, apresenta referências sobre os níveis considerados adequados e alerta sobre os possíveis impactos da qualidade do ar para grupos mais sensíveis.",
@@ -139,13 +139,20 @@ const PROJECT_TEXTS_BR = [
   },
   {
     title: "Sistema de Visão: Detector",
-    description: "Descrição do projeto 3",
-    paragraphs: ["Parágrafo 1", "Parágrafo 2", "Parágrafo 3"],
+    description: "Projeto de Pesquisa & Desenvolvimento (P&D) voltado à criação de um sistema de visão computacional para inspeção de componentes industriais e detecção de defeitos e resíduos. A solução integra sistemas MES, câmeras industriais, scanners, CLPs e interfaces homem-máquina (IHM), garantindo automação do processo, rastreabilidade e controle da produção. Desenvolvido com React, Node.js, Vite e OpenCV (Python).",
+    paragraphs: [
+      "O sistema reúne software e firmware para automatizar a inspeção de componentes industriais. O frontend foi desenvolvido em React com Vite e é responsável pelo gerenciamento do fluxo de inspeção, controle manual do hardware por comunicação Modbus, exibição de alertas operacionais, monitoramento do sistema e geração de registros diários das inspeções realizadas.",
+      "O backend foi desenvolvido em Node.js e realiza a comunicação com bancos de dados locais e remotos. A inspeção por visão computacional é iniciada por comandos enviados à câmera através do backend, enquanto o processamento das imagens é executado por uma biblioteca própria baseada em OpenCV e Python. A aplicação permite configurar diferentes modelos de câmeras, industriais ou convencionais, adaptando automaticamente o fluxo de captura e processamento conforme o equipamento conectado.",
+      "A camada de firmware utiliza comunicação Modbus com o CLP responsável pelo controle do hardware da estação de inspeção. Os comandos enviados pelo frontend são executados pelo CLP, que retorna o estado de cada etapa do ciclo produtivo. Essa arquitetura possibilita a implementação de alertas de emergência, sinalização visual e sonora, identificação de peças aprovadas (OK) e reprovadas (NOK), além do gerenciamento completo do fluxo de testes e rastreabilidade da produção."
+    ]
   },
   {
     title: "Dashboard de Monitoramento",
-    description: "Descrição do projeto 4",
-    paragraphs: ["Parágrafo 1", "Parágrafo 2", "Parágrafo 3"],
+    description: "Sistema corporativo SPA para gerenciamento operacional e controle de acesso em ambiente industrial. A plataforma centraliza o registro de entrada de materiais, veículos, colaboradores e prestadores de serviço, integrando tecnologias como RFID, câmeras, sensores e reconhecimento facial para monitoramento e rastreabilidade em tempo real. Desenvolvido em React e Node.js para Web e Mobile, com uma versão complementar em React Native destinada ao registro de informações em tablets Android.",
+    paragraphs: [
+      "O software é composto por módulos independentes que abrangem dashboards operacionais, controle de registros de entrada, rastreabilidade de informações, gerenciamento de acessos a áreas restritas e um sistema interno de comunicação para solicitações entre setores. Cada módulo possui controle de permissões baseado no perfil do usuário, permitindo restringir funcionalidades conforme o nível de acesso.",
+      "A plataforma atende diferentes setores da fábrica, incluindo planta industrial, refeitório, produção, estacionamento e almoxarifado. Cada ambiente pode possuir uma interface personalizada, adaptada às necessidades operacionais e às políticas de segurança de cada área, garantindo maior controle sobre o fluxo de pessoas e recursos."
+    ]
   },
   {
     title: "Icomp Números",
@@ -202,13 +209,21 @@ const PROJECT_TEXTS_EN = [
   },
   {
     title: "Vision System: Detector",
-    description: "Project 3 description",
-    paragraphs: ["Paragraph 1", "Paragraph 2", "Paragraph 3"],
+    description: "Research & Development (R&D) project focused on building a computer vision system for industrial component inspection and defect detection. The solution integrates MES platforms, industrial cameras, barcode scanners, PLCs, and HMIs to provide production automation, traceability, and quality control. Developed with React, Node.js, Vite, and OpenCV (Python).",
+    paragraphs: [
+      "The system combines software and firmware to automate the inspection of industrial components. The frontend was developed with React and Vite and is responsible for managing the inspection workflow, providing manual hardware control through Modbus communication, displaying operational alerts, monitoring production data, and generating daily inspection logs.",
+      "The backend is built with Node.js and communicates with both local and remote databases. The computer vision pipeline is initiated through camera commands sent by the backend, while image processing is handled by a custom OpenCV library written in Python. The application supports both industrial and standard cameras, automatically adapting the inspection workflow according to the connected device and its configuration.",
+      "The firmware layer communicates with a PLC through the Modbus protocol to control the inspection hardware. Commands issued by the frontend are executed by the PLC, which returns the status of each production cycle. This architecture enables emergency notifications, visual and audible alarms, OK/NOK part indication, complete test workflow management, and full production traceability."
+    ]
   },
   {
     title: "Monitoring Dashboard",
-    description: "Project 4 description",
-    paragraphs: ["Paragraph 1", "Paragraph 2", "Paragraph 3"],
+    description: "Enterprise SPA designed for operational management and industrial access control. The platform centralizes the registration of materials, vehicles, employees, and contractors, integrating RFID, cameras, sensors, and facial recognition technologies to provide real-time monitoring and traceability. Developed with React and Node.js for Web and Mobile, alongside a complementary React Native application for Android tablets.",
+    
+    paragraphs: [
+      "The application is organized into independent modules covering operational dashboards, entry registration, data traceability, restricted area access management, and an internal messaging system for interdepartmental requests. Each module implements role-based access control, allowing features to be restricted according to the user's permissions.",
+      "The platform supports multiple factory environments, including the production plant, cafeteria, production areas, parking facilities, and warehouse. Each location can be configured with a dedicated interface tailored to its operational requirements and security policies, ensuring greater control over personnel and material flow."
+    ]
   },
   {
     title: "Icomp Numbers",
@@ -266,13 +281,20 @@ const PROJECT_TEXTS_JA = [
   },
   {
     title: "ビジョンシステム: 検出器",
-    description: "プロジェクト 3 の説明",
-    paragraphs: ["段落 1", "段落 2", "段落 3"],
+    description: "産業用部品の検査や欠陥・異物検出を目的としたコンピュータビジョンシステムの研究開発（R&D）プロジェクトです。MES、産業用カメラ、バーコードスキャナー、PLC、HMIと連携し、生産ラインの自動化、品質管理、トレーサビリティを実現します。React、Node.js、Vite、OpenCV（Python）を使用して開発しました。",
+    paragraphs: [
+      "本システムは、産業用部品の検査を自動化するためのソフトウェアとファームウェアを組み合わせたソリューションです。フロントエンドはReactとViteで開発され、検査フローの管理、Modbus通信によるハードウェアの手動操作、システムアラートの表示、データ監視、日次ログの管理を担当しています。",
+      "バックエンドはNode.jsで構築され、ローカルおよびリモートデータベースと通信します。画像検査はバックエンドからカメラへ送信されるコマンドによって開始され、画像処理はPythonで開発したOpenCVライブラリによって実行されます。また、産業用カメラと一般的なカメラの両方に対応しており、接続された機器に応じて検査フローを切り替えることができます。",
+      "ファームウェア層では、Modbus通信を利用してPLCと接続し、検査装置のハードウェアを制御しています。フロントエンドから送信されたコマンドはPLCによって実行され、その結果が各工程の状態として返されます。この仕組みにより、非常停止アラート、OK・NOK判定、音や画面による通知、検査フローの管理、生産ラインのトレーサビリティを実現しています。"
+    ]
   },
   {
     title: "モニタリングダッシュボード",
-    description: "プロジェクト 4 の説明",
-    paragraphs: ["段落 1", "段落 2", "段落 3"],
+    description: "工場内の運用管理と入退室管理を目的とした企業向けSPAシステムです。資材、車両、従業員、外部作業員の入場情報を一元管理し、RFID、カメラ、各種センサー、顔認証と連携してリアルタイムで監視とトレーサビリティを実現します。ReactとNode.jsを使用したWeb・モバイル版に加え、Androidタブレット向けのReact Native版も開発しました。",
+    paragraphs: [
+      "本システムは、運用ダッシュボード、入場記録管理、データのトレーサビリティ、立入制限エリアのアクセス管理、社内連絡機能など、複数のモジュールで構成されています。各モジュールはユーザー権限に応じて利用できる機能が制限され、安全な運用を実現しています。",
+      "このプラットフォームは、工場、食堂、生産エリア、駐車場、倉庫など、さまざまな施設で利用できます。それぞれの環境に合わせた専用画面を設定できるため、運用要件やセキュリティポリシーに応じた柔軟な管理が可能です。"
+    ]
   },
   {
     title: "Icomp Numbers",
